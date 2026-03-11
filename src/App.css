@@ -293,6 +293,13 @@
   align-items: center;
 }
 
+.mountain-picker-row {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  flex-wrap: wrap;
+}
+
 .mountain-select {
   min-width: 12rem;
   min-height: 2.7rem;
@@ -303,6 +310,38 @@
   color: #214632;
   font: inherit;
   font-weight: 700;
+}
+
+.favorite-toggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 2.7rem;
+  padding: 0 0.9rem;
+  border: 1px solid rgba(24, 72, 45, 0.14);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.92);
+  color: #214632;
+  font: inherit;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.favorite-toggle .icon-badge {
+  width: 1.4rem;
+  height: 1.4rem;
+  margin-right: 0.35rem;
+  background: rgba(255, 255, 255, 0.55);
+}
+
+.favorite-toggle.active {
+  background: #214632;
+  color: #f4faf6;
+}
+
+.favorite-toggle.active .icon-badge {
+  background: rgba(255, 255, 255, 0.16);
+  color: #f4faf6;
 }
 
 .preset-chip-list.compact {
@@ -539,6 +578,11 @@
   .mountain-select {
     width: 100%;
     min-width: 0;
+  }
+
+  .mountain-picker-row {
+    flex-direction: column;
+    align-items: stretch;
   }
 
   .preset-chip-list.compact {

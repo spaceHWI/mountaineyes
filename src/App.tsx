@@ -4,8 +4,9 @@ import { feeds, mountains, worldPicks, type FeedKind, type MountainId } from './
 import { StreamPlayer } from './components/StreamPlayer'
 
 const EARTH_RADIUS_KM = 6371
+const FAVORITE_MOUNTAIN_KEY = 'mountaineyes-favorite-mountain'
 
-function Icon({ name }: { name: 'mountain' | 'path' | 'grid' | 'camera' | 'link' | 'pin' | 'view' }) {
+function Icon({ name }: { name: 'mountain' | 'path' | 'grid' | 'camera' | 'link' | 'pin' | 'view' | 'star' }) {
   const commonProps = {
     fill: 'none',
     stroke: 'currentColor',
@@ -62,6 +63,14 @@ function Icon({ name }: { name: 'mountain' | 'path' | 'grid' | 'camera' | 'link'
         <path {...commonProps} d="m20.5 7.5-6.2 6.2" />
       </>
     ),
+    star: (
+      <>
+        <path
+          {...commonProps}
+          d="m12 4.5 2.2 4.6 5.1.7-3.7 3.6.9 5.1-4.5-2.4-4.5 2.4.9-5.1L4.7 9.8l5.1-.7L12 4.5Z"
+        />
+      </>
+    ),
   }
 
   return (
@@ -92,11 +101,42 @@ const getDistanceKm = (
 }
 
 function App() {
-  const [activeMountainId, setActiveMountainId] = useState<MountainId>('hallasan')
+  const [favoriteMountainId, setFavoriteMountainId] = useState<MountainId | null>(() => {
+    if (typeof window === 'undefined') {
+      return null
+    }
+
+    const stored = window.localStorage.getItem(FAVORITE_MOUNTAIN_KEY)
+    return mountains.some((mountain) => mountain.id === stored) ? (stored as MountainId) : null
+  })
+  const [activeMountainId, setActiveMountainId] = useState<MountainId>(() => {
+    if (typeof window === 'undefined') {
+      return 'hallasan'
+    }
+
+    const stored = window.localStorage.getItem(FAVORITE_MOUNTAIN_KEY)
+    return mountains.some((mountain) => mountain.id === stored) ? (stored as MountainId) : 'hallasan'
+  })
   const [activeKind, setActiveKind] = useState<'전체' | FeedKind>('전체')
-  const [locationLabel, setLocationLabel] = useState('전국 대표 산부터 보여드리고 있어요')
+  const [nearestMountainName, setNearestMountainName] = useState<string | null>(null)
 
   useEffect(() => {
+    if (typeof window === 'undefined') {
+      return
+    }
+
+    if (favoriteMountainId) {
+      window.localStorage.setItem(FAVORITE_MOUNTAIN_KEY, favoriteMountainId)
+      return
+    }
+
+    window.localStorage.removeItem(FAVORITE_MOUNTAIN_KEY)
+  }, [favoriteMountainId])
+
+  useEffect(() => {
+    if (favoriteMountainId) {
+      return
+    }
     if (!navigator.geolocation) {
       return
     }
@@ -118,10 +158,10 @@ function App() {
         }
 
         setActiveMountainId(nearestMountain.mountainId)
-        setLocationLabel(`지금 위치에서 가까운 ${nearestMountain.mountainName}부터 보여드려요`)
+        setNearestMountainName(nearestMountain.mountainName)
       },
       () => {
-        setLocationLabel('위치를 허용하면 가까운 산부터 먼저 보여드려요')
+        setNearestMountainName(null)
       },
       {
         enableHighAccuracy: false,
@@ -129,9 +169,16 @@ function App() {
         timeout: 5000,
       },
     )
-  }, [])
+  }, [favoriteMountainId])
+
+  const locationLabel = favoriteMountainId
+    ? '즐겨찾는 산부터 먼저 보여드려요'
+    : nearestMountainName
+      ? `지금 위치에서 가까운 ${nearestMountainName}부터 보여드려요`
+      : '위치를 허용하면 가까운 산부터 먼저 보여드려요'
 
   const activeMountain = mountains.find((mountain) => mountain.id === activeMountainId) ?? mountains[0]
+  const isFavoriteMountain = favoriteMountainId === activeMountainId
 
   const availableKinds = useMemo(() => {
     const kinds = new Set<FeedKind>()
@@ -156,6 +203,10 @@ function App() {
       }),
     [activeMountainId, visibleKind],
   )
+
+  const toggleFavoriteMountain = () => {
+    setFavoriteMountainId((current) => (current === activeMountainId ? null : activeMountainId))
+  }
 
   return (
     <div className="app-shell">
@@ -213,20 +264,30 @@ function App() {
           <div className="toolbar-stack">
             <div className="toolbar-block">
               <p className="toolbar-label">산 종류</p>
-              <label className="mountain-select-wrap" htmlFor="mountain-select">
-                <select
-                  id="mountain-select"
-                  className="mountain-select"
-                  onChange={(event) => setActiveMountainId(event.target.value as MountainId)}
-                  value={activeMountainId}
+              <div className="mountain-picker-row">
+                <label className="mountain-select-wrap" htmlFor="mountain-select">
+                  <select
+                    id="mountain-select"
+                    className="mountain-select"
+                    onChange={(event) => setActiveMountainId(event.target.value as MountainId)}
+                    value={activeMountainId}
+                  >
+                    {mountains.map((mountain) => (
+                      <option key={mountain.id} value={mountain.id}>
+                        {mountain.name}
+                      </option>
+                    ))}
+                  </select>
+                </label>
+                <button
+                  className={isFavoriteMountain ? 'favorite-toggle active' : 'favorite-toggle'}
+                  onClick={toggleFavoriteMountain}
+                  type="button"
                 >
-                  {mountains.map((mountain) => (
-                    <option key={mountain.id} value={mountain.id}>
-                      {mountain.name}
-                    </option>
-                  ))}
-                </select>
-              </label>
+                  <Icon name="star" />
+                  {isFavoriteMountain ? '즐겨찾기됨' : '즐겨찾기'}
+                </button>
+              </div>
             </div>
 
             <div className="toolbar-block">
