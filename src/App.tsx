@@ -133,14 +133,28 @@ function App() {
 
   const activeMountain = mountains.find((mountain) => mountain.id === activeMountainId) ?? mountains[0]
 
+  const availableKinds = useMemo(() => {
+    const kinds = new Set<FeedKind>()
+
+    feeds.forEach((feed) => {
+      if (feed.mountainId === activeMountainId) {
+        kinds.add(feed.kind)
+      }
+    })
+
+    return ['전체', ...Array.from(kinds)] as Array<'전체' | FeedKind>
+  }, [activeMountainId])
+
+  const visibleKind = availableKinds.includes(activeKind) ? activeKind : '전체'
+
   const visibleFeeds = useMemo(
     () =>
       feeds.filter((feed) => {
         const sameMountain = feed.mountainId === activeMountainId
-        const sameKind = activeKind === '전체' || feed.kind === activeKind
+        const sameKind = visibleKind === '전체' || feed.kind === visibleKind
         return sameMountain && sameKind
       }),
-    [activeKind, activeMountainId],
+    [activeMountainId, visibleKind],
   )
 
   return (
@@ -218,27 +232,27 @@ function App() {
             <div className="toolbar-block">
               <p className="toolbar-label">CCTV 구분</p>
               <div className="chip-list preset-chip-list compact">
-              {(['전체', '정상', '진입부', '풍경'] as const).map((preset) => (
-                <button
-                  key={preset}
-                  className={activeKind === preset ? 'chip active' : 'chip'}
-                  onClick={() => setActiveKind(preset)}
-                  type="button"
-                >
-                  <Icon
-                    name={
-                      preset === '전체'
-                        ? 'grid'
-                        : preset === '정상'
-                          ? 'mountain'
-                          : preset === '풍경'
-                            ? 'view'
-                          : 'path'
-                    }
-                  />
-                  {preset}
-                </button>
-              ))}
+                {availableKinds.map((preset) => (
+                  <button
+                    key={preset}
+                    className={visibleKind === preset ? 'chip active' : 'chip'}
+                    onClick={() => setActiveKind(preset)}
+                    type="button"
+                  >
+                    <Icon
+                      name={
+                        preset === '전체'
+                          ? 'grid'
+                          : preset === '정상'
+                            ? 'mountain'
+                            : preset === '풍경'
+                              ? 'view'
+                              : 'path'
+                      }
+                    />
+                    {preset}
+                  </button>
+                ))}
               </div>
             </div>
           </div>
