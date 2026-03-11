@@ -180,11 +180,11 @@ function App() {
               가까운 산이 먼저 보이고, 다른 산들도 계속 업데이트됩니다.
             </p>
             <div className="hero-badges">
-              <span className="soft-badge">
+              <span className="soft-badge compact">
                 <Icon name="pin" />
                 {locationLabel}
               </span>
-              <span className="soft-badge">
+              <span className="soft-badge compact">
                 <Icon name="camera" />
                 지금은 {mountains.map((mountain) => mountain.name).join(', ')}부터 시작합니다
               </span>
@@ -194,21 +194,27 @@ function App() {
 
         <section className="toolbar panel">
           <div className="toolbar-stack">
-            <div className="chip-list mountain-chip-list">
-              {mountains.map((mountain) => (
-                <button
-                  key={mountain.id}
-                  className={activeMountainId === mountain.id ? 'chip active' : 'chip'}
-                  onClick={() => setActiveMountainId(mountain.id)}
-                  type="button"
+            <div className="toolbar-block">
+              <p className="toolbar-label">산 종류</p>
+              <label className="mountain-select-wrap" htmlFor="mountain-select">
+                <select
+                  id="mountain-select"
+                  className="mountain-select"
+                  onChange={(event) => setActiveMountainId(event.target.value as MountainId)}
+                  value={activeMountainId}
                 >
-                  <Icon name="mountain" />
-                  {mountain.name}
-                </button>
-              ))}
+                  {mountains.map((mountain) => (
+                    <option key={mountain.id} value={mountain.id}>
+                      {mountain.name}
+                    </option>
+                  ))}
+                </select>
+              </label>
             </div>
 
-            <div className="chip-list preset-chip-list">
+            <div className="toolbar-block">
+              <p className="toolbar-label">CCTV 구분</p>
+              <div className="chip-list preset-chip-list compact">
               {(['전체', '정상', '진입부', '풍경'] as const).map((preset) => (
                 <button
                   key={preset}
@@ -228,13 +234,14 @@ function App() {
                   {preset}
                 </button>
               ))}
+              </div>
             </div>
           </div>
         </section>
 
         <section className="mountain-summary panel">
           <div>
-            <p className="eyebrow">Current Mountain</p>
+            <p className="eyebrow">Live Mountain</p>
             <h2>{activeMountain.name}</h2>
             <p>{activeMountain.description}</p>
           </div>
