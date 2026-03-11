@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <defs>
+    <linearGradient id="mountainGradient" x1="0%" x2="100%" y1="0%" y2="100%">
+      <stop offset="0%" stop-color="#8fd19c" />
+      <stop offset="100%" stop-color="#2f6a53" />
+    </linearGradient>
+  </defs>
+  <rect width="64" height="64" rx="18" fill="#edf7ef" />
+  <path d="M10 46 26 22l8 11 6-9 14 22H10Z" fill="url(#mountainGradient)" />
+  <path
+    d="m23.5 25.2 2.6-3.9 2.8 3.9"
+    fill="none"
+    stroke="#f8fffb"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+    stroke-width="3"
+  />
+  <path
+    d="M17 46c4.6-3.5 9.5-5.1 14.7-5.1 5.4 0 10.2 1.6 16.3 5.1"
+    fill="none"
+    stroke="#d7efdc"
+    stroke-linecap="round"
+    stroke-width="3"
+  />
+</svg>
