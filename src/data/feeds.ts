@@ -26,6 +26,7 @@ export type Feed = {
   officialPage: string
   provider: string
   region: string
+  sourceType?: 'hls' | 'image'
   sourceUrl: string
   thumbnail?: string
 }
@@ -246,5 +247,20 @@ export const feeds: Feed[] = [
     officialLabel: '강원 기상청 원본',
     officialPage: 'https://www.weather.go.kr/gangwon/maple/cctv.php',
     sourceUrl: 'https://live.knps.or.kr/cctv/hls/zchunje.m3u8',
+  },
+]
+
+export const worldPicks: Feed[] = [
+  {
+    id: 'fujisan-oshinohakkai',
+    name: '후지산 오시노핫카이',
+    mountainId: 'fujisan' as MountainId,
+    kind: '풍경',
+    region: '일본',
+    provider: 'Fujigoko.TV · Mt. Fuji Climbing Official Site linked source',
+    officialLabel: '후지산 라이브카메라 원본',
+    officialPage: 'https://live.fujigoko.tv/?n=1&e=1',
+    sourceType: 'image',
+    sourceUrl: 'https://cam.fujigoko.tv/livecam1/cam1_8150.jpg',
   },
 ]

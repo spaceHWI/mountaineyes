@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from 'react'
 import './App.css'
-import { feeds, mountains, type FeedKind, type MountainId } from './data/feeds'
+import { feeds, mountains, worldPicks, type FeedKind, type MountainId } from './data/feeds'
 import { StreamPlayer } from './components/StreamPlayer'
 
 const EARTH_RADIUS_KM = 6371
@@ -293,6 +293,38 @@ function App() {
               </div>
             </article>
           ))}
+        </section>
+
+        <section className="world-block panel">
+          <div className="world-head">
+            <div>
+              <p className="eyebrow">World Pick</p>
+              <h2>후지산</h2>
+              <p>공식 후지산 등반 사이트가 연결하는 라이브카메라 한 장면을 함께 보여줍니다.</p>
+            </div>
+          </div>
+          <div className="world-grid">
+            {worldPicks.map((feed) => (
+              <article key={feed.id} className="simul-card">
+                <div className="card-head">
+                  <h3>{feed.name}</h3>
+                </div>
+                <p className="card-copy">{feed.provider}</p>
+                <StreamPlayer compact feed={feed} />
+                <div className="card-actions">
+                  <a
+                    className="action tertiary"
+                    href={feed.officialPage}
+                    rel="noreferrer"
+                    target="_blank"
+                  >
+                    <Icon name="link" />
+                    공식 원본
+                  </a>
+                </div>
+              </article>
+            ))}
+          </div>
         </section>
 
         {visibleFeeds.length === 0 ? (

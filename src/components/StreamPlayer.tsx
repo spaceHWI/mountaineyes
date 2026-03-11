@@ -9,9 +9,11 @@ type StreamPlayerProps = {
 
 export function StreamPlayer({ compact = false, feed, priority = false }: StreamPlayerProps) {
   const videoRef = useRef<HTMLVideoElement | null>(null)
+  const imageUrlRef = useRef(feed.sourceUrl)
   const [status, setStatus] = useState<'loading' | 'ready' | 'error'>('loading')
   const [isPlaying, setIsPlaying] = useState(false)
   const [captureMessage, setCaptureMessage] = useState('')
+  const [imageVersion, setImageVersion] = useState(0)
   const playbackUrl = useMemo(
     () =>
       feed.sourceUrl.startsWith('http://')
@@ -19,8 +21,34 @@ export function StreamPlayer({ compact = false, feed, priority = false }: Stream
         : feed.sourceUrl,
     [feed.sourceUrl],
   )
+  const refreshedImageUrl = useMemo(
+    () => `${feed.sourceUrl}${feed.sourceUrl.includes('?') ? '&' : '?'}t=${imageVersion}`,
+    [feed.sourceUrl, imageVersion],
+  )
 
   useEffect(() => {
+    if (feed.sourceType !== 'image') {
+      return
+    }
+
+    setStatus('ready')
+    setIsPlaying(true)
+    imageUrlRef.current = refreshedImageUrl
+
+    const interval = window.setInterval(() => {
+      setImageVersion((current) => current + 1)
+    }, 60000)
+
+    return () => {
+      window.clearInterval(interval)
+    }
+  }, [feed.sourceType, refreshedImageUrl])
+
+  useEffect(() => {
+    if (feed.sourceType === 'image') {
+      return
+    }
+
     const video = videoRef.current
 
     if (!video) {
@@ -98,6 +126,10 @@ export function StreamPlayer({ compact = false, feed, priority = false }: Stream
   }, [feed, playbackUrl])
 
   const togglePlayback = async () => {
+    if (feed.sourceType === 'image') {
+      return
+    }
+
     const video = videoRef.current
 
     if (!video || status === 'loading' || status === 'error') {
@@ -117,18 +149,8 @@ export function StreamPlayer({ compact = false, feed, priority = false }: Stream
   }
 
   const handleCapture = async () => {
-    const video = videoRef.current
-
-    if (!video || video.videoWidth === 0 || video.videoHeight === 0) {
-      setCaptureMessage('아직 화면을 저장할 수 없어요')
-      return
-    }
-
     try {
       const canvas = document.createElement('canvas')
-      canvas.width = video.videoWidth
-      canvas.height = video.videoHeight
-
       const context = canvas.getContext('2d')
 
       if (!context) {
@@ -136,7 +158,30 @@ export function StreamPlayer({ compact = false, feed, priority = false }: Stream
         return
       }
 
-      context.drawImage(video, 0, 0, canvas.width, canvas.height)
+      if (feed.sourceType === 'image') {
+        const image = new Image()
+        image.crossOrigin = 'anonymous'
+        image.src = imageUrlRef.current
+        await new Promise<void>((resolve, reject) => {
+          image.onload = () => resolve()
+          image.onerror = () => reject(new Error('image_load_failed'))
+        })
+
+        canvas.width = image.naturalWidth
+        canvas.height = image.naturalHeight
+        context.drawImage(image, 0, 0, canvas.width, canvas.height)
+      } else {
+        const video = videoRef.current
+
+        if (!video || video.videoWidth === 0 || video.videoHeight === 0) {
+          setCaptureMessage('아직 화면을 저장할 수 없어요')
+          return
+        }
+
+        canvas.width = video.videoWidth
+        canvas.height = video.videoHeight
+        context.drawImage(video, 0, 0, canvas.width, canvas.height)
+      }
 
       const timestamp = new Date().toISOString().replaceAll(':', '-')
       const fileName = `${feed.name}-${timestamp}.png`
@@ -194,19 +239,29 @@ export function StreamPlayer({ compact = false, feed, priority = false }: Stream
         <span className="stream-area">{feed.region}</span>
       </div>
       <div className={compact ? 'stream-player compact' : 'stream-player'}>
-        <video
-          aria-label={`${feed.name} 실시간 영상`}
-          className="stream-video"
-          crossOrigin="anonymous"
-          muted
-          onClick={() => {
-            void togglePlayback()
-          }}
-          playsInline
-          poster={feed.thumbnail}
-          preload={priority ? 'auto' : 'metadata'}
-          ref={videoRef}
-        />
+        {feed.sourceType === 'image' ? (
+          <img
+            alt={`${feed.name} 실시간 이미지`}
+            className="stream-image"
+            crossOrigin="anonymous"
+            onError={() => setStatus('error')}
+            src={refreshedImageUrl}
+          />
+        ) : (
+          <video
+            aria-label={`${feed.name} 실시간 영상`}
+            className="stream-video"
+            crossOrigin="anonymous"
+            muted
+            onClick={() => {
+              void togglePlayback()
+            }}
+            playsInline
+            poster={feed.thumbnail}
+            preload={priority ? 'auto' : 'metadata'}
+            ref={videoRef}
+          />
+        )}
       </div>
 
       <div className="stream-tools">
