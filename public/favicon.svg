@@ -1,24 +1,23 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
   <defs>
-    <linearGradient id="mountainGradient" x1="0%" x2="100%" y1="0%" y2="100%">
-      <stop offset="0%" stop-color="#8fd19c" />
-      <stop offset="100%" stop-color="#2f6a53" />
+    <linearGradient id="peak" x1="0%" x2="100%" y1="0%" y2="100%">
+      <stop offset="0%" stop-color="#34c46a" />
+      <stop offset="100%" stop-color="#0f6b3b" />
     </linearGradient>
   </defs>
-  <rect width="64" height="64" rx="18" fill="#edf7ef" />
-  <path d="M10 46 26 22l8 11 6-9 14 22H10Z" fill="url(#mountainGradient)" />
+  <path d="M8 48 24 23l8 11 7-10 17 24H8Z" fill="url(#peak)" />
   <path
-    d="m23.5 25.2 2.6-3.9 2.8 3.9"
+    d="m22 27 2.6-4 2.8 4"
     fill="none"
-    stroke="#f8fffb"
+    stroke="#effff5"
     stroke-linecap="round"
     stroke-linejoin="round"
     stroke-width="3"
   />
   <path
-    d="M17 46c4.6-3.5 9.5-5.1 14.7-5.1 5.4 0 10.2 1.6 16.3 5.1"
+    d="M15 48c5.2-4.2 10.7-6.1 16.7-6.1 6.2 0 11.9 1.9 18.8 6.1"
     fill="none"
-    stroke="#d7efdc"
+    stroke="#a6efbb"
     stroke-linecap="round"
     stroke-width="3"
   />
