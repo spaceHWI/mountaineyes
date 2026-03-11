@@ -1,4 +1,10 @@
-export type MountainId = 'hallasan' | 'balwangsan'
+export type MountainId =
+  | 'hallasan'
+  | 'balwangsan'
+  | 'seoraksan'
+  | 'odaesan'
+  | 'chiaksan'
+  | 'taebaeksan'
 export type FeedKind = '정상' | '진입부' | '풍경'
 
 export type Mountain = {
@@ -42,6 +48,42 @@ export const mountains: Mountain[] = [
     lng: 128.6806,
     officialPage: 'https://www.weather.go.kr/gangwon/maple/cctv2.php',
     description: '강원지방기상청 실시간영상 페이지를 통해 확인할 수 있는 대표 산입니다.',
+  },
+  {
+    id: 'seoraksan',
+    name: '설악산',
+    region: '강원',
+    lat: 38.1194,
+    lng: 128.4656,
+    officialPage: 'https://www.weather.go.kr/gangwon/maple/cctv.php',
+    description: '국립공원공단 공식 실시간영상에서 울산바위 쪽 화면을 확인할 수 있습니다.',
+  },
+  {
+    id: 'odaesan',
+    name: '오대산',
+    region: '강원',
+    lat: 37.7866,
+    lng: 128.5646,
+    officialPage: 'https://www.weather.go.kr/gangwon/maple/cctv.php',
+    description: '국립공원공단 공식 실시간영상에서 두로령 화면을 확인할 수 있습니다.',
+  },
+  {
+    id: 'chiaksan',
+    name: '치악산',
+    region: '강원',
+    lat: 37.3653,
+    lng: 128.0504,
+    officialPage: 'https://www.weather.go.kr/gangwon/maple/cctv.php',
+    description: '국립공원공단 공식 실시간영상에서 상원사 화면을 확인할 수 있습니다.',
+  },
+  {
+    id: 'taebaeksan',
+    name: '태백산',
+    region: '강원',
+    lat: 37.0967,
+    lng: 128.9166,
+    officialPage: 'https://www.weather.go.kr/gangwon/maple/cctv.php',
+    description: '국립공원공단 공식 실시간영상에서 천제단 화면을 확인할 수 있습니다.',
   },
 ]
 
@@ -160,5 +202,49 @@ export const feeds: Feed[] = [
     officialLabel: '강원 기상청 원본',
     officialPage: 'https://www.weather.go.kr/gangwon/maple/cctv2.php',
     sourceUrl: 'https://live.yongpyong.co.kr/Ycam1/cam07.stream/playlist.m3u8',
+  },
+  {
+    id: 'seoraksan-ulsanbawi',
+    name: '울산바위',
+    mountainId: 'seoraksan',
+    kind: '정상',
+    region: '강원',
+    provider: '국립공원공단',
+    officialLabel: '강원 기상청 원본',
+    officialPage: 'https://www.weather.go.kr/gangwon/maple/cctv.php',
+    sourceUrl: 'https://live.knps.or.kr/cctv/hls/solak.m3u8',
+  },
+  {
+    id: 'odaesan-duro',
+    name: '두로령',
+    mountainId: 'odaesan',
+    kind: '정상',
+    region: '강원',
+    provider: '국립공원공단',
+    officialLabel: '강원 기상청 원본',
+    officialPage: 'https://www.weather.go.kr/gangwon/maple/cctv.php',
+    sourceUrl: 'https://live.knps.or.kr/cctv/hls/zduro.m3u8',
+  },
+  {
+    id: 'chiaksan-sangwonsa',
+    name: '상원사',
+    mountainId: 'chiaksan',
+    kind: '정상',
+    region: '강원',
+    provider: '국립공원공단',
+    officialLabel: '강원 기상청 원본',
+    officialPage: 'https://www.weather.go.kr/gangwon/maple/cctv.php',
+    sourceUrl: 'https://live.knps.or.kr/cctv/hls/sangwonsa.m3u8',
+  },
+  {
+    id: 'taebaeksan-cheonjedan',
+    name: '천제단',
+    mountainId: 'taebaeksan',
+    kind: '정상',
+    region: '강원',
+    provider: '국립공원공단',
+    officialLabel: '강원 기상청 원본',
+    officialPage: 'https://www.weather.go.kr/gangwon/maple/cctv.php',
+    sourceUrl: 'https://live.knps.or.kr/cctv/hls/zchunje.m3u8',
   },
 ]
