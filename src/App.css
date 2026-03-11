@@ -219,12 +219,19 @@
   padding: 1rem;
 }
 
-.card-title {
-  align-items: flex-start;
+.card-title-wrap {
+  display: grid;
+  gap: 0.2rem;
 }
 
 .card-copy {
   margin: 0;
+}
+
+.card-notice {
+  color: #71867a;
+  font-size: 0.78rem;
+  line-height: 1.35;
 }
 
 .hero-badges {

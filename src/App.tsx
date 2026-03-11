@@ -420,7 +420,12 @@ function App() {
           {visibleFeeds.map((feed, index) => (
             <article key={feed.id} className="simul-card">
               <div className="card-head">
-                <h3>{feed.name}</h3>
+                <div className="card-title-wrap">
+                  <h3>{feed.name}</h3>
+                  {feed.id === 'hallasan-baengnokdam' ? (
+                    <span className="card-notice">공식 CCTV에도 백록담이 나오고 있지 않네요?</span>
+                  ) : null}
+                </div>
               </div>
               <p className="card-copy">
                 {feed.provider} · {feed.kind}
