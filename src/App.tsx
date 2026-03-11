@@ -184,10 +184,6 @@ function App() {
                 <Icon name="pin" />
                 {locationLabel}
               </span>
-              <span className="soft-badge compact">
-                <Icon name="camera" />
-                지금은 {mountains.map((mountain) => mountain.name).join(', ')}부터 시작합니다
-              </span>
             </div>
           </div>
         </section>
