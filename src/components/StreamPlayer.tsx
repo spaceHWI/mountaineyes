@@ -191,7 +191,7 @@ export function StreamPlayer({ compact = false, feed, priority = false }: Stream
         >
           {status === 'error' ? '연결 확인 필요' : 'LIVE'}
         </span>
-        <span className="stream-area">{feed.area}</span>
+        <span className="stream-area">{feed.region}</span>
       </div>
       <div className={compact ? 'stream-player compact' : 'stream-player'}>
         <video

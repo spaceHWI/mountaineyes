@@ -1,344 +1,164 @@
-export type FeedCategory = '한라산' | '적설감시' | '재해위험지구'
+export type MountainId = 'hallasan' | 'balwangsan'
+export type FeedKind = '정상' | '진입부' | '풍경'
+
+export type Mountain = {
+  description: string
+  id: MountainId
+  lat: number
+  lng: number
+  name: string
+  officialPage: string
+  region: string
+}
 
 export type Feed = {
-  area: string
-  category: FeedCategory
-  description: string
   id: string
+  kind: FeedKind
+  mountainId: MountainId
   name: string
   officialLabel: string
   officialPage: string
+  provider: string
+  region: string
   sourceUrl: string
   thumbnail?: string
 }
 
-type CategoryMeta = {
-  description: string
-  label: string
-  officialPage: string
-}
-
-const HALLA_PAGE = 'https://www.jeju.go.kr/tool/halla/cctv.html'
-const SNOW_PAGE = 'https://bangjae.jeju.go.kr/realtimeinfor/cctv/snow.htm'
-const DANGER_PAGE = 'https://bangjae.jeju.go.kr/realtimeinfor/cctv/danger.htm'
-
-const makeFeed = (feed: Feed) => feed
-
-export const categoryMeta: Record<FeedCategory, CategoryMeta> = {
-  한라산: {
-    label: '한라산 CCTV',
-    description: '백록담과 윗세오름 등 한라산 주요 지점을 확인합니다.',
-    officialPage: HALLA_PAGE,
+export const mountains: Mountain[] = [
+  {
+    id: 'hallasan',
+    name: '한라산',
+    region: '제주',
+    lat: 33.3617,
+    lng: 126.5292,
+    officialPage: 'https://www.jeju.go.kr/tool/halla/cctv.html',
+    description: '제주 대표 산. 정상과 진입부 CCTV가 고르게 있습니다.',
   },
-  적설감시: {
-    label: '적설감시',
-    description: '1100도로와 산간도로의 적설 상황을 확인합니다.',
-    officialPage: SNOW_PAGE,
+  {
+    id: 'balwangsan',
+    name: '발왕산',
+    region: '강원',
+    lat: 37.6444,
+    lng: 128.6806,
+    officialPage: 'https://www.weather.go.kr/gangwon/maple/cctv2.php',
+    description: '강원지방기상청 실시간영상 페이지를 통해 확인할 수 있는 대표 산입니다.',
   },
-  재해위험지구: {
-    label: '재해위험지구',
-    description: '해안과 항포구 등 재해 취약 구역의 실시간 영상입니다.',
-    officialPage: DANGER_PAGE,
-  },
-}
+]
 
 export const feeds: Feed[] = [
   {
-    id: 'halla-baengnokdam',
+    id: 'hallasan-baengnokdam',
     name: '백록담',
-    category: '한라산',
-    area: '한라산',
-    description: '정상부 시야와 날씨 변화를 빠르게 확인하기 좋은 대표 지점입니다.',
+    mountainId: 'hallasan',
+    kind: '정상',
+    region: '제주',
+    provider: '제주특별자치도',
     officialLabel: '한라산 CCTV 원본',
     officialPage: 'https://www.jeju.go.kr/tool/halla/cctv_01.html',
     sourceUrl: 'https://hallacctv.kr/live/cctv01.stream_360p/playlist.m3u8',
     thumbnail: 'https://www.jeju.go.kr/tool/halla/images/cctv01.png',
   },
   {
-    id: 'halla-wanggwanneung',
+    id: 'hallasan-wanggwanneung',
     name: '왕관릉',
-    category: '한라산',
-    area: '한라산',
-    description: '능선부 기상과 시정 변화를 확인할 수 있는 한라산 상부 지점입니다.',
+    mountainId: 'hallasan',
+    kind: '정상',
+    region: '제주',
+    provider: '제주특별자치도',
     officialLabel: '한라산 CCTV 원본',
     officialPage: 'https://www.jeju.go.kr/tool/halla/cctv_02.html',
     sourceUrl: 'https://hallacctv.kr/live/cctv02.stream_360p/playlist.m3u8',
     thumbnail: 'https://www.jeju.go.kr/tool/halla/images/cctv02.png',
   },
   {
-    id: 'halla-witseoreum',
+    id: 'hallasan-witseoreum',
     name: '윗세오름',
-    category: '한라산',
-    area: '한라산',
-    description: '탐방 전 시계와 적설, 풍속 체감에 유용한 중산간 대표 지점입니다.',
+    mountainId: 'hallasan',
+    kind: '정상',
+    region: '제주',
+    provider: '제주특별자치도',
     officialLabel: '한라산 CCTV 원본',
     officialPage: 'https://www.jeju.go.kr/tool/halla/cctv_03.html',
     sourceUrl: 'https://hallacctv.kr/live/cctv03.stream_360p/playlist.m3u8',
     thumbnail: 'https://www.jeju.go.kr/tool/halla/images/cctv03.png',
   },
   {
-    id: 'halla-eoseungsaengak',
+    id: 'hallasan-eoseungsaengak',
     name: '어승생악',
-    category: '한라산',
-    area: '한라산',
-    description: '중산간 접근로 주변 기상과 시정 확인에 적합한 지점입니다.',
+    mountainId: 'hallasan',
+    kind: '진입부',
+    region: '제주',
+    provider: '제주특별자치도',
     officialLabel: '한라산 CCTV 원본',
     officialPage: 'https://www.jeju.go.kr/tool/halla/cctv_04.html',
     sourceUrl: 'https://hallacctv.kr/live/cctv04.stream_360p/playlist.m3u8',
     thumbnail: 'https://www.jeju.go.kr/tool/halla/images/cctv04.png',
   },
   {
-    id: 'halla-1100',
+    id: 'hallasan-1100',
     name: '1100도로',
-    category: '한라산',
-    area: '중산간',
-    description: '강설과 노면 상황이 급변하는 1100도로 구간을 확인합니다.',
+    mountainId: 'hallasan',
+    kind: '진입부',
+    region: '제주',
+    provider: '제주특별자치도',
     officialLabel: '한라산 CCTV 원본',
     officialPage: 'https://www.jeju.go.kr/tool/halla/cctv_05.html',
     sourceUrl: 'https://hallacctv.kr/live/cctv05.stream_360p/playlist.m3u8',
     thumbnail: 'https://www.jeju.go.kr/tool/halla/images/cctv05.png',
   },
-  makeFeed({
-    id: 'snow-pyeonghwaro',
-    name: '평화로입구',
-    category: '적설감시',
-    area: '제주시',
-    description: '평화로 진입부의 노면과 시정 상황을 확인합니다.',
-    officialLabel: '적설감시 원본',
-    officialPage: SNOW_PAGE,
-    sourceUrl: 'http://59.8.86.94:8080/media/api/v1/hls/vurix/192871/100017/0/0',
-  }),
-  makeFeed({
-    id: 'snow-marine-9th',
-    name: '해병9여단',
-    category: '적설감시',
-    area: '제주시',
-    description: '제주시 동쪽 중산간으로 향하는 구간의 날씨를 보여줍니다.',
-    officialLabel: '적설감시 원본',
-    officialPage: SNOW_PAGE,
-    sourceUrl: 'http://59.8.86.94:8080/media/api/v1/hls/vurix/192871/100018/0/0',
-  }),
-  makeFeed({
-    id: 'snow-sancheondan',
-    name: '산천단입구',
-    category: '적설감시',
-    area: '제주시',
-    description: '516도로 접근부의 기상 변화를 빠르게 확인하는 지점입니다.',
-    officialLabel: '적설감시 원본',
-    officialPage: SNOW_PAGE,
-    sourceUrl: 'http://59.8.86.94:8080/media/api/v1/hls/vurix/192871/100016/0/0',
-  }),
-  makeFeed({
-    id: 'snow-jewonranch',
-    name: '제원목장',
-    category: '적설감시',
-    area: '제주시',
-    description: '중산간 목장 지대의 적설 여부를 확인합니다.',
-    officialLabel: '적설감시 원본',
-    officialPage: SNOW_PAGE,
-    sourceUrl: 'http://59.8.86.94:8080/media/api/v1/hls/vurix/192871/100216/0/0',
-  }),
-  makeFeed({
-    id: 'snow-bijarim',
-    name: '비자림',
-    category: '적설감시',
-    area: '구좌',
-    description: '동부 산간 도로의 적설과 시계 상황을 보여줍니다.',
-    officialLabel: '적설감시 원본',
-    officialPage: SNOW_PAGE,
-    sourceUrl: 'http://59.8.86.94:8080/media/api/v1/hls/vurix/192871/100015/0/0',
-  }),
-  makeFeed({
-    id: 'snow-samdasu',
-    name: '삼다수공장',
-    category: '적설감시',
-    area: '조천',
-    description: '조천 산간 구간의 체감 기상 확인에 유용한 지점입니다.',
-    officialLabel: '적설감시 원본',
-    officialPage: SNOW_PAGE,
-    sourceUrl: 'http://59.8.86.94:8080/media/api/v1/hls/vurix/192871/100217/0/0',
-  }),
-  makeFeed({
-    id: 'snow-geumak',
-    name: '금악이시돌목장',
-    category: '적설감시',
-    area: '한림',
-    description: '서부 중산간의 눈과 바람 상황을 확인합니다.',
-    officialLabel: '적설감시 원본',
-    officialPage: SNOW_PAGE,
-    sourceUrl: 'http://59.8.86.94:8080/media/api/v1/hls/vurix/192871/100218/0/0',
-  }),
-  makeFeed({
-    id: 'snow-moseulpo',
-    name: '모슬포예비군훈련장 입구',
-    category: '적설감시',
-    area: '대정',
-    description: '남서부 진입 도로의 강풍과 시정 변화를 체크합니다.',
-    officialLabel: '적설감시 원본',
-    officialPage: SNOW_PAGE,
-    sourceUrl: 'http://59.8.86.94:8080/media/api/v1/hls/vurix/192871/100219/0/0',
-  }),
-  makeFeed({
-    id: 'snow-yeongsil',
-    name: '영실',
-    category: '적설감시',
-    area: '서귀포',
-    description: '한라산 서쪽 탐방로 접근부 적설 상황 확인용 지점입니다.',
-    officialLabel: '적설감시 원본',
-    officialPage: SNOW_PAGE,
-    sourceUrl: 'http://59.8.86.94:8080/media/api/v1/hls/vurix/192871/100023/0/0',
-  }),
-  makeFeed({
-    id: 'snow-topyeong',
-    name: '토평감귤유통센터앞',
-    category: '적설감시',
-    area: '서귀포',
-    description: '서귀포 시내에서 산간으로 연결되는 구간의 날씨를 확인합니다.',
-    officialLabel: '적설감시 원본',
-    officialPage: SNOW_PAGE,
-    sourceUrl: 'http://59.8.86.94:8080/media/api/v1/hls/vurix/192871/100220/0/0',
-  }),
-  makeFeed({
-    id: 'danger-tapdong',
-    name: '탑동',
-    category: '재해위험지구',
-    area: '제주시',
-    description: '제주항 인근 해안 상황과 파고를 확인하는 대표 지점입니다.',
-    officialLabel: '재해위험지구 원본',
-    officialPage: DANGER_PAGE,
-    sourceUrl: 'http://59.8.86.94:8080/media/api/v1/hls/vurix/192871/100001/0/0',
-  }),
-  makeFeed({
-    id: 'danger-seogwipo-port',
-    name: '서귀항',
-    category: '재해위험지구',
-    area: '서귀포',
-    description: '서귀포항 주변 해상과 기상 상황을 확인할 수 있습니다.',
-    officialLabel: '재해위험지구 원본',
-    officialPage: DANGER_PAGE,
-    sourceUrl: 'http://59.8.86.94:8080/media/api/v1/hls/vurix/192871/100009/0/0',
-  }),
-  makeFeed({
-    id: 'danger-beophwan-port',
-    name: '법환포구',
-    category: '재해위험지구',
-    area: '서귀포',
-    description: '남쪽 해안 파고와 포구 주변 접근 상황을 살펴봅니다.',
-    officialLabel: '재해위험지구 원본',
-    officialPage: DANGER_PAGE,
-    sourceUrl: 'http://59.8.86.94:8080/media/api/v1/hls/vurix/192871/100007/0/0',
-  }),
-  makeFeed({
-    id: 'danger-beophwan-fishing',
-    name: '법환어촌계',
-    category: '재해위험지구',
-    area: '서귀포',
-    description: '남서풍과 해상 변화에 민감한 포구 구간을 보여줍니다.',
-    officialLabel: '재해위험지구 원본',
-    officialPage: DANGER_PAGE,
-    sourceUrl: 'http://59.8.86.94:8080/media/api/v1/hls/vurix/192871/100008/0/0',
-  }),
-  makeFeed({
-    id: 'danger-onpyeong',
-    name: '온평어촌계',
-    category: '재해위험지구',
-    area: '성산',
-    description: '동남부 해안 파고와 기상 변화 체크에 유용한 지점입니다.',
-    officialLabel: '재해위험지구 원본',
-    officialPage: DANGER_PAGE,
-    sourceUrl: 'http://59.8.86.94:8080/media/api/v1/hls/vurix/192871/100011/0/0',
-  }),
-  makeFeed({
-    id: 'danger-gujwa-office',
-    name: '구좌읍사무소',
-    category: '재해위험지구',
-    area: '구좌',
-    description: '동부 해안으로 향하는 도로와 기상 상황을 확인합니다.',
-    officialLabel: '재해위험지구 원본',
-    officialPage: DANGER_PAGE,
-    sourceUrl: 'http://59.8.86.94:8080/media/api/v1/hls/vurix/192871/100002/0/0',
-  }),
-  makeFeed({
-    id: 'danger-ongpo',
-    name: '옹포항',
-    category: '재해위험지구',
-    area: '한림',
-    description: '서부 해안의 파고와 바람 상태를 확인할 수 있습니다.',
-    officialLabel: '재해위험지구 원본',
-    officialPage: DANGER_PAGE,
-    sourceUrl: 'http://59.8.86.94:8080/media/api/v1/hls/vurix/192871/100005/0/0',
-  }),
-  makeFeed({
-    id: 'danger-jungmun',
-    name: '중문해수욕장',
-    category: '재해위험지구',
-    area: '중문',
-    description: '해수욕장 연안의 너울과 기상 변화를 확인합니다.',
-    officialLabel: '재해위험지구 원본',
-    officialPage: DANGER_PAGE,
-    sourceUrl: 'http://59.8.86.94:8080/media/api/v1/hls/vurix/192871/100010/0/0',
-  }),
-  makeFeed({
-    id: 'danger-sanbangsan',
-    name: '산방산',
-    category: '재해위험지구',
-    area: '안덕',
-    description: '남서부 해안과 산방산 주변 시정을 함께 확인할 수 있습니다.',
-    officialLabel: '재해위험지구 원본',
-    officialPage: DANGER_PAGE,
-    sourceUrl: 'http://59.8.86.94:8080/media/api/v1/hls/vurix/192871/100012/0/0',
-  }),
-  makeFeed({
-    id: 'danger-pyeonghwagyo',
-    name: '평화교',
-    category: '재해위험지구',
-    area: '제주시',
-    description: '하천과 교량 주변 재해 위험 상황을 모니터링합니다.',
-    officialLabel: '재해위험지구 원본',
-    officialPage: DANGER_PAGE,
-    sourceUrl: 'http://59.8.86.94:8080/media/api/v1/hls/vurix/192871/100013/0/0',
-  }),
-  makeFeed({
-    id: 'danger-namwon',
-    name: '남원어촌계',
-    category: '재해위험지구',
-    area: '남원',
-    description: '남동부 해안의 파고와 포구 상황을 확인할 수 있습니다.',
-    officialLabel: '재해위험지구 원본',
-    officialPage: DANGER_PAGE,
-    sourceUrl: 'http://59.8.86.94:8080/media/api/v1/hls/vurix/192871/100006/0/0',
-  }),
-  makeFeed({
-    id: 'danger-sinchang',
-    name: '신창리포구',
-    category: '재해위험지구',
-    area: '한경',
-    description: '서북부 연안의 바람과 파도를 빠르게 체크하는 지점입니다.',
-    officialLabel: '재해위험지구 원본',
-    officialPage: DANGER_PAGE,
-    sourceUrl: 'http://59.8.86.94:8080/media/api/v1/hls/vurix/192871/100004/0/0',
-  }),
+  {
+    id: 'balwangsan-skywalk',
+    name: '스카이워크',
+    mountainId: 'balwangsan',
+    kind: '정상',
+    region: '강원',
+    provider: '강원지방기상청 · 모나용평',
+    officialLabel: '강원 기상청 원본',
+    officialPage: 'https://www.weather.go.kr/gangwon/maple/cctv2.php',
+    sourceUrl: 'https://live.yongpyong.co.kr/Ycam1/cam14.stream/playlist.m3u8',
+  },
+  {
+    id: 'balwangsan-forest',
+    name: '천년주목숲길',
+    mountainId: 'balwangsan',
+    kind: '정상',
+    region: '강원',
+    provider: '강원지방기상청 · 모나용평',
+    officialLabel: '강원 기상청 원본',
+    officialPage: 'https://www.weather.go.kr/gangwon/maple/cctv2.php',
+    sourceUrl: 'https://live.yongpyong.co.kr/Ycam1/cam15.stream/playlist.m3u8',
+  },
+  {
+    id: 'balwangsan-rainbow',
+    name: '레인보우 전경',
+    mountainId: 'balwangsan',
+    kind: '풍경',
+    region: '강원',
+    provider: '강원지방기상청 · 모나용평',
+    officialLabel: '강원 기상청 원본',
+    officialPage: 'https://www.weather.go.kr/gangwon/maple/cctv2.php',
+    sourceUrl: 'https://live.yongpyong.co.kr/Ycam1/cam08.stream/playlist.m3u8',
+  },
+  {
+    id: 'balwangsan-megagreen',
+    name: '메가그린 슬로프',
+    mountainId: 'balwangsan',
+    kind: '진입부',
+    region: '강원',
+    provider: '강원지방기상청 · 모나용평',
+    officialLabel: '강원 기상청 원본',
+    officialPage: 'https://www.weather.go.kr/gangwon/maple/cctv2.php',
+    sourceUrl: 'https://live.yongpyong.co.kr/Ycam1/cam01.stream/playlist.m3u8',
+  },
+  {
+    id: 'balwangsan-pink',
+    name: '핑크 슬로프',
+    mountainId: 'balwangsan',
+    kind: '풍경',
+    region: '강원',
+    provider: '강원지방기상청 · 모나용평',
+    officialLabel: '강원 기상청 원본',
+    officialPage: 'https://www.weather.go.kr/gangwon/maple/cctv2.php',
+    sourceUrl: 'https://live.yongpyong.co.kr/Ycam1/cam07.stream/playlist.m3u8',
+  },
 ]
-
-export const hikingPresetIds = {
-  핵심: ['halla-baengnokdam', 'halla-witseoreum', 'halla-1100', 'snow-yeongsil'],
-  전체: [
-    'halla-baengnokdam',
-    'halla-wanggwanneung',
-    'halla-witseoreum',
-    'halla-eoseungsaengak',
-    'halla-1100',
-    'snow-yeongsil',
-    'snow-sancheondan',
-    'snow-pyeonghwaro',
-    'snow-marine-9th',
-  ],
-  정상부: [
-    'halla-baengnokdam',
-    'halla-wanggwanneung',
-    'halla-witseoreum',
-    'halla-eoseungsaengak',
-    'halla-1100',
-  ],
-  접근로: ['halla-1100', 'snow-yeongsil', 'snow-sancheondan', 'snow-pyeonghwaro', 'snow-marine-9th'],
-} as const

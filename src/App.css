@@ -115,7 +115,6 @@
 }
 
 .toolbar,
-.simul-header,
 .simul-grid,
 .empty-state {
   margin-top: 1rem;
@@ -126,8 +125,6 @@
 }
 
 .toolbar-row,
-.link-row,
-.simul-header,
 .card-head,
 .card-actions {
   display: flex;
@@ -136,25 +133,27 @@
   gap: 1rem;
 }
 
+.toolbar-stack {
+  display: grid;
+  gap: 0.8rem;
+  width: 100%;
+}
+
 .toolbar-row {
   flex-wrap: wrap;
   align-items: center;
   justify-content: flex-start;
 }
 
-.chip-list,
-.link-row {
+.chip-list {
   display: flex;
   flex-wrap: wrap;
   gap: 0.65rem;
 }
 
+.mountain-chip-list .chip,
 .preset-chip-list .chip {
   min-width: 7rem;
-}
-
-.link-row {
-  margin-top: 1rem;
 }
 
 .action,
@@ -206,19 +205,6 @@
   color: #f4faf6;
 }
 
-.simul-header {
-  align-items: end;
-}
-
-.section-badge,
-.card-head span {
-  padding: 0.45rem 0.75rem;
-  border-radius: 999px;
-  background: #edf3ee;
-  color: #567060;
-  white-space: nowrap;
-}
-
 .simul-grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -237,6 +223,46 @@
 
 .card-copy {
   margin: 0;
+}
+
+.hero-badges {
+  display: grid;
+  gap: 0.65rem;
+  margin-top: 1rem;
+}
+
+.soft-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  width: fit-content;
+  min-height: 2.5rem;
+  padding: 0 0.95rem;
+  border-radius: 999px;
+  background: #f3f8f4;
+  color: #456558;
+  font-size: 0.95rem;
+  font-weight: 600;
+}
+
+.mountain-summary {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-top: 1rem;
+  padding: 1rem 1.1rem;
+}
+
+.mountain-summary h2 {
+  margin: 0.4rem 0 0;
+  letter-spacing: -0.03em;
+}
+
+.mountain-summary p {
+  margin: 0.7rem 0 0;
+  color: #4d6154;
+  line-height: 1.6;
 }
 
 .stream-player {
@@ -386,7 +412,7 @@
     border-radius: 1.2rem;
   }
 
-  .simul-header,
+  .mountain-summary,
   .card-head,
   .card-actions {
     flex-direction: column;
@@ -407,12 +433,14 @@
     gap: 0.65rem;
   }
 
+  .mountain-chip-list,
   .preset-chip-list {
     display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
+    grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 0.5rem;
   }
 
+  .mountain-chip-list .chip,
   .preset-chip-list .chip {
     min-width: 0;
     min-height: 2.3rem;
@@ -420,12 +448,14 @@
     font-size: 0.9rem;
   }
 
+  .mountain-chip-list .chip .icon-badge,
   .preset-chip-list .chip .icon-badge {
     width: 1.4rem;
     height: 1.4rem;
     margin-right: 0.3rem;
   }
 
+  .mountain-chip-list .chip .icon-badge svg,
   .preset-chip-list .chip .icon-badge svg {
     width: 0.9rem;
     height: 0.9rem;
