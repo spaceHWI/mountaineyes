@@ -261,6 +261,6 @@ export const worldPicks: Feed[] = [
     officialLabel: '후지산 라이브카메라 원본',
     officialPage: 'https://live.fujigoko.tv/?n=1&e=1',
     sourceType: 'image',
-    sourceUrl: 'https://cam.fujigoko.tv/livecam1/cam1_8150.jpg',
+    sourceUrl: 'https://cam.fujigoko.tv/livecam1/s/cam.jpg',
   },
 ]
