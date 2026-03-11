@@ -5,7 +5,7 @@ import { StreamPlayer } from './components/StreamPlayer'
 
 const EARTH_RADIUS_KM = 6371
 
-function Icon({ name }: { name: 'mountain' | 'path' | 'grid' | 'camera' | 'link' | 'pin' }) {
+function Icon({ name }: { name: 'mountain' | 'path' | 'grid' | 'camera' | 'link' | 'pin' | 'view' }) {
   const commonProps = {
     fill: 'none',
     stroke: 'currentColor',
@@ -53,6 +53,13 @@ function Icon({ name }: { name: 'mountain' | 'path' | 'grid' | 'camera' | 'link'
       <>
         <path {...commonProps} d="M12 20s6-5.4 6-10a6 6 0 1 0-12 0c0 4.6 6 10 6 10Z" />
         <circle {...commonProps} cx="12" cy="10" r="2.2" />
+      </>
+    ),
+    view: (
+      <>
+        <path {...commonProps} d="M3.5 16.5 8.2 11l3 3.2 2.1-2.7 4.2 5H3.5Z" />
+        <path {...commonProps} d="M15.5 7.5h5v5" />
+        <path {...commonProps} d="m20.5 7.5-6.2 6.2" />
       </>
     ),
   }
@@ -224,6 +231,8 @@ function App() {
                         ? 'grid'
                         : preset === '정상'
                           ? 'mountain'
+                          : preset === '풍경'
+                            ? 'view'
                           : 'path'
                     }
                   />
