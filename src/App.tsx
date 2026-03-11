@@ -5,6 +5,7 @@ import { StreamPlayer } from './components/StreamPlayer'
 
 const EARTH_RADIUS_KM = 6371
 const FAVORITE_MOUNTAIN_KEY = 'mountaineyes-favorite-mountain'
+const RECENT_MOUNTAINS_KEY = 'mountaineyes-recent-mountains'
 
 function Icon({ name }: { name: 'mountain' | 'path' | 'grid' | 'camera' | 'link' | 'pin' | 'view' | 'star' }) {
   const commonProps = {
@@ -100,6 +101,11 @@ const getDistanceKm = (
   return EARTH_RADIUS_KM * 2 * Math.atan2(Math.sqrt(haversine), Math.sqrt(1 - haversine))
 }
 
+const rememberRecentMountains = (current: MountainId[], next: MountainId) => {
+  const deduped = current.filter((value) => value !== next)
+  return [next, ...deduped].slice(0, 3)
+}
+
 function App() {
   const [favoriteMountainId, setFavoriteMountainId] = useState<MountainId | null>(() => {
     if (typeof window === 'undefined') {
@@ -109,16 +115,61 @@ function App() {
     const stored = window.localStorage.getItem(FAVORITE_MOUNTAIN_KEY)
     return mountains.some((mountain) => mountain.id === stored) ? (stored as MountainId) : null
   })
+  const [recentMountainIds, setRecentMountainIds] = useState<MountainId[]>(() => {
+    if (typeof window === 'undefined') {
+      return []
+    }
+
+    const stored = window.localStorage.getItem(RECENT_MOUNTAINS_KEY)
+
+    if (!stored) {
+      return []
+    }
+
+    try {
+      const parsed = JSON.parse(stored) as string[]
+      return parsed.filter((value): value is MountainId =>
+        mountains.some((mountain) => mountain.id === value),
+      )
+    } catch {
+      return []
+    }
+  })
   const [activeMountainId, setActiveMountainId] = useState<MountainId>(() => {
     if (typeof window === 'undefined') {
       return 'hallasan'
     }
 
-    const stored = window.localStorage.getItem(FAVORITE_MOUNTAIN_KEY)
-    return mountains.some((mountain) => mountain.id === stored) ? (stored as MountainId) : 'hallasan'
+    const favoriteStored = window.localStorage.getItem(FAVORITE_MOUNTAIN_KEY)
+
+    if (mountains.some((mountain) => mountain.id === favoriteStored)) {
+      return favoriteStored as MountainId
+    }
+
+    const recentStored = window.localStorage.getItem(RECENT_MOUNTAINS_KEY)
+
+    if (recentStored) {
+      try {
+        const parsed = JSON.parse(recentStored) as string[]
+        const firstRecent = parsed.find((value) => mountains.some((mountain) => mountain.id === value))
+
+        if (firstRecent) {
+          return firstRecent as MountainId
+        }
+      } catch {
+        return 'hallasan'
+      }
+    }
+
+    return 'hallasan'
   })
   const [activeKind, setActiveKind] = useState<'전체' | FeedKind>('전체')
   const [nearestMountainName, setNearestMountainName] = useState<string | null>(null)
+
+  const activateMountain = (mountainId: MountainId) => {
+    setActiveMountainId(mountainId)
+    setRecentMountainIds((current) => rememberRecentMountains(current, mountainId))
+  }
 
   useEffect(() => {
     if (typeof window === 'undefined') {
@@ -134,7 +185,18 @@ function App() {
   }, [favoriteMountainId])
 
   useEffect(() => {
+    if (typeof window === 'undefined') {
+      return
+    }
+
+    window.localStorage.setItem(RECENT_MOUNTAINS_KEY, JSON.stringify(recentMountainIds))
+  }, [recentMountainIds])
+
+  useEffect(() => {
     if (favoriteMountainId) {
+      return
+    }
+    if (recentMountainIds.length > 0) {
       return
     }
     if (!navigator.geolocation) {
@@ -157,7 +219,7 @@ function App() {
           return
         }
 
-        setActiveMountainId(nearestMountain.mountainId)
+        activateMountain(nearestMountain.mountainId)
         setNearestMountainName(nearestMountain.mountainName)
       },
       () => {
@@ -169,16 +231,22 @@ function App() {
         timeout: 5000,
       },
     )
-  }, [favoriteMountainId])
+  }, [favoriteMountainId, recentMountainIds.length])
 
   const locationLabel = favoriteMountainId
     ? '즐겨찾는 산부터 먼저 보여드려요'
+    : recentMountainIds.length > 0
+      ? `최근 본 ${mountains.find((mountain) => mountain.id === recentMountainIds[0])?.name ?? '산'}부터 먼저 보여드려요`
     : nearestMountainName
       ? `지금 위치에서 가까운 ${nearestMountainName}부터 보여드려요`
       : '위치를 허용하면 가까운 산부터 먼저 보여드려요'
 
   const activeMountain = mountains.find((mountain) => mountain.id === activeMountainId) ?? mountains[0]
   const isFavoriteMountain = favoriteMountainId === activeMountainId
+  const recentMountains = recentMountainIds
+    .filter((mountainId) => mountainId !== activeMountainId)
+    .map((mountainId) => mountains.find((mountain) => mountain.id === mountainId))
+    .filter((mountain): mountain is (typeof mountains)[number] => Boolean(mountain))
 
   const availableKinds = useMemo(() => {
     const kinds = new Set<FeedKind>()
@@ -269,7 +337,7 @@ function App() {
                   <select
                     id="mountain-select"
                     className="mountain-select"
-                    onChange={(event) => setActiveMountainId(event.target.value as MountainId)}
+                    onChange={(event) => activateMountain(event.target.value as MountainId)}
                     value={activeMountainId}
                   >
                     {mountains.map((mountain) => (
@@ -288,6 +356,23 @@ function App() {
                   {isFavoriteMountain ? '즐겨찾기됨' : '즐겨찾기'}
                 </button>
               </div>
+              {recentMountains.length > 0 ? (
+                <div className="recent-row">
+                  <span className="recent-label">최근 본 산</span>
+                  <div className="recent-list">
+                    {recentMountains.map((mountain) => (
+                      <button
+                        key={mountain.id}
+                        className="recent-chip"
+                        onClick={() => activateMountain(mountain.id)}
+                        type="button"
+                      >
+                        {mountain.name}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              ) : null}
             </div>
 
             <div className="toolbar-block">
