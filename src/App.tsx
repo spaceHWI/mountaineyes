@@ -193,7 +193,7 @@ function App() {
                   />
                 </svg>
               </span>
-              <h1>MountainEyes V1.0</h1>
+              <h1>MountainEyes V1.1</h1>
             </div>
             <p className="hero-text">
               전국 산 CCTV를 한눈에 보고 한손에 캡쳐하세요.
