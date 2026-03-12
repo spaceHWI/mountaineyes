@@ -17,6 +17,7 @@ export function StreamPlayer({
 }: StreamPlayerProps) {
   const videoRef = useRef<HTMLVideoElement | null>(null)
   const imageUrlRef = useRef(feed.sourceUrl)
+  const hasStartedPlaybackRef = useRef(false)
   const [status, setStatus] = useState<'loading' | 'ready' | 'error'>('loading')
   const [isPlaying, setIsPlaying] = useState(false)
   const [captureMessage, setCaptureMessage] = useState('')
@@ -87,22 +88,41 @@ export function StreamPlayer({
 
     let cancelled = false
     let teardown: (() => void) | undefined
+    hasStartedPlaybackRef.current = false
     setStatus('loading')
     setIsPlaying(false)
     video.pause()
     video.removeAttribute('src')
     video.load()
 
-    const handleCanPlay = () => setStatus('ready')
     const handleError = () => setStatus('error')
+    const markReady = () => {
+      hasStartedPlaybackRef.current = true
+      setStatus('ready')
+    }
     const handlePlay = () => setIsPlaying(true)
+    const handlePlaying = () => {
+      setIsPlaying(true)
+      markReady()
+    }
     const handlePause = () => setIsPlaying(false)
+    const handleWaiting = () => {
+      if (hasStartedPlaybackRef.current) {
+        setStatus('loading')
+      }
+    }
+    const handleTimeUpdate = () => {
+      if (video.currentTime > 0) {
+        markReady()
+      }
+    }
 
-    video.addEventListener('canplay', handleCanPlay)
-    video.addEventListener('playing', handleCanPlay)
     video.addEventListener('error', handleError)
     video.addEventListener('play', handlePlay)
+    video.addEventListener('playing', handlePlaying)
     video.addEventListener('pause', handlePause)
+    video.addEventListener('timeupdate', handleTimeUpdate)
+    video.addEventListener('waiting', handleWaiting)
 
     const setupPlayer = async () => {
       if (video.canPlayType('application/vnd.apple.mpegurl')) {
@@ -146,11 +166,12 @@ export function StreamPlayer({
 
     return () => {
       cancelled = true
-      video.removeEventListener('canplay', handleCanPlay)
-      video.removeEventListener('playing', handleCanPlay)
       video.removeEventListener('error', handleError)
       video.removeEventListener('play', handlePlay)
+      video.removeEventListener('playing', handlePlaying)
       video.removeEventListener('pause', handlePause)
+      video.removeEventListener('timeupdate', handleTimeUpdate)
+      video.removeEventListener('waiting', handleWaiting)
       teardown?.()
     }
   }, [feed, playbackUrl])
