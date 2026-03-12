@@ -2,7 +2,6 @@ import { useEffect, useMemo, useRef, useState } from 'react'
 import type { Feed } from '../data/feeds'
 import { useItsStreamUrl } from '../hooks/useItsUrls'
 import { localize, playerCopy, type Language } from '../i18n'
-import { withProxyBase } from '../utils/proxy'
 
 type StreamStatus = 'loading' | 'ready' | 'error'
 
@@ -53,9 +52,7 @@ export function StreamPlayer({
 
   const playbackUrl = useMemo(() => {
     if (isItsFeed) {
-      return itsStreamUrl
-        ? withProxyBase(`/api/proxy?target=${encodeURIComponent(itsStreamUrl)}`)
-        : ''
+      return itsStreamUrl ?? ''
     }
 
     return feed.sourceUrl.startsWith('http://')
