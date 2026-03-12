@@ -283,7 +283,6 @@ function App() {
         <section className="toolbar panel">
           <div className="toolbar-stack">
             <div className="toolbar-block">
-              <p className="toolbar-label">산 종류</p>
               <div className="mountain-picker-row">
                 <label className="mountain-select-wrap" htmlFor="mountain-select">
                   <select
@@ -302,7 +301,6 @@ function App() {
               </div>
               {recentMountains.length > 0 ? (
                 <div className="recent-row">
-                  <span className="recent-label">최근 본 산</span>
                   <div className="recent-list">
                     {recentMountains.map((mountain) => (
                       <button
@@ -320,7 +318,6 @@ function App() {
             </div>
 
             <div className="toolbar-block">
-              <p className="toolbar-label">CCTV 구분</p>
               <div className="chip-list preset-chip-list compact">
                 {availableKinds.map((preset) => (
                   <button
