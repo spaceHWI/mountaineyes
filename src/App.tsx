@@ -1,9 +1,11 @@
 import { useEffect, useMemo, useState } from 'react'
 import './App.css'
-import { feeds, mountains, worldPicks, type FeedKind, type MountainId } from './data/feeds'
 import { StreamPlayer } from './components/StreamPlayer'
+import { feeds, mountains, worldPicks, type FeedKind, type MountainId } from './data/feeds'
+import { appCopy, kindLabels, localize, type Language } from './i18n'
 
 const EARTH_RADIUS_KM = 6371
+const LANGUAGE_STORAGE_KEY = 'mountaineyes-language'
 
 function Icon({
   name,
@@ -102,16 +104,65 @@ const getDistanceKm = (
   return EARTH_RADIUS_KM * 2 * Math.atan2(Math.sqrt(haversine), Math.sqrt(1 - haversine))
 }
 
+const getInitialLanguage = (): Language => {
+  if (typeof window === 'undefined') {
+    return 'ko'
+  }
+
+  const storedLanguage = window.localStorage.getItem(LANGUAGE_STORAGE_KEY)
+  if (storedLanguage === 'ko' || storedLanguage === 'en') {
+    return storedLanguage
+  }
+
+  return window.navigator.language.toLowerCase().startsWith('ko') ? 'ko' : 'en'
+}
+
+const setMetaContent = (selector: string, value: string) => {
+  const element = document.head.querySelector<HTMLMetaElement>(selector)
+  if (element) {
+    element.content = value
+  }
+}
+
+const getKindIcon = (kind: FeedKind | 'all') => {
+  if (kind === 'all') {
+    return 'grid'
+  }
+
+  if (kind === 'summit') {
+    return 'mountain'
+  }
+
+  if (kind === 'view') {
+    return 'view'
+  }
+
+  return 'path'
+}
+
 function App() {
-  const [activeMountainId, setActiveMountainId] = useState<MountainId>(() => {
-    return 'hallasan'
-  })
-  const [activeKind, setActiveKind] = useState<'전체' | FeedKind>('전체')
-  const [nearestMountainName, setNearestMountainName] = useState<string | null>(null)
+  const [language, setLanguage] = useState<Language>(getInitialLanguage)
+  const [activeMountainId, setActiveMountainId] = useState<MountainId>('hallasan')
+  const [activeKind, setActiveKind] = useState<'all' | FeedKind>('all')
+  const [nearestMountainId, setNearestMountainId] = useState<MountainId | null>(null)
+
+  const copy = appCopy[language]
 
   const activateMountain = (mountainId: MountainId) => {
     setActiveMountainId(mountainId)
   }
+
+  useEffect(() => {
+    document.documentElement.lang = language
+    window.localStorage.setItem(LANGUAGE_STORAGE_KEY, language)
+
+    document.title = copy.pageTitle
+    setMetaContent('meta[name="description"]', copy.pageDescription)
+    setMetaContent('meta[property="og:title"]', copy.pageTitle)
+    setMetaContent('meta[property="og:description"]', copy.pageDescription)
+    setMetaContent('meta[name="twitter:title"]', copy.pageTitle)
+    setMetaContent('meta[name="twitter:description"]', copy.twitterDescription)
+  }, [copy.pageDescription, copy.pageTitle, copy.twitterDescription, language])
 
   useEffect(() => {
     if (!navigator.geolocation) {
@@ -124,21 +175,21 @@ function App() {
           const distance = getDistanceKm(coords.latitude, coords.longitude, mountain.lat, mountain.lng)
 
           if (!closest || distance < closest.distance) {
-            return { distance, mountainId: mountain.id, mountainName: mountain.name }
+            return { distance, mountainId: mountain.id }
           }
 
           return closest
-        }, null as null | { distance: number; mountainId: MountainId; mountainName: string })
+        }, null as null | { distance: number; mountainId: MountainId })
 
         if (!nearestMountain) {
           return
         }
 
         activateMountain(nearestMountain.mountainId)
-        setNearestMountainName(nearestMountain.mountainName)
+        setNearestMountainId(nearestMountain.mountainId)
       },
       () => {
-        setNearestMountainName(null)
+        setNearestMountainId(null)
       },
       {
         enableHighAccuracy: false,
@@ -148,9 +199,12 @@ function App() {
     )
   }, [])
 
+  const nearestMountainName = nearestMountainId
+    ? localize(mountains.find((mountain) => mountain.id === nearestMountainId)?.name ?? mountains[0].name, language)
+    : null
   const locationLabel = nearestMountainName
-      ? `지금 위치에서 가까운 ${nearestMountainName}부터 보여드려요`
-      : '위치를 허용하면 가까운 산부터 먼저 보여드려요'
+    ? copy.locationWithNearest(nearestMountainName)
+    : copy.locationPrompt
 
   const activeMountain = mountains.find((mountain) => mountain.id === activeMountainId) ?? mountains[0]
 
@@ -163,16 +217,16 @@ function App() {
       }
     })
 
-    return ['전체', ...Array.from(kinds)] as Array<'전체' | FeedKind>
+    return ['all', ...Array.from(kinds)] as Array<'all' | FeedKind>
   }, [activeMountainId])
 
-  const visibleKind = availableKinds.includes(activeKind) ? activeKind : '전체'
+  const visibleKind = availableKinds.includes(activeKind) ? activeKind : 'all'
 
   const visibleFeeds = useMemo(
     () =>
       feeds.filter((feed) => {
         const sameMountain = feed.mountainId === activeMountainId
-        const sameKind = visibleKind === '전체' || feed.kind === visibleKind
+        const sameKind = visibleKind === 'all' || feed.kind === visibleKind
         return sameMountain && sameKind
       }),
     [activeMountainId, visibleKind],
@@ -183,7 +237,22 @@ function App() {
       <main className="page">
         <section className="hero">
           <div className="hero-copy">
-            <p className="eyebrow">Live Cam</p>
+            <div className="hero-topline">
+              <p className="eyebrow">{copy.heroEyebrow}</p>
+              <div className="language-switch" aria-label={copy.languageLabel} role="group">
+                <span className="language-switch-label">{copy.languageLabel}</span>
+                {(['ko', 'en'] as const).map((option) => (
+                  <button
+                    key={option}
+                    className={language === option ? 'language-chip active' : 'language-chip'}
+                    onClick={() => setLanguage(option)}
+                    type="button"
+                  >
+                    {copy.languageOptions[option]}
+                  </button>
+                ))}
+              </div>
+            </div>
             <div className="title-row">
               <span className="title-logo" aria-hidden="true">
                 <svg viewBox="0 0 48 48">
@@ -214,11 +283,9 @@ function App() {
                   />
                 </svg>
               </span>
-              <h1>MountainEyes V1.1</h1>
+              <h1>{copy.pageTitle}</h1>
             </div>
-            <p className="hero-text">
-              전국 산 CCTV를 한눈에 보고 한손에 캡쳐하세요.
-            </p>
+            <p className="hero-text">{copy.heroText}</p>
             <div className="hero-badges">
               <span className="soft-badge compact">
                 <Icon name="pin" />
@@ -241,7 +308,7 @@ function App() {
                   >
                     {mountains.map((mountain) => (
                       <option key={mountain.id} value={mountain.id}>
-                        {mountain.name}
+                        {localize(mountain.name, language)}
                       </option>
                     ))}
                   </select>
@@ -258,18 +325,8 @@ function App() {
                     onClick={() => setActiveKind(preset)}
                     type="button"
                   >
-                    <Icon
-                      name={
-                        preset === '전체'
-                          ? 'grid'
-                          : preset === '정상'
-                            ? 'mountain'
-                            : preset === '풍경'
-                              ? 'view'
-                              : 'path'
-                      }
-                    />
-                    {preset}
+                    <Icon name={getKindIcon(preset)} />
+                    {preset === 'all' ? copy.allLabel : localize(kindLabels[preset], language)}
                   </button>
                 ))}
               </div>
@@ -280,12 +337,12 @@ function App() {
         <section className="mountain-summary panel">
           <div className="section-head">
             <div>
-            <p className="eyebrow">Live Mountain</p>
-            <h2>{activeMountain.name}</h2>
-            <p>{activeMountain.description}</p>
+              <p className="eyebrow">{copy.liveMountainEyebrow}</p>
+              <h2>{localize(activeMountain.name, language)}</h2>
+              <p>{localize(activeMountain.description, language)}</p>
             </div>
             <a className="inline-link" href={activeMountain.officialPage} rel="noreferrer" target="_blank">
-              공식 정보
+              {copy.officialInfo}
             </a>
           </div>
         </section>
@@ -294,15 +351,15 @@ function App() {
           {visibleFeeds.map((feed, index) => (
             <article key={feed.id} className="simul-card">
               <div className="card-head">
-                <h3>{feed.name}</h3>
+                <h3>{localize(feed.name, language)}</h3>
                 <a className="inline-link" href={feed.officialPage} rel="noreferrer" target="_blank">
-                  공식 원본
+                  {copy.officialSource}
                 </a>
               </div>
               <p className="card-copy">
-                {feed.provider} · {feed.kind}
+                {localize(feed.provider, language)} · {localize(kindLabels[feed.kind], language)}
               </p>
-              <StreamPlayer compact feed={feed} priority={index < 4} />
+              <StreamPlayer compact feed={feed} language={language} priority={index < 4} />
             </article>
           ))}
         </section>
@@ -310,33 +367,33 @@ function App() {
         <section className="world-block panel">
           <div className="world-head">
             <div>
-              <p className="eyebrow">World Pick</p>
-              <h2>몽블랑</h2>
-              <p>프랑스 샤모니 공식 웹캠에서 제공하는 최신 몽블랑 이미지를 함께 보여줍니다.</p>
+              <p className="eyebrow">{copy.worldPickEyebrow}</p>
+              <h2>{copy.worldPickTitle}</h2>
+              <p>{copy.worldPickDescription}</p>
             </div>
           </div>
           <div className="world-grid">
             {worldPicks.map((feed) => (
               <article key={feed.id} className="simul-card">
                 <div className="card-head">
-                  <h3>{feed.name}</h3>
+                  <h3>{localize(feed.name, language)}</h3>
                   <a className="inline-link" href={feed.officialPage} rel="noreferrer" target="_blank">
-                    공식 원본
+                    {copy.officialSource}
                   </a>
                 </div>
-                <p className="card-copy">{feed.provider}</p>
-                <StreamPlayer compact feed={feed} />
+                <p className="card-copy">{localize(feed.provider, language)}</p>
+                <StreamPlayer compact feed={feed} language={language} />
               </article>
             ))}
           </div>
         </section>
 
         {visibleFeeds.length === 0 ? (
-          <section className="panel empty-state">지금 보여줄 CCTV가 없어요.</section>
+          <section className="panel empty-state">{copy.emptyState}</section>
         ) : null}
 
         <footer className="site-footer">
-          <span>Powered by HWI</span>
+          <span>{copy.poweredBy}</span>
           <span className="site-footer-divider" aria-hidden="true">
             |
           </span>
@@ -345,8 +402,8 @@ function App() {
             href="https://www.instagram.com/spacehwi/"
             rel="noreferrer"
             target="_blank"
-            aria-label="Instagram에서 @spacehwi로 피드백 보내기"
-            title="Instagram에서 피드백 보내기"
+            aria-label={copy.instagramAriaLabel}
+            title={copy.instagramTitle}
           >
             <Icon name="instagram" />
             <span>@spacehwi</span>

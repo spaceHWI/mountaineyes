@@ -27,6 +27,19 @@ npm run build
 npm run start
 ```
 
+## 방문자 수 보기
+
+Cloudflare Web Analytics를 쓰면 봇이 아닌 실제 방문자와 페이지뷰를 볼 수 있습니다.
+
+현재는 Cloudflare에서 발급한 Web Analytics JS snippet을 `index.html`에 직접 넣는 방식으로 연결되어 있습니다.
+
+1. Cloudflare 대시보드에서 `Web Analytics`를 엽니다.
+2. `Enable with JS Snippet installation`을 선택합니다.
+3. 발급된 snippet의 `data-cf-beacon` token 값을 확인합니다.
+4. 사이트를 다시 배포합니다.
+
+방문 데이터는 보통 반영까지 몇 분 정도 걸릴 수 있습니다.
+
 ## 참고
 
 - 현재 메인 데모는 한라산 공식 `https` 스트림만 사용합니다.

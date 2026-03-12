@@ -1,19 +1,28 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
 import type { Feed } from '../data/feeds'
+import { localize, playerCopy, type Language } from '../i18n'
 
 type StreamPlayerProps = {
   compact?: boolean
   feed: Feed
+  language: Language
   priority?: boolean
 }
 
-export function StreamPlayer({ compact = false, feed, priority = false }: StreamPlayerProps) {
+export function StreamPlayer({
+  compact = false,
+  feed,
+  language,
+  priority = false,
+}: StreamPlayerProps) {
   const videoRef = useRef<HTMLVideoElement | null>(null)
   const imageUrlRef = useRef(feed.sourceUrl)
   const [status, setStatus] = useState<'loading' | 'ready' | 'error'>('loading')
   const [isPlaying, setIsPlaying] = useState(false)
   const [captureMessage, setCaptureMessage] = useState('')
   const [imageVersion, setImageVersion] = useState(0)
+  const copy = playerCopy[language]
+  const feedName = localize(feed.name, language)
   const playbackUrl = useMemo(
     () =>
       feed.sourceUrl.startsWith('http://')
@@ -25,6 +34,10 @@ export function StreamPlayer({ compact = false, feed, priority = false }: Stream
     () => `${feed.sourceUrl}${feed.sourceUrl.includes('?') ? '&' : '?'}t=${imageVersion}`,
     [feed.sourceUrl, imageVersion],
   )
+
+  useEffect(() => {
+    setCaptureMessage('')
+  }, [feed.id, language])
 
   useEffect(() => {
     if (feed.sourceType !== 'image') {
@@ -140,7 +153,7 @@ export function StreamPlayer({ compact = false, feed, priority = false }: Stream
       try {
         await video.play()
       } catch {
-        setCaptureMessage('재생을 시작하지 못했어요')
+        setCaptureMessage(copy.statusCannotStartPlayback)
       }
       return
     }
@@ -154,7 +167,7 @@ export function StreamPlayer({ compact = false, feed, priority = false }: Stream
       const context = canvas.getContext('2d')
 
       if (!context) {
-        setCaptureMessage('캡쳐를 준비하지 못했어요')
+        setCaptureMessage(copy.statusCapturePreparingFailed)
         return
       }
 
@@ -174,7 +187,7 @@ export function StreamPlayer({ compact = false, feed, priority = false }: Stream
         const video = videoRef.current
 
         if (!video || video.videoWidth === 0 || video.videoHeight === 0) {
-          setCaptureMessage('아직 화면을 저장할 수 없어요')
+          setCaptureMessage(copy.statusCannotStoreYet)
           return
         }
 
@@ -184,7 +197,7 @@ export function StreamPlayer({ compact = false, feed, priority = false }: Stream
       }
 
       const timestamp = new Date().toISOString().replaceAll(':', '-')
-      const fileName = `${feed.name}-${timestamp}.png`
+      const fileName = `${feedName}-${timestamp}.png`
       const isMobile = /Android|iPhone|iPad|iPod|Mobile/i.test(navigator.userAgent)
 
       const downloadImage = () => {
@@ -192,7 +205,7 @@ export function StreamPlayer({ compact = false, feed, priority = false }: Stream
         link.download = fileName
         link.href = canvas.toDataURL('image/png')
         link.click()
-        setCaptureMessage('사진으로 저장했어요')
+        setCaptureMessage(copy.statusDownloaded)
       }
 
       if (isMobile && typeof navigator.share === 'function') {
@@ -207,10 +220,10 @@ export function StreamPlayer({ compact = false, feed, priority = false }: Stream
             try {
               await navigator.share({
                 files: [file],
-                title: `${feed.name} 캡쳐`,
-                text: `${feed.name} 화면을 저장하거나 공유해보세요.`,
+                title: copy.shareFallbackTitle(feedName),
+                text: copy.shareFallbackText(feedName),
               })
-              setCaptureMessage('공유 화면을 열었어요')
+              setCaptureMessage(copy.statusOpenedShare)
               return
             } catch {
               downloadImage()
@@ -222,7 +235,7 @@ export function StreamPlayer({ compact = false, feed, priority = false }: Stream
 
       downloadImage()
     } catch {
-      setCaptureMessage('이 화면은 저장이 안 되는 상태예요')
+      setCaptureMessage(copy.statusCaptureFailed)
     }
   }
 
@@ -234,21 +247,21 @@ export function StreamPlayer({ compact = false, feed, priority = false }: Stream
             status === 'error' ? 'error' : isPlaying ? 'playing' : status === 'loading' ? 'loading' : 'ready'
           }`}
         >
-          {status === 'error' ? '연결 확인 필요' : 'LIVE'}
+          {status === 'error' ? copy.connectionCheck : copy.live}
         </span>
-        <span className="stream-area">{feed.region}</span>
+        <span className="stream-area">{localize(feed.region, language)}</span>
       </div>
       <div className={compact ? 'stream-player compact' : 'stream-player'}>
         {feed.sourceType === 'image' ? (
           <img
-            alt={`${feed.name} 실시간 이미지`}
+            alt={copy.streamImageAlt(feedName)}
             className="stream-image"
             onError={() => setStatus('error')}
             src={refreshedImageUrl}
           />
         ) : (
           <video
-            aria-label={`${feed.name} 실시간 영상`}
+            aria-label={copy.streamVideoAriaLabel(feedName)}
             className="stream-video"
             crossOrigin="anonymous"
             muted
@@ -271,7 +284,7 @@ export function StreamPlayer({ compact = false, feed, priority = false }: Stream
           }}
           type="button"
         >
-          화면 캡쳐
+          {copy.capture}
         </button>
         <span className="capture-message" aria-live="polite">
           {captureMessage}
