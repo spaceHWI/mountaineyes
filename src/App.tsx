@@ -7,6 +7,17 @@ import { appCopy, kindLabels, localize, type Language } from './i18n'
 const EARTH_RADIUS_KM = 6371
 const LANGUAGE_STORAGE_KEY = 'mountaineyes-language'
 
+const getInitialMountainId = (): MountainId => {
+  if (typeof window === 'undefined') {
+    return 'hallasan'
+  }
+
+  const mountainId = new URLSearchParams(window.location.search).get('mountain')
+  const isValidMountain = mountains.some((mountain) => mountain.id === mountainId)
+
+  return isValidMountain ? (mountainId as MountainId) : 'hallasan'
+}
+
 function Icon({
   name,
 }: {
@@ -142,7 +153,7 @@ const getKindIcon = (kind: FeedKind | 'all') => {
 
 function App() {
   const [language, setLanguage] = useState<Language>(getInitialLanguage)
-  const [activeMountainId, setActiveMountainId] = useState<MountainId>('hallasan')
+  const [activeMountainId, setActiveMountainId] = useState<MountainId>(getInitialMountainId)
   const [activeKind, setActiveKind] = useState<'all' | FeedKind>('all')
   const [nearestMountainId, setNearestMountainId] = useState<MountainId | null>(null)
 
