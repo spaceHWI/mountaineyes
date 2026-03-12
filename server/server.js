@@ -7,7 +7,7 @@ const app = express()
 const port = Number(process.env.PORT ?? 8787)
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 const distPath = path.resolve(__dirname, '../dist')
-const allowedHosts = new Set(['59.8.86.94:8080', 'hallacctv.kr'])
+const allowedHosts = new Set(['59.8.86.94:8080', '59.30.12.195:1935', 'hallacctv.kr'])
 
 const isPlaylistResponse = (target, contentType) => {
   const normalizedType = contentType.toLowerCase()
