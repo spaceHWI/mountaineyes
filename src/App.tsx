@@ -31,6 +31,7 @@ function App() {
   const [language, setLanguage] = useState<Language>(getInitialLanguage)
   const [activeMountainId, setActiveMountainId] = useState<MountainId>(getInitialMountainId)
   const [activeKind, setActiveKind] = useState<'all' | FeedKind>('all')
+  const [activeItsFeedId, setActiveItsFeedId] = useState<string | null>(null)
   const [nearestMountainId, setNearestMountainId] = useState<MountainId | null>(null)
   const itsAvailable = useItsAvailable()
 
@@ -119,6 +120,10 @@ function App() {
       }),
     [activeMountainId, itsAvailable, visibleKind],
   )
+  const hasVisibleItsFeeds = visibleFeeds.some((feed) => feed.sourceType === 'its')
+  const visibleActiveItsFeedId = visibleFeeds.some((feed) => feed.id === activeItsFeedId)
+    ? activeItsFeedId
+    : null
 
   return (
     <div className="app-shell">
@@ -235,12 +240,23 @@ function App() {
           </div>
         </section>
 
+        {hasVisibleItsFeeds ? (
+          <section className="its-notice panel">
+            <span className="feed-badge its">{copy.itsNoticeBadge}</span>
+            <p>{copy.itsNoticeText}</p>
+          </section>
+        ) : null}
+
         <section className="simul-grid">
           {visibleFeeds.map((feed, index) => (
             <FeedCard
               key={feed.id}
               feed={feed}
+              isItsActive={feed.sourceType === 'its' && visibleActiveItsFeedId === feed.id}
               language={language}
+              onItsPlaybackChange={(nextActive) => {
+                setActiveItsFeedId(nextActive ? feed.id : (current) => (current === feed.id ? null : current))
+              }}
               priority={index < 4}
               showKind
             />

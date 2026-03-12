@@ -8,7 +8,9 @@ type StreamStatus = 'loading' | 'ready' | 'error'
 type StreamPlayerProps = {
   compact?: boolean
   feed: Feed
+  isItsActive?: boolean
   language: Language
+  onItsPlaybackChange?: (nextActive: boolean) => void
   priority?: boolean
 }
 
@@ -30,7 +32,9 @@ const getStatusTone = (status: StreamStatus, isPlaying: boolean) => {
 export function StreamPlayer({
   compact = false,
   feed,
+  isItsActive = false,
   language,
+  onItsPlaybackChange,
   priority = false,
 }: StreamPlayerProps) {
   const videoRef = useRef<HTMLVideoElement | null>(null)
@@ -49,7 +53,11 @@ export function StreamPlayer({
   const isItsFeed = feed.sourceType === 'its'
   const itsStreamUrl = useItsStreamUrl(isItsFeed ? feed.itsDeviceId : undefined)
   const playerTone = getStatusTone(status, isPlaying)
-  const playerStatusLabel = status === 'error' ? copy.connectionCheck : copy.live
+  const playerStatusLabel = isItsFeed && !isItsActive
+    ? copy.itsStandby
+    : status === 'error'
+      ? copy.connectionCheck
+      : copy.live
 
   useEffect(() => {
     if (!isItsFeed) {
@@ -127,12 +135,24 @@ export function StreamPlayer({
       return
     }
 
-    if (isItsFeed && !playbackUrl) {
-      setStatus('error')
+    const video = videoRef.current
+
+    if (isItsFeed && !isItsActive) {
+      hasStartedPlaybackRef.current = false
+      setStatus('ready')
+      setIsPlaying(false)
+      if (video) {
+        video.pause()
+        video.removeAttribute('src')
+        video.load()
+      }
       return
     }
 
-    const video = videoRef.current
+    if (isItsFeed && !playbackUrl) {
+      setStatus('loading')
+      return
+    }
 
     if (!video) {
       return
@@ -226,7 +246,7 @@ export function StreamPlayer({
       video.removeEventListener('waiting', handleWaiting)
       teardown?.()
     }
-  }, [feed, isImageFeed, isItsFeed, playbackUrl])
+  }, [feed, isImageFeed, isItsActive, isItsFeed, playbackUrl])
 
   const togglePlayback = async () => {
     if (isImageFeed) {
@@ -249,6 +269,20 @@ export function StreamPlayer({
     }
 
     video.pause()
+  }
+
+  const handleItsPlaybackToggle = () => {
+    if (!isItsFeed || !onItsPlaybackChange) {
+      return
+    }
+
+    if (isItsActive) {
+      onItsPlaybackChange(false)
+      return
+    }
+
+    setStatus('loading')
+    onItsPlaybackChange(true)
   }
 
   const handleCapture = async () => {
@@ -336,7 +370,17 @@ export function StreamPlayer({
         <span className="stream-area">{localize(feed.region, language)}</span>
       </div>
       <div className={compact ? 'stream-player compact' : 'stream-player'}>
-        {isImageFeed ? (
+        {isItsFeed && !isItsActive ? (
+          <div className="stream-its-gate">
+            <button
+              className="stream-its-play-button"
+              onClick={handleItsPlaybackToggle}
+              type="button"
+            >
+              {copy.itsPlay}
+            </button>
+          </div>
+        ) : isImageFeed ? (
           <img
             alt={copy.streamImageAlt(feedName)}
             className="stream-image"
@@ -372,17 +416,27 @@ export function StreamPlayer({
       </div>
 
       <div className="stream-tools">
-        <button
-          className="capture-button"
-          onClick={() => {
-            void handleCapture()
-          }}
-          type="button"
-        >
-          {copy.capture}
-        </button>
+        {isItsFeed ? (
+          <button
+            className="capture-button"
+            onClick={handleItsPlaybackToggle}
+            type="button"
+          >
+            {isItsActive ? copy.itsStop : copy.itsPlay}
+          </button>
+        ) : (
+          <button
+            className="capture-button"
+            onClick={() => {
+              void handleCapture()
+            }}
+            type="button"
+          >
+            {copy.capture}
+          </button>
+        )}
         <span className="capture-message" aria-live="polite">
-          {captureMessage}
+          {isItsFeed && !isItsActive ? '' : captureMessage}
         </span>
       </div>
     </div>
