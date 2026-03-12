@@ -16,7 +16,6 @@ type StreamPlayerProps = {
 
 const IMAGE_REFRESH_MS = 60_000
 const LOADING_TICK_MS = 1_000
-const ITS_SESSION_REFRESH_MS = 30_000
 const ITS_WAITING_GRACE_MS = 10_000
 
 const getStatusTone = (status: StreamStatus, isPlaying: boolean) => {
@@ -42,11 +41,10 @@ export function StreamPlayer({
   const videoRef = useRef<HTMLVideoElement | null>(null)
   const imageUrlRef = useRef(feed.sourceUrl)
   const hasStartedPlaybackRef = useRef(false)
-  const itsRefreshTimerRef = useRef<number | null>(null)
   const waitingTimerRef = useRef<number | null>(null)
   const latestItsStreamUrlRef = useRef<string | null>(null)
   const [activeItsStreamUrl, setActiveItsStreamUrl] = useState<string | null>(null)
-  const [itsReconnectVersion, setItsReconnectVersion] = useState(0)
+  const [itsSessionExpired, setItsSessionExpired] = useState(false)
   const [status, setStatus] = useState<StreamStatus>('loading')
   const [isPlaying, setIsPlaying] = useState(false)
   const [captureMessage, setCaptureMessage] = useState('')
@@ -70,37 +68,9 @@ export function StreamPlayer({
   }, [itsStreamUrl])
 
   useEffect(() => {
-    if (!isItsFeed || !isItsActive || status !== 'ready') {
-      if (itsRefreshTimerRef.current !== null) {
-        window.clearTimeout(itsRefreshTimerRef.current)
-        itsRefreshTimerRef.current = null
-      }
-      return
-    }
-
-    itsRefreshTimerRef.current = window.setTimeout(() => {
-      const nextItsStreamUrl = latestItsStreamUrlRef.current
-
-      if (nextItsStreamUrl) {
-        setActiveItsStreamUrl(nextItsStreamUrl)
-      }
-
-      setStatus('loading')
-      setItsReconnectVersion((current) => current + 1)
-      itsRefreshTimerRef.current = null
-    }, ITS_SESSION_REFRESH_MS)
-
-    return () => {
-      if (itsRefreshTimerRef.current !== null) {
-        window.clearTimeout(itsRefreshTimerRef.current)
-        itsRefreshTimerRef.current = null
-      }
-    }
-  }, [isItsActive, isItsFeed, status])
-
-  useEffect(() => {
     if (!isItsFeed) {
       setActiveItsStreamUrl(null)
+      setItsSessionExpired(false)
       return
     }
 
@@ -134,6 +104,12 @@ export function StreamPlayer({
   useEffect(() => {
     setCaptureMessage('')
   }, [feed.id, language])
+
+  useEffect(() => {
+    if (!isItsActive) {
+      setItsSessionExpired(false)
+    }
+  }, [isItsActive])
 
   useEffect(() => {
     if (status !== 'loading' || isImageFeed) {
@@ -200,13 +176,6 @@ export function StreamPlayer({
     let cancelled = false
     let teardown: (() => void) | undefined
 
-    const clearRefreshTimer = () => {
-      if (itsRefreshTimerRef.current !== null) {
-        window.clearTimeout(itsRefreshTimerRef.current)
-        itsRefreshTimerRef.current = null
-      }
-    }
-
     const clearWaitingTimer = () => {
       if (waitingTimerRef.current !== null) {
         window.clearTimeout(waitingTimerRef.current)
@@ -215,17 +184,32 @@ export function StreamPlayer({
     }
 
     hasStartedPlaybackRef.current = false
+    setItsSessionExpired(false)
     setStatus('loading')
     setIsPlaying(false)
     video.pause()
     video.removeAttribute('src')
     video.load()
 
-    const handleError = () => setStatus('error')
+    const expireItsSession = () => {
+      clearWaitingTimer()
+      setStatus('error')
+      setIsPlaying(false)
+      setItsSessionExpired(true)
+    }
+
+    const handleError = () => {
+      if (isItsFeed && hasStartedPlaybackRef.current) {
+        expireItsSession()
+        return
+      }
+
+      setStatus('error')
+    }
     const markReady = () => {
-      clearRefreshTimer()
       clearWaitingTimer()
       hasStartedPlaybackRef.current = true
+      setItsSessionExpired(false)
       setStatus('ready')
     }
     const handlePlay = () => setIsPlaying(true)
@@ -246,13 +230,7 @@ export function StreamPlayer({
 
       if (isItsFeed) {
         waitingTimerRef.current = window.setTimeout(() => {
-          const nextItsStreamUrl = latestItsStreamUrlRef.current
-
-          if (nextItsStreamUrl && nextItsStreamUrl !== activeItsStreamUrl) {
-            setActiveItsStreamUrl(nextItsStreamUrl)
-          }
-
-          setStatus('loading')
+          expireItsSession()
           waitingTimerRef.current = null
         }, ITS_WAITING_GRACE_MS)
         return
@@ -315,7 +293,6 @@ export function StreamPlayer({
 
     return () => {
       cancelled = true
-      clearRefreshTimer()
       clearWaitingTimer()
       video.removeEventListener('error', handleError)
       video.removeEventListener('play', handlePlay)
@@ -325,7 +302,7 @@ export function StreamPlayer({
       video.removeEventListener('waiting', handleWaiting)
       teardown?.()
     }
-  }, [activeItsStreamUrl, feed, isImageFeed, isItsActive, isItsFeed, itsReconnectVersion, playbackUrl])
+  }, [activeItsStreamUrl, feed, isImageFeed, isItsActive, isItsFeed, playbackUrl])
 
   const togglePlayback = async () => {
     if (isImageFeed) {
@@ -362,6 +339,17 @@ export function StreamPlayer({
 
     setStatus('loading')
     onItsPlaybackChange(true)
+  }
+
+  const handleItsRetry = () => {
+    const nextItsStreamUrl = latestItsStreamUrlRef.current
+
+    if (nextItsStreamUrl) {
+      setActiveItsStreamUrl(nextItsStreamUrl)
+    }
+
+    setItsSessionExpired(false)
+    setStatus('loading')
   }
 
   const handleCapture = async () => {
@@ -463,6 +451,28 @@ export function StreamPlayer({
             >
               {copy.itsPlay}
             </button>
+          </div>
+        ) : isItsFeed && itsSessionExpired ? (
+          <div className="stream-its-expired">
+            <strong>{copy.itsExpiredTitle}</strong>
+            <p>{copy.itsExpiredBody}</p>
+            <div className="stream-its-expired-actions">
+              <button
+                className="stream-its-play-button"
+                onClick={handleItsRetry}
+                type="button"
+              >
+                {copy.itsRetry}
+              </button>
+              <a
+                className="stream-its-button"
+                href={feed.officialPage}
+                rel="noreferrer"
+                target="_blank"
+              >
+                {copy.itsOpenOfficial}
+              </a>
+            </div>
           </div>
         ) : isImageFeed ? (
           <img
