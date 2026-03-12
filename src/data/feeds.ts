@@ -5,6 +5,7 @@ export type MountainId =
   | 'odaesan'
   | 'chiaksan'
   | 'taebaeksan'
+  | 'montblanc'
 export type FeedKind = '정상' | '진입부' | '풍경'
 
 export type Mountain = {
@@ -252,15 +253,15 @@ export const feeds: Feed[] = [
 
 export const worldPicks: Feed[] = [
   {
-    id: 'hotaka-kamikochi',
-    name: '호타카',
-    mountainId: 'fujisan' as MountainId,
+    id: 'montblanc-argentiere',
+    name: '몽블랑',
+    mountainId: 'montblanc',
     kind: '풍경',
-    region: '일본',
-    provider: '환경성 생물다양성센터 · 인터넷 자연연구소',
-    officialLabel: '호타카 최신 이미지 원본',
-    officialPage: 'https://www.sizenken.biodic.go.jp/view_new.php?no=93',
+    region: '프랑스',
+    provider: 'Chamonix Mont-Blanc Tourisme',
+    officialLabel: '몽블랑 최신 이미지 원본',
+    officialPage: 'https://en.chamonix.com/argentiere-view-of-mont-blanc',
     sourceType: 'image',
-    sourceUrl: 'https://www.sizenken.biodic.go.jp/camera_img/93_c/image/2026/03/12/NCS20260312100001000.jpg',
+    sourceUrl: 'https://docs.chamonix.com/webcam/webcam-ota-1.jpg',
   },
 ]

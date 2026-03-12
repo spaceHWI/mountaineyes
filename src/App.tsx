@@ -300,8 +300,8 @@ function App() {
           <div className="world-head">
             <div>
               <p className="eyebrow">World Pick</p>
-              <h2>호타카</h2>
-              <p>일본 공식 공공 자연관측 페이지에서 제공하는 최신 산악 이미지를 함께 보여줍니다.</p>
+              <h2>몽블랑</h2>
+              <p>프랑스 샤모니 공식 웹캠에서 제공하는 최신 몽블랑 이미지를 함께 보여줍니다.</p>
             </div>
           </div>
           <div className="world-grid">
