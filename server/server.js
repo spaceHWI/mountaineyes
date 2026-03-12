@@ -145,6 +145,28 @@ const rewritePlaylist = (text, target) =>
     })
     .join('\n')
 
+const maskUrl = (value) => {
+  if (!value) {
+    return value
+  }
+
+  try {
+    const url = new URL(value)
+
+    if (url.searchParams.has('authKey')) {
+      url.searchParams.set('authKey', '***')
+    }
+
+    if (url.searchParams.has('sessionID')) {
+      url.searchParams.set('sessionID', '***')
+    }
+
+    return url.toString()
+  } catch {
+    return value
+  }
+}
+
 app.use('/api', (request, response, next) => {
   applyCors(request, response)
 
@@ -265,6 +287,87 @@ app.get('/api/jejuits/stream', async (request, response) => {
   } catch (error) {
     console.error('jeju_its_proxy_error', error)
     response.status(502).json({ message: '제주 ITS 프록시 처리 중 오류가 발생했습니다.' })
+  }
+})
+
+app.get('/api/jejuits/debug', async (request, response) => {
+  const deviceId = request.query.deviceId
+
+  if (typeof deviceId !== 'string' || !/^[a-f0-9-]{36}$/i.test(deviceId)) {
+    response.status(400).json({ message: '유효하지 않은 제주 ITS CCTV ID입니다.' })
+    return
+  }
+
+  const debug = {
+    deviceId,
+    entry: null,
+    streamLookup: null,
+    upstreamPlaylist: null,
+  }
+
+  try {
+    const entryPage = await fetch(JEJU_ITS_CCTV_PAGE, {
+      headers: JEJU_ITS_BROWSER_HEADERS,
+    })
+
+    const cookieHeader = getCookieHeader(entryPage.headers)
+
+    debug.entry = {
+      cookieCount: cookieHeader ? cookieHeader.split('; ').length : 0,
+      ok: entryPage.ok,
+      status: entryPage.status,
+    }
+
+    const streamResponse = await fetch(JEJU_ITS_STREAM_URL, {
+      method: 'POST',
+      headers: {
+        accept: '*/*',
+        'accept-language': JEJU_ITS_BROWSER_HEADERS['Accept-Language'],
+        'content-type': 'application/x-www-form-urlencoded; charset=UTF-8',
+        origin: 'https://www.jejuits.go.kr',
+        referer: JEJU_ITS_CCTV_PAGE,
+        'user-agent': JEJU_ITS_BROWSER_HEADERS['User-Agent'],
+        'x-requested-with': 'XMLHttpRequest',
+        ...(cookieHeader ? { cookie: cookieHeader } : {}),
+      },
+      body: new URLSearchParams({ DEVICE_ID: deviceId }).toString(),
+    })
+
+    const rawValue = (await streamResponse.text()).trim()
+    const parsedValue = rawValue.startsWith('"') ? JSON.parse(rawValue) : rawValue
+
+    debug.streamLookup = {
+      ok: streamResponse.ok,
+      rawValue,
+      status: streamResponse.status,
+      streamUrl: maskUrl(parsedValue),
+    }
+
+    if (streamResponse.ok && parsedValue && parsedValue !== 'error' && parsedValue !== 'read_error') {
+      const upstream = await fetch(parsedValue, {
+        headers: {
+          accept: '*/*',
+          'accept-language': JEJU_ITS_BROWSER_HEADERS['Accept-Language'],
+          referer: JEJU_ITS_CCTV_PAGE,
+          'user-agent': JEJU_ITS_BROWSER_HEADERS['User-Agent'],
+        },
+      })
+
+      const playlistBody = await upstream.text()
+
+      debug.upstreamPlaylist = {
+        bodyPreview: playlistBody.slice(0, 240),
+        ok: upstream.ok,
+        status: upstream.status,
+      }
+    }
+
+    response.json(debug)
+  } catch (error) {
+    response.status(500).json({
+      ...debug,
+      error: error instanceof Error ? error.message : String(error),
+    })
   }
 })
 
