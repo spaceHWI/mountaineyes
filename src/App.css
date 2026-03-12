@@ -38,7 +38,6 @@
   align-items: center;
   justify-content: space-between;
   gap: 1rem;
-  flex-wrap: wrap;
 }
 
 .title-row {
@@ -52,10 +51,12 @@
   display: inline-flex;
   align-items: center;
   gap: 0.35rem;
+  margin-left: auto;
   padding: 0.3rem;
   border: 1px solid rgba(24, 72, 45, 0.1);
   border-radius: 999px;
   background: rgba(255, 255, 255, 0.76);
+  flex: 0 0 auto;
 }
 
 .language-switch-label {
@@ -631,6 +632,7 @@
   }
 
   .hero-topline {
+    flex-wrap: wrap;
     align-items: stretch;
   }
 
