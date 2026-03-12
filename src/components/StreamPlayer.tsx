@@ -16,7 +16,8 @@ type StreamPlayerProps = {
 
 const IMAGE_REFRESH_MS = 60_000
 const LOADING_TICK_MS = 1_000
-const ITS_WAITING_GRACE_MS = 2_500
+const ITS_SESSION_REFRESH_MS = 30_000
+const ITS_WAITING_GRACE_MS = 10_000
 
 const getStatusTone = (status: StreamStatus, isPlaying: boolean) => {
   if (status === 'error') {
@@ -41,9 +42,11 @@ export function StreamPlayer({
   const videoRef = useRef<HTMLVideoElement | null>(null)
   const imageUrlRef = useRef(feed.sourceUrl)
   const hasStartedPlaybackRef = useRef(false)
+  const itsRefreshTimerRef = useRef<number | null>(null)
   const waitingTimerRef = useRef<number | null>(null)
   const latestItsStreamUrlRef = useRef<string | null>(null)
   const [activeItsStreamUrl, setActiveItsStreamUrl] = useState<string | null>(null)
+  const [itsReconnectVersion, setItsReconnectVersion] = useState(0)
   const [status, setStatus] = useState<StreamStatus>('loading')
   const [isPlaying, setIsPlaying] = useState(false)
   const [captureMessage, setCaptureMessage] = useState('')
@@ -65,6 +68,35 @@ export function StreamPlayer({
   useEffect(() => {
     latestItsStreamUrlRef.current = itsStreamUrl
   }, [itsStreamUrl])
+
+  useEffect(() => {
+    if (!isItsFeed || !isItsActive || status !== 'ready') {
+      if (itsRefreshTimerRef.current !== null) {
+        window.clearTimeout(itsRefreshTimerRef.current)
+        itsRefreshTimerRef.current = null
+      }
+      return
+    }
+
+    itsRefreshTimerRef.current = window.setTimeout(() => {
+      const nextItsStreamUrl = latestItsStreamUrlRef.current
+
+      if (nextItsStreamUrl) {
+        setActiveItsStreamUrl(nextItsStreamUrl)
+      }
+
+      setStatus('loading')
+      setItsReconnectVersion((current) => current + 1)
+      itsRefreshTimerRef.current = null
+    }, ITS_SESSION_REFRESH_MS)
+
+    return () => {
+      if (itsRefreshTimerRef.current !== null) {
+        window.clearTimeout(itsRefreshTimerRef.current)
+        itsRefreshTimerRef.current = null
+      }
+    }
+  }, [isItsActive, isItsFeed, status])
 
   useEffect(() => {
     if (!isItsFeed) {
@@ -168,6 +200,13 @@ export function StreamPlayer({
     let cancelled = false
     let teardown: (() => void) | undefined
 
+    const clearRefreshTimer = () => {
+      if (itsRefreshTimerRef.current !== null) {
+        window.clearTimeout(itsRefreshTimerRef.current)
+        itsRefreshTimerRef.current = null
+      }
+    }
+
     const clearWaitingTimer = () => {
       if (waitingTimerRef.current !== null) {
         window.clearTimeout(waitingTimerRef.current)
@@ -184,6 +223,7 @@ export function StreamPlayer({
 
     const handleError = () => setStatus('error')
     const markReady = () => {
+      clearRefreshTimer()
       clearWaitingTimer()
       hasStartedPlaybackRef.current = true
       setStatus('ready')
@@ -275,6 +315,7 @@ export function StreamPlayer({
 
     return () => {
       cancelled = true
+      clearRefreshTimer()
       clearWaitingTimer()
       video.removeEventListener('error', handleError)
       video.removeEventListener('play', handlePlay)
@@ -284,7 +325,7 @@ export function StreamPlayer({
       video.removeEventListener('waiting', handleWaiting)
       teardown?.()
     }
-  }, [activeItsStreamUrl, feed, isImageFeed, isItsActive, isItsFeed, playbackUrl])
+  }, [activeItsStreamUrl, feed, isImageFeed, isItsActive, isItsFeed, itsReconnectVersion, playbackUrl])
 
   const togglePlayback = async () => {
     if (isImageFeed) {
