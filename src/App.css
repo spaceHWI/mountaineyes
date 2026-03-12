@@ -683,6 +683,13 @@
   gap: 0.75rem;
 }
 
+.stream-action-group {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  flex-wrap: wrap;
+}
+
 .capture-button {
   display: inline-flex;
   align-items: center;

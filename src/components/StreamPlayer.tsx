@@ -365,6 +365,11 @@ export function StreamPlayer({
   }
 
   const handleCapture = async () => {
+    if (isItsFeed && !isItsActive) {
+      setCaptureMessage(copy.statusStartPlaybackFirst)
+      return
+    }
+
     try {
       const canvas = document.createElement('canvas')
       const context = canvas.getContext('2d')
@@ -498,15 +503,7 @@ export function StreamPlayer({
       </div>
 
       <div className="stream-tools">
-        {isItsFeed ? (
-          <button
-            className="capture-button"
-            onClick={handleItsPlaybackToggle}
-            type="button"
-          >
-            {isItsActive ? copy.itsStop : copy.itsPlay}
-          </button>
-        ) : (
+        <div className="stream-action-group">
           <button
             className="capture-button"
             onClick={() => {
@@ -516,7 +513,7 @@ export function StreamPlayer({
           >
             {copy.capture}
           </button>
-        )}
+        </div>
         <span className="capture-message" aria-live="polite">
           {isItsFeed && !isItsActive ? '' : captureMessage}
         </span>
