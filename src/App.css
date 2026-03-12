@@ -632,13 +632,24 @@
   }
 
   .hero-topline {
-    flex-wrap: wrap;
-    align-items: stretch;
+    flex-wrap: nowrap;
+    align-items: center;
   }
 
   .language-switch {
-    width: 100%;
-    justify-content: space-between;
+    width: auto;
+    gap: 0.2rem;
+    padding: 0.22rem;
+    justify-content: flex-end;
+  }
+
+  .language-switch-label {
+    display: none;
+  }
+
+  .language-chip {
+    min-height: 1.95rem;
+    padding: 0 0.7rem;
   }
 
   .hero h1 {
