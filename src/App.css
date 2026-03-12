@@ -796,25 +796,25 @@
 }
 
 .deer-from-left {
-  animation-name: deer-run-left;
+  animation-name: deer-run-ltr;
 }
 
 .deer-from-right {
-  animation-name: deer-run-right;
+  animation-name: deer-run-rtl;
 }
 
 .deer-from-right .deer-svg {
   transform: scaleX(-1);
 }
 
-@keyframes deer-run-left {
-  0% { right: -5rem; left: auto; }
-  100% { right: calc(100vw + 5rem); left: auto; }
-}
-
-@keyframes deer-run-right {
+@keyframes deer-run-ltr {
   0% { left: -5rem; right: auto; }
   100% { left: calc(100vw + 5rem); right: auto; }
+}
+
+@keyframes deer-run-rtl {
+  0% { right: -5rem; left: auto; }
+  100% { right: calc(100vw + 5rem); left: auto; }
 }
 
 @keyframes deer-bounce {
