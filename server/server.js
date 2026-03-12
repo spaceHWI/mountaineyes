@@ -13,6 +13,16 @@ const JEJU_ITS_CCTV_PAGE = 'https://www.jejuits.go.kr/jido/mainView.do?DEVICE_KI
 const JEJU_ITS_STREAM_URL = 'https://www.jejuits.go.kr/jido/streamUrl.do'
 const JEJU_ITS_STREAM_TTL_MS = 1000 * 45
 const USER_AGENT = 'JejuEye/1.0'
+const JEJU_ITS_BROWSER_HEADERS = {
+  Accept:
+    'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8',
+  'Accept-Language': 'ko-KR,ko;q=0.9,en-US;q=0.8,en;q=0.7',
+  'Cache-Control': 'no-cache',
+  Pragma: 'no-cache',
+  'Upgrade-Insecure-Requests': '1',
+  'User-Agent':
+    'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/134.0.0.0 Safari/537.36',
+}
 const corsOrigins = (process.env.CORS_ALLOWED_ORIGINS ?? '*')
   .split(',')
   .map((origin) => origin.trim())
@@ -72,9 +82,7 @@ const getJejuItsStreamUrl = async (deviceId, forceRefresh = false) => {
   }
 
   const entryPage = await fetch(JEJU_ITS_CCTV_PAGE, {
-    headers: {
-      'user-agent': USER_AGENT,
-    },
+    headers: JEJU_ITS_BROWSER_HEADERS,
   })
 
   if (!entryPage.ok) {
@@ -86,10 +94,12 @@ const getJejuItsStreamUrl = async (deviceId, forceRefresh = false) => {
   const streamResponse = await fetch(JEJU_ITS_STREAM_URL, {
     method: 'POST',
     headers: {
+      accept: '*/*',
+      'accept-language': JEJU_ITS_BROWSER_HEADERS['Accept-Language'],
       'content-type': 'application/x-www-form-urlencoded; charset=UTF-8',
       origin: 'https://www.jejuits.go.kr',
       referer: JEJU_ITS_CCTV_PAGE,
-      'user-agent': USER_AGENT,
+      'user-agent': JEJU_ITS_BROWSER_HEADERS['User-Agent'],
       'x-requested-with': 'XMLHttpRequest',
       ...(cookieHeader ? { cookie: cookieHeader } : {}),
     },
@@ -210,8 +220,10 @@ app.get('/api/jejuits/stream', async (request, response) => {
 
     let upstream = await fetch(target, {
       headers: {
+        accept: '*/*',
+        'accept-language': JEJU_ITS_BROWSER_HEADERS['Accept-Language'],
         referer: JEJU_ITS_CCTV_PAGE,
-        'user-agent': USER_AGENT,
+        'user-agent': JEJU_ITS_BROWSER_HEADERS['User-Agent'],
       },
     })
 
@@ -225,8 +237,10 @@ app.get('/api/jejuits/stream', async (request, response) => {
 
       upstream = await fetch(target, {
         headers: {
+          accept: '*/*',
+          'accept-language': JEJU_ITS_BROWSER_HEADERS['Accept-Language'],
           referer: JEJU_ITS_CCTV_PAGE,
-          'user-agent': USER_AGENT,
+          'user-agent': JEJU_ITS_BROWSER_HEADERS['User-Agent'],
         },
       })
     }
