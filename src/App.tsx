@@ -4,7 +4,6 @@ import { feeds, mountains, worldPicks, type FeedKind, type MountainId } from './
 import { StreamPlayer } from './components/StreamPlayer'
 
 const EARTH_RADIUS_KM = 6371
-const RECENT_MOUNTAINS_KEY = 'mountaineyes-recent-mountains'
 
 function Icon({ name }: { name: 'mountain' | 'path' | 'grid' | 'camera' | 'link' | 'pin' | 'view' }) {
   const commonProps = {
@@ -92,52 +91,8 @@ const getDistanceKm = (
   return EARTH_RADIUS_KM * 2 * Math.atan2(Math.sqrt(haversine), Math.sqrt(1 - haversine))
 }
 
-const rememberRecentMountains = (current: MountainId[], next: MountainId) => {
-  const deduped = current.filter((value) => value !== next)
-  return [next, ...deduped].slice(0, 3)
-}
-
 function App() {
-  const [recentMountainIds, setRecentMountainIds] = useState<MountainId[]>(() => {
-    if (typeof window === 'undefined') {
-      return []
-    }
-
-    const stored = window.localStorage.getItem(RECENT_MOUNTAINS_KEY)
-
-    if (!stored) {
-      return []
-    }
-
-    try {
-      const parsed = JSON.parse(stored) as string[]
-      return parsed.filter((value): value is MountainId =>
-        mountains.some((mountain) => mountain.id === value),
-      )
-    } catch {
-      return []
-    }
-  })
   const [activeMountainId, setActiveMountainId] = useState<MountainId>(() => {
-    if (typeof window === 'undefined') {
-      return 'hallasan'
-    }
-
-    const recentStored = window.localStorage.getItem(RECENT_MOUNTAINS_KEY)
-
-    if (recentStored) {
-      try {
-        const parsed = JSON.parse(recentStored) as string[]
-        const firstRecent = parsed.find((value) => mountains.some((mountain) => mountain.id === value))
-
-        if (firstRecent) {
-          return firstRecent as MountainId
-        }
-      } catch {
-        return 'hallasan'
-      }
-    }
-
     return 'hallasan'
   })
   const [activeKind, setActiveKind] = useState<'전체' | FeedKind>('전체')
@@ -145,21 +100,9 @@ function App() {
 
   const activateMountain = (mountainId: MountainId) => {
     setActiveMountainId(mountainId)
-    setRecentMountainIds((current) => rememberRecentMountains(current, mountainId))
   }
 
   useEffect(() => {
-    if (typeof window === 'undefined') {
-      return
-    }
-
-    window.localStorage.setItem(RECENT_MOUNTAINS_KEY, JSON.stringify(recentMountainIds))
-  }, [recentMountainIds])
-
-  useEffect(() => {
-    if (recentMountainIds.length > 0) {
-      return
-    }
     if (!navigator.geolocation) {
       return
     }
@@ -192,19 +135,13 @@ function App() {
         timeout: 5000,
       },
     )
-  }, [recentMountainIds.length])
+  }, [])
 
-  const locationLabel = recentMountainIds.length > 0
-      ? `최근 본 ${mountains.find((mountain) => mountain.id === recentMountainIds[0])?.name ?? '산'}부터 먼저 보여드려요`
-      : nearestMountainName
+  const locationLabel = nearestMountainName
       ? `지금 위치에서 가까운 ${nearestMountainName}부터 보여드려요`
       : '위치를 허용하면 가까운 산부터 먼저 보여드려요'
 
   const activeMountain = mountains.find((mountain) => mountain.id === activeMountainId) ?? mountains[0]
-  const recentMountains = recentMountainIds
-    .filter((mountainId) => mountainId !== activeMountainId)
-    .map((mountainId) => mountains.find((mountain) => mountain.id === mountainId))
-    .filter((mountain): mountain is (typeof mountains)[number] => Boolean(mountain))
 
   const availableKinds = useMemo(() => {
     const kinds = new Set<FeedKind>()
@@ -299,22 +236,6 @@ function App() {
                   </select>
                 </label>
               </div>
-              {recentMountains.length > 0 ? (
-                <div className="recent-row">
-                  <div className="recent-list">
-                    {recentMountains.map((mountain) => (
-                      <button
-                        key={mountain.id}
-                        className="recent-chip"
-                        onClick={() => activateMountain(mountain.id)}
-                        type="button"
-                      >
-                        {mountain.name}
-                      </button>
-                    ))}
-                  </div>
-                </div>
-              ) : null}
             </div>
 
             <div className="toolbar-block">

@@ -287,31 +287,6 @@
   flex-wrap: wrap;
 }
 
-.recent-row {
-  display: grid;
-  gap: 0.45rem;
-  margin-top: 0.55rem;
-}
-
-.recent-list {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.45rem;
-}
-
-.recent-chip {
-  min-height: 2rem;
-  padding: 0 0.75rem;
-  border: 1px solid rgba(24, 72, 45, 0.12);
-  border-radius: 999px;
-  background: #f7fbf8;
-  color: #214632;
-  font: inherit;
-  font-size: 0.82rem;
-  font-weight: 700;
-  cursor: pointer;
-}
-
 .mountain-select {
   min-width: 12rem;
   min-height: 2.7rem;
@@ -564,10 +539,6 @@
   .mountain-picker-row {
     flex-direction: column;
     align-items: stretch;
-  }
-
-  .recent-list {
-    gap: 0.35rem;
   }
 
   .preset-chip-list.compact {
