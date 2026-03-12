@@ -3,6 +3,7 @@ import type { LocalizedText } from '../i18n'
 export type MountainId =
   | 'hallasan'
   | 'balwangsan'
+  | 'high1'
   | 'seoraksan'
   | 'odaesan'
   | 'chiaksan'
@@ -58,6 +59,18 @@ export const mountains: Mountain[] = [
     description: {
       ko: '강원지방기상청 실시간영상 페이지를 통해 확인할 수 있는 대표 산입니다.',
       en: 'A popular mountain with official live feeds available through the Gangwon Regional Meteorological Administration.',
+    },
+  },
+  {
+    id: 'high1',
+    name: { ko: '하이원', en: 'High1' },
+    region: { ko: '강원', en: 'Gangwon' },
+    lat: 37.2088,
+    lng: 128.8333,
+    officialPage: 'https://www.weather.go.kr/gangwon/maple/cctv3.php',
+    description: {
+      ko: '강원지방기상청이 연결한 하이원리조트 실시간 슬로프 영상입니다. 함백산권 설경 확인용으로 테스트 중입니다.',
+      en: 'Official High1 Resort live slope feeds linked by the Gangwon Regional Meteorological Administration, useful for checking the Hambaeksan snow view.',
     },
   },
   {
@@ -236,6 +249,61 @@ export const feeds: Feed[] = [
     officialLabel: { ko: '강원 기상청 원본', en: 'Gangwon Weather Office source' },
     officialPage: 'https://www.weather.go.kr/gangwon/maple/cctv.php',
     sourceUrl: 'https://live.knps.or.kr/cctv/hls/solak.m3u8',
+  },
+  {
+    id: 'high1-athena',
+    name: { ko: '아테나 1번 슬로프', en: 'Athena Slope 1' },
+    mountainId: 'high1',
+    kind: 'access',
+    region: { ko: '강원', en: 'Gangwon' },
+    provider: { ko: '강원지방기상청 · 하이원리조트', en: 'Gangwon Weather Office · High1 Resort' },
+    officialLabel: { ko: '강원 기상청 원본', en: 'Gangwon Weather Office source' },
+    officialPage: 'https://www.weather.go.kr/gangwon/maple/cctv3.php',
+    sourceUrl: 'http://59.30.12.195:1935/live/_definst_/ch4.stream/playlist.m3u8',
+  },
+  {
+    id: 'high1-victoria-lower',
+    name: { ko: '빅토리아 1번 슬로프', en: 'Victoria Slope 1' },
+    mountainId: 'high1',
+    kind: 'access',
+    region: { ko: '강원', en: 'Gangwon' },
+    provider: { ko: '강원지방기상청 · 하이원리조트', en: 'Gangwon Weather Office · High1 Resort' },
+    officialLabel: { ko: '강원 기상청 원본', en: 'Gangwon Weather Office source' },
+    officialPage: 'https://www.weather.go.kr/gangwon/maple/cctv3.php',
+    sourceUrl: 'http://59.30.12.195:1935/live/ch12.stream/playlist.m3u8',
+  },
+  {
+    id: 'high1-zeus',
+    name: { ko: '제우스 2번 슬로프', en: 'Zeus Slope 2' },
+    mountainId: 'high1',
+    kind: 'view',
+    region: { ko: '강원', en: 'Gangwon' },
+    provider: { ko: '강원지방기상청 · 하이원리조트', en: 'Gangwon Weather Office · High1 Resort' },
+    officialLabel: { ko: '강원 기상청 원본', en: 'Gangwon Weather Office source' },
+    officialPage: 'https://www.weather.go.kr/gangwon/maple/cctv3.php',
+    sourceUrl: 'http://59.30.12.195:1935/live/ch10.stream/playlist.m3u8',
+  },
+  {
+    id: 'high1-victoria-upper',
+    name: { ko: '빅토리아 상단', en: 'Victoria Upper' },
+    mountainId: 'high1',
+    kind: 'summit',
+    region: { ko: '강원', en: 'Gangwon' },
+    provider: { ko: '강원지방기상청 · 하이원리조트', en: 'Gangwon Weather Office · High1 Resort' },
+    officialLabel: { ko: '강원 기상청 원본', en: 'Gangwon Weather Office source' },
+    officialPage: 'https://www.weather.go.kr/gangwon/maple/cctv3.php',
+    sourceUrl: 'http://59.30.12.195:1935/live/ch9.stream/playlist.m3u8',
+  },
+  {
+    id: 'high1-hera',
+    name: { ko: '헤라 2번 슬로프 입구', en: 'Hera Slope 2 Entrance' },
+    mountainId: 'high1',
+    kind: 'access',
+    region: { ko: '강원', en: 'Gangwon' },
+    provider: { ko: '강원지방기상청 · 하이원리조트', en: 'Gangwon Weather Office · High1 Resort' },
+    officialLabel: { ko: '강원 기상청 원본', en: 'Gangwon Weather Office source' },
+    officialPage: 'https://www.weather.go.kr/gangwon/maple/cctv3.php',
+    sourceUrl: 'http://59.30.12.195:1935/live/ch2.stream/playlist.m3u8',
   },
   {
     id: 'odaesan-duro',
