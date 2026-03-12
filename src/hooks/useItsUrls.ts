@@ -1,7 +1,5 @@
 import { useEffect, useState } from 'react'
-
-const envBase = import.meta.env.VITE_PROXY_BASE_URL as string | undefined
-const proxyBaseUrl = envBase ? envBase.replace(/\/$/, '') : ''
+import { getProxyBaseUrl } from '../utils/proxy'
 
 let sharedUrls: Record<string, string> = {}
 let lastFetchTime = 0
@@ -14,13 +12,15 @@ async function refreshCache(): Promise<Record<string, string>> {
   }
 
   try {
-    const res = await fetch(`${proxyBaseUrl}/api/jejuits/urls`)
-    if (res.ok) {
-      sharedUrls = await res.json()
+    const response = await fetch(`${getProxyBaseUrl()}/api/jejuits/urls`)
+    if (response.ok) {
+      sharedUrls = await response.json()
       lastFetchTime = Date.now()
+    } else {
+      sharedUrls = {}
     }
   } catch {
-    /* network error – keep stale cache */
+    sharedUrls = {}
   }
 
   return sharedUrls
@@ -30,24 +30,29 @@ export function useItsStreamUrl(deviceId: string | undefined): string | null {
   const [url, setUrl] = useState<string | null>(null)
 
   useEffect(() => {
-    if (!deviceId) return
+    if (!deviceId) {
+      return
+    }
 
     let cancelled = false
 
     const poll = async () => {
       const urls = await refreshCache()
-      if (!cancelled) setUrl(urls[deviceId] ?? null)
+      if (!cancelled) {
+        setUrl(urls[deviceId] ?? null)
+      }
     }
 
     void poll()
-    const timer = setInterval(poll, POLL_MS)
+    const timer = window.setInterval(poll, POLL_MS)
+
     return () => {
       cancelled = true
-      clearInterval(timer)
+      window.clearInterval(timer)
     }
   }, [deviceId])
 
-  return url
+  return deviceId ? url : null
 }
 
 export function useItsAvailable(): boolean {
@@ -58,14 +63,17 @@ export function useItsAvailable(): boolean {
 
     const check = async () => {
       const urls = await refreshCache()
-      if (!cancelled) setAvailable(Object.keys(urls).length > 0)
+      if (!cancelled) {
+        setAvailable(Object.keys(urls).length > 0)
+      }
     }
 
     void check()
-    const timer = setInterval(check, POLL_MS)
+    const timer = window.setInterval(check, POLL_MS)
+
     return () => {
       cancelled = true
-      clearInterval(timer)
+      window.clearInterval(timer)
     }
   }, [])
 

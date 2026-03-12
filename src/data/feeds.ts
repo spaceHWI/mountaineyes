@@ -1,9 +1,5 @@
 import type { LocalizedText } from '../i18n'
-
-const proxyBaseUrl = (
-  import.meta.env.VITE_PROXY_BASE_URL ?? 'https://mountaineyes-proxy.onrender.com'
-).replace(/\/$/, '')
-const withProxyBase = (path: string) => `${proxyBaseUrl}${path}`
+import { withProxyBase } from '../utils/proxy'
 
 export type MountainId =
   | 'hallasan'

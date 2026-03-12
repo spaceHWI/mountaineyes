@@ -19,6 +19,7 @@ npm run dev
 
 - 프런트엔드: `http://localhost:5173`
 - 선택적 프록시 서버: `http://localhost:8787`
+- ITS를 프로덕션에서도 보이게 하려면, 로컬 릴레이가 Render 프록시에 세션 URL을 계속 push해야 합니다.
 
 프로덕션 빌드 후 실행
 
@@ -64,6 +65,29 @@ VITE_PROXY_BASE_URL=https://your-render-service.onrender.com
 ```bash
 VITE_PROXY_BASE_URL=https://mountaineyes-proxy.onrender.com
 ```
+
+ITS를 프로덕션 경로로 연결하려면:
+
+```bash
+VITE_PROXY_BASE_URL=https://mountaineyes-proxy.onrender.com
+```
+
+그리고 로컬 Mac에서 릴레이를 켭니다:
+
+```bash
+ITS_RELAY_TOKEN=... ITS_RELAY_TARGET=https://mountaineyes-proxy.onrender.com npm run its-relay
+```
+
+릴레이가 켜져 있으면 Render의 `/api/jejuits/urls` 캐시에 ITS 세션 URL이 쌓이고, 프론트는 그때만 ITS 피드를 노출합니다.
+릴레이가 꺼지면 캐시가 만료된 뒤 ITS 피드는 자동으로 다시 숨겨집니다.
+
+Mac을 재부팅해도 자동으로 다시 시작하려면 이 저장소의 launchd 설정을 사용합니다.
+
+```bash
+launchctl load ~/Library/LaunchAgents/com.spacehwi.mountaineyes.its-relay.plist
+```
+
+릴레이 실행 스크립트는 `scripts/run-its-relay.sh`이고, `web/.env`에서 `ITS_RELAY_TOKEN`을 읽습니다.
 
 프록시 서버는 `/healthz` 헬스체크를 지원하고, `CORS_ALLOWED_ORIGINS`로 허용 도메인을 제어합니다.
 

@@ -2,6 +2,7 @@ import { useEffect, useMemo, useRef, useState } from 'react'
 import type { Feed } from '../data/feeds'
 import { useItsStreamUrl } from '../hooks/useItsUrls'
 import { localize, playerCopy, type Language } from '../i18n'
+import { withProxyBase } from '../utils/proxy'
 
 type StreamStatus = 'loading' | 'ready' | 'error'
 
@@ -45,16 +46,22 @@ export function StreamPlayer({
   const feedName = localize(feed.name, language)
 
   const isImageFeed = feed.sourceType === 'image'
-  const isIts = feed.sourceType === 'its'
-  const itsStreamUrl = useItsStreamUrl(isIts ? feed.itsDeviceId : undefined)
+  const isItsFeed = feed.sourceType === 'its'
+  const itsStreamUrl = useItsStreamUrl(isItsFeed ? feed.itsDeviceId : undefined)
   const playerTone = getStatusTone(status, isPlaying)
+  const playerStatusLabel = status === 'error' ? copy.connectionCheck : copy.live
 
   const playbackUrl = useMemo(() => {
-    if (isIts) return itsStreamUrl ? `/api/proxy?target=${encodeURIComponent(itsStreamUrl)}` : ''
+    if (isItsFeed) {
+      return itsStreamUrl
+        ? withProxyBase(`/api/proxy?target=${encodeURIComponent(itsStreamUrl)}`)
+        : ''
+    }
+
     return feed.sourceUrl.startsWith('http://')
       ? `/api/proxy?target=${encodeURIComponent(feed.sourceUrl)}`
       : feed.sourceUrl
-  }, [feed.sourceUrl, isIts, itsStreamUrl])
+  }, [feed.sourceUrl, isItsFeed, itsStreamUrl])
   const refreshedImageUrl = useMemo(
     () => `${feed.sourceUrl}${feed.sourceUrl.includes('?') ? '&' : '?'}t=${imageVersion}`,
     [feed.sourceUrl, imageVersion],
@@ -103,8 +110,8 @@ export function StreamPlayer({
       return
     }
 
-    if (isIts && !playbackUrl) {
-      setStatus('loading')
+    if (isItsFeed && !playbackUrl) {
+      setStatus('error')
       return
     }
 
@@ -202,7 +209,7 @@ export function StreamPlayer({
       video.removeEventListener('waiting', handleWaiting)
       teardown?.()
     }
-  }, [feed, isImageFeed, isIts, playbackUrl])
+  }, [feed, isImageFeed, isItsFeed, playbackUrl])
 
   const togglePlayback = async () => {
     if (isImageFeed) {
@@ -308,25 +315,11 @@ export function StreamPlayer({
   return (
     <div className="stream-shell">
       <div className="stream-meta">
-        <span className={`stream-pill ${playerTone}`}>
-          {status === 'error' ? copy.connectionCheck : copy.live}
-        </span>
+        <span className={`stream-pill ${playerTone}`}>{playerStatusLabel}</span>
         <span className="stream-area">{localize(feed.region, language)}</span>
       </div>
       <div className={compact ? 'stream-player compact' : 'stream-player'}>
-        {isIts && !playbackUrl ? (
-          <div className="stream-its-fallback">
-            <p>{copy.itsStreamPreparing}</p>
-            <a
-              className="inline-link"
-              href={feed.officialPage}
-              rel="noreferrer"
-              target="_blank"
-            >
-              {copy.itsDirectLink}
-            </a>
-          </div>
-        ) : isImageFeed ? (
+        {isImageFeed ? (
           <img
             alt={copy.streamImageAlt(feedName)}
             className="stream-image"

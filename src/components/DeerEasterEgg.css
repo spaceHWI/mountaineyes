@@ -1,0 +1,53 @@
+.deer-runner {
+  position: fixed;
+  left: -5rem;
+  bottom: 1rem;
+  z-index: 30;
+  pointer-events: none;
+  animation: deer-run-across 4.5s linear forwards;
+}
+
+.deer-svg {
+  display: block;
+  width: 4.25rem;
+  height: auto;
+  filter: drop-shadow(0 4px 10px rgba(47, 106, 83, 0.22));
+  animation: deer-bob 340ms ease-in-out infinite alternate;
+}
+
+@keyframes deer-run-across {
+  from {
+    transform: translateX(0);
+  }
+
+  to {
+    transform: translateX(calc(100vw + 10rem));
+  }
+}
+
+@keyframes deer-bob {
+  from {
+    transform: translateY(0);
+  }
+
+  to {
+    transform: translateY(-0.22rem);
+  }
+}
+
+@media (max-width: 720px) {
+  .deer-runner {
+    bottom: 0.7rem;
+  }
+
+  .deer-svg {
+    width: 3.6rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .deer-runner,
+  .deer-svg {
+    animation: none;
+  }
+}

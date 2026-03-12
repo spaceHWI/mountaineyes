@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import './DeerEasterEgg.css'
 
 const DEER_COLOR = '#2f6a53'
 
@@ -37,14 +38,12 @@ const MAX_INTERVAL_MS = 120_000
 
 export function DeerEasterEgg() {
   const [visible, setVisible] = useState(false)
-  const [fromRight, setFromRight] = useState(false)
 
   useEffect(() => {
     let timerId: ReturnType<typeof setTimeout>
     let hideTimerId: ReturnType<typeof setTimeout>
 
     const show = () => {
-      setFromRight(Math.random() > 0.5)
       setVisible(true)
       hideTimerId = setTimeout(() => setVisible(false), HIDE_DELAY_MS)
     }
@@ -70,12 +69,5 @@ export function DeerEasterEgg() {
 
   if (!visible) return null
 
-  return (
-    <div
-      className={`deer-runner ${fromRight ? 'deer-from-right' : 'deer-from-left'}`}
-      aria-hidden="true"
-    >
-      {DEER_SVG}
-    </div>
-  )
+  return <div className="deer-runner deer-from-left" aria-hidden="true">{DEER_SVG}</div>
 }

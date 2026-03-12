@@ -110,7 +110,10 @@ function App() {
   const visibleFeeds = useMemo(
     () =>
       feeds.filter((feed) => {
-        if (feed.sourceType === 'its' && !itsAvailable) return false
+        if (feed.sourceType === 'its' && !itsAvailable) {
+          return false
+        }
+
         const sameMountain = feed.mountainId === activeMountainId
         const sameKind = visibleKind === 'all' || feed.kind === visibleKind
         return sameMountain && sameKind

@@ -189,6 +189,14 @@ app.get('/healthz', (_, response) => {
   })
 })
 
+app.get('/api/jejuits/health', (_, response) => {
+  response.json({
+    ok: true,
+    service: 'jejuits-local-proxy',
+    timestamp: new Date().toISOString(),
+  })
+})
+
 app.get('/api/proxy', async (request, response) => {
   const target = request.query.target
 
