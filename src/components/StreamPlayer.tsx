@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
 import type { Feed } from '../data/feeds'
+import { useItsStreamUrl } from '../hooks/useItsUrls'
 import { localize, playerCopy, type Language } from '../i18n'
 
 type StreamPlayerProps = {
@@ -25,13 +26,16 @@ export function StreamPlayer({
   const [loadingElapsed, setLoadingElapsed] = useState(0)
   const copy = playerCopy[language]
   const feedName = localize(feed.name, language)
-  const playbackUrl = useMemo(
-    () =>
-      feed.sourceUrl.startsWith('http://')
-        ? `/api/proxy?target=${encodeURIComponent(feed.sourceUrl)}`
-        : feed.sourceUrl,
-    [feed.sourceUrl],
-  )
+
+  const isIts = feed.sourceType === 'its'
+  const itsStreamUrl = useItsStreamUrl(isIts ? feed.itsDeviceId : undefined)
+
+  const playbackUrl = useMemo(() => {
+    if (isIts) return itsStreamUrl ? `/api/proxy?target=${encodeURIComponent(itsStreamUrl)}` : ''
+    return feed.sourceUrl.startsWith('http://')
+      ? `/api/proxy?target=${encodeURIComponent(feed.sourceUrl)}`
+      : feed.sourceUrl
+  }, [feed.sourceUrl, isIts, itsStreamUrl])
   const refreshedImageUrl = useMemo(
     () => `${feed.sourceUrl}${feed.sourceUrl.includes('?') ? '&' : '?'}t=${imageVersion}`,
     [feed.sourceUrl, imageVersion],
@@ -77,6 +81,11 @@ export function StreamPlayer({
 
   useEffect(() => {
     if (feed.sourceType === 'image') {
+      return
+    }
+
+    if (isIts && !playbackUrl) {
+      setStatus('loading')
       return
     }
 
@@ -290,7 +299,19 @@ export function StreamPlayer({
         <span className="stream-area">{localize(feed.region, language)}</span>
       </div>
       <div className={compact ? 'stream-player compact' : 'stream-player'}>
-        {feed.sourceType === 'image' ? (
+        {isIts && !playbackUrl ? (
+          <div className="stream-its-fallback">
+            <p>{language === 'ko' ? 'ITS 스트림 준비 중...' : 'Preparing ITS stream...'}</p>
+            <a
+              className="inline-link"
+              href={feed.officialPage}
+              rel="noreferrer"
+              target="_blank"
+            >
+              {language === 'ko' ? '제주 ITS에서 직접 보기' : 'View on Jeju ITS'}
+            </a>
+          </div>
+        ) : feed.sourceType === 'image' ? (
           <img
             alt={copy.streamImageAlt(feedName)}
             className="stream-image"

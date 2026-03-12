@@ -1,7 +1,9 @@
 import { useEffect, useMemo, useState } from 'react'
 import './App.css'
+import { DeerEasterEgg } from './components/DeerEasterEgg'
 import { StreamPlayer } from './components/StreamPlayer'
 import { feeds, mountains, worldPicks, type FeedKind, type MountainId } from './data/feeds'
+import { useItsAvailable } from './hooks/useItsUrls'
 import { appCopy, kindLabels, localize, type Language } from './i18n'
 
 const EARTH_RADIUS_KM = 6371
@@ -156,6 +158,7 @@ function App() {
   const [activeMountainId, setActiveMountainId] = useState<MountainId>(getInitialMountainId)
   const [activeKind, setActiveKind] = useState<'all' | FeedKind>('all')
   const [nearestMountainId, setNearestMountainId] = useState<MountainId | null>(null)
+  const itsAvailable = useItsAvailable()
 
   const copy = appCopy[language]
 
@@ -236,11 +239,12 @@ function App() {
   const visibleFeeds = useMemo(
     () =>
       feeds.filter((feed) => {
+        if (feed.sourceType === 'its' && !itsAvailable) return false
         const sameMountain = feed.mountainId === activeMountainId
         const sameKind = visibleKind === 'all' || feed.kind === visibleKind
         return sameMountain && sameKind
       }),
-    [activeMountainId, visibleKind],
+    [activeMountainId, itsAvailable, visibleKind],
   )
 
   return (
@@ -421,6 +425,7 @@ function App() {
           </a>
         </footer>
       </main>
+      <DeerEasterEgg />
     </div>
   )
 }

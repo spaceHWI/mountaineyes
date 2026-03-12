@@ -9,6 +9,9 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url))
 const distPath = path.resolve(__dirname, '../dist')
 const allowedHosts = new Set(['59.8.86.94:8080', '59.30.12.195:1935', 'hallacctv.kr'])
 const jejuItsStreamCache = new Map()
+const jejuItsUrlCache = new Map()
+const ITS_URL_CACHE_TTL_MS = 1000 * 90
+const ITS_RELAY_TOKEN = process.env.ITS_RELAY_TOKEN ?? ''
 const JEJU_ITS_CCTV_PAGE = 'https://www.jejuits.go.kr/jido/mainView.do?DEVICE_KIND=CCTV'
 const JEJU_ITS_STREAM_URL = 'https://www.jejuits.go.kr/jido/streamUrl.do'
 const JEJU_ITS_STREAM_TTL_MS = 1000 * 45
@@ -38,8 +41,8 @@ const applyCors = (request, response) => {
     response.setHeader('Vary', 'Origin')
   }
 
-  response.setHeader('Access-Control-Allow-Headers', 'Content-Type, Range')
-  response.setHeader('Access-Control-Allow-Methods', 'GET, HEAD, OPTIONS')
+  response.setHeader('Access-Control-Allow-Headers', 'Content-Type, Range, Authorization')
+  response.setHeader('Access-Control-Allow-Methods', 'GET, HEAD, POST, OPTIONS')
 }
 
 const isPlaylistResponse = (target, contentType) => {
@@ -369,6 +372,53 @@ app.get('/api/jejuits/debug', async (request, response) => {
       error: error instanceof Error ? error.message : String(error),
     })
   }
+})
+
+app.use('/api/jejuits/push-urls', express.json())
+
+app.post('/api/jejuits/push-urls', (request, response) => {
+  if (!ITS_RELAY_TOKEN) {
+    response.status(503).json({ message: 'ITS relay가 설정되지 않았습니다.' })
+    return
+  }
+
+  const auth = request.headers.authorization
+  if (auth !== `Bearer ${ITS_RELAY_TOKEN}`) {
+    response.status(401).json({ message: '인증 실패' })
+    return
+  }
+
+  const urls = request.body
+  if (!urls || typeof urls !== 'object' || Array.isArray(urls)) {
+    response.status(400).json({ message: '유효하지 않은 요청입니다.' })
+    return
+  }
+
+  const now = Date.now()
+  let count = 0
+  for (const [deviceId, streamUrl] of Object.entries(urls)) {
+    if (typeof streamUrl === 'string' && streamUrl.startsWith('https://media')) {
+      jejuItsUrlCache.set(deviceId, { url: streamUrl, expiresAt: now + ITS_URL_CACHE_TTL_MS })
+      count++
+    }
+  }
+
+  console.log(`its_relay: cached ${count} stream URLs`)
+  response.json({ ok: true, cached: count })
+})
+
+app.get('/api/jejuits/urls', (_, response) => {
+  const now = Date.now()
+  const result = {}
+  for (const [deviceId, entry] of jejuItsUrlCache) {
+    if (entry.expiresAt > now) {
+      result[deviceId] = entry.url
+    } else {
+      jejuItsUrlCache.delete(deviceId)
+    }
+  }
+  response.setHeader('Cache-Control', 'public, max-age=10')
+  response.json(result)
 })
 
 if (fs.existsSync(distPath)) {

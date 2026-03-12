@@ -11,6 +11,7 @@
     "lint": "eslint .",
     "preview": "npm run build && wrangler dev",
     "start": "node server/server.js",
+    "its-relay": "node server/its-relay.js",
     "deploy": "npm run build && wrangler deploy"
   },
   "dependencies": {

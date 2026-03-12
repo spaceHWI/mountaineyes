@@ -437,6 +437,24 @@
   background: #07110b;
 }
 
+.stream-its-fallback {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem;
+  padding: 1.5rem;
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 0.85rem;
+  text-align: center;
+}
+
+.stream-its-fallback .inline-link {
+  font-size: 0.8rem;
+}
+
 .stream-loading-overlay {
   position: absolute;
   inset: 0;
@@ -757,4 +775,49 @@
   .site-footer {
     flex-wrap: wrap;
   }
+}
+
+/* Deer Easter Egg */
+.deer-runner {
+  position: fixed;
+  bottom: 1rem;
+  z-index: 9999;
+  pointer-events: none;
+  animation-duration: 4.2s;
+  animation-timing-function: linear;
+  animation-fill-mode: forwards;
+}
+
+.deer-runner .deer-svg {
+  width: 4rem;
+  height: auto;
+  filter: drop-shadow(0 1px 3px rgba(0, 0, 0, 0.15));
+  animation: deer-bounce 0.35s ease-in-out infinite;
+}
+
+.deer-from-left {
+  animation-name: deer-run-left;
+}
+
+.deer-from-right {
+  animation-name: deer-run-right;
+}
+
+.deer-from-right .deer-svg {
+  transform: scaleX(-1);
+}
+
+@keyframes deer-run-left {
+  0% { right: -5rem; left: auto; }
+  100% { right: calc(100vw + 5rem); left: auto; }
+}
+
+@keyframes deer-run-right {
+  0% { left: -5rem; right: auto; }
+  100% { left: calc(100vw + 5rem); right: auto; }
+}
+
+@keyframes deer-bounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-0.6rem); }
 }
