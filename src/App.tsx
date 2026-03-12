@@ -5,7 +5,11 @@ import { StreamPlayer } from './components/StreamPlayer'
 
 const EARTH_RADIUS_KM = 6371
 
-function Icon({ name }: { name: 'mountain' | 'path' | 'grid' | 'camera' | 'link' | 'pin' | 'view' }) {
+function Icon({
+  name,
+}: {
+  name: 'mountain' | 'path' | 'grid' | 'camera' | 'link' | 'pin' | 'view' | 'instagram'
+}) {
   const commonProps = {
     fill: 'none',
     stroke: 'currentColor',
@@ -60,6 +64,13 @@ function Icon({ name }: { name: 'mountain' | 'path' | 'grid' | 'camera' | 'link'
         <path {...commonProps} d="M3.5 16.5 8.2 11l3 3.2 2.1-2.7 4.2 5H3.5Z" />
         <path {...commonProps} d="M15.5 7.5h5v5" />
         <path {...commonProps} d="m20.5 7.5-6.2 6.2" />
+      </>
+    ),
+    instagram: (
+      <>
+        <rect {...commonProps} x="4.5" y="4.5" width="15" height="15" rx="4.2" />
+        <circle {...commonProps} cx="12" cy="12" r="3.3" />
+        <circle {...commonProps} cx="17" cy="7.8" r="0.8" fill="currentColor" stroke="none" />
       </>
     ),
   }
@@ -326,8 +337,19 @@ function App() {
 
         <footer className="site-footer">
           <span>Powered by HWI</span>
-          <a href="https://www.instagram.com/spacehwi/" rel="noreferrer" target="_blank">
-            @spacehwi
+          <span className="site-footer-divider" aria-hidden="true">
+            |
+          </span>
+          <a
+            className="site-footer-instagram"
+            href="https://www.instagram.com/spacehwi/"
+            rel="noreferrer"
+            target="_blank"
+            aria-label="Instagram에서 @spacehwi로 피드백 보내기"
+            title="Instagram에서 피드백 보내기"
+          >
+            <Icon name="instagram" />
+            <span>@spacehwi</span>
           </a>
         </footer>
       </main>

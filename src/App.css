@@ -506,6 +506,27 @@
   text-decoration: none;
 }
 
+.site-footer-divider {
+  color: #96a99e;
+}
+
+.site-footer-instagram {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+}
+
+.site-footer-instagram .icon-badge {
+  width: 1.75rem;
+  height: 1.75rem;
+  background: rgba(255, 255, 255, 0.72);
+}
+
+.site-footer-instagram .icon-badge svg {
+  width: 0.95rem;
+  height: 0.95rem;
+}
+
 @media (max-width: 1180px) {
   .simul-grid {
     grid-template-columns: 1fr;
@@ -587,5 +608,9 @@
   .stream-player,
   .stream-player.compact {
     min-height: 15rem;
+  }
+
+  .site-footer {
+    flex-wrap: wrap;
   }
 }
