@@ -32,11 +32,10 @@ export type Feed = {
   kind: FeedKind
   mountainId: MountainId
   name: LocalizedText
-  officialLabel: LocalizedText
   officialPage: string
   provider: LocalizedText
   region: LocalizedText
-  sourceType?: 'hls' | 'image' | 'its'
+  sourceType: 'hls' | 'image' | 'its'
   sourceUrl: string
   itsDeviceId?: string
   thumbnail?: string
@@ -137,8 +136,8 @@ export const feeds: Feed[] = [
     kind: 'summit',
     region: { ko: '제주', en: 'Jeju' },
     provider: { ko: '제주특별자치도', en: 'Jeju Special Self-Governing Province' },
-    officialLabel: { ko: '한라산 CCTV 원본', en: 'Hallasan official CCTV' },
     officialPage: 'https://www.jeju.go.kr/tool/halla/cctv_01.html',
+    sourceType: 'hls',
     sourceUrl: 'https://hallacctv.kr/live/cctv01.stream_360p/playlist.m3u8',
     thumbnail: 'https://www.jeju.go.kr/tool/halla/images/cctv01.png',
   },
@@ -149,8 +148,8 @@ export const feeds: Feed[] = [
     kind: 'summit',
     region: { ko: '제주', en: 'Jeju' },
     provider: { ko: '제주특별자치도', en: 'Jeju Special Self-Governing Province' },
-    officialLabel: { ko: '한라산 CCTV 원본', en: 'Hallasan official CCTV' },
     officialPage: 'https://www.jeju.go.kr/tool/halla/cctv_02.html',
+    sourceType: 'hls',
     sourceUrl: 'https://hallacctv.kr/live/cctv02.stream_360p/playlist.m3u8',
     thumbnail: 'https://www.jeju.go.kr/tool/halla/images/cctv02.png',
   },
@@ -161,8 +160,8 @@ export const feeds: Feed[] = [
     kind: 'summit',
     region: { ko: '제주', en: 'Jeju' },
     provider: { ko: '제주특별자치도', en: 'Jeju Special Self-Governing Province' },
-    officialLabel: { ko: '한라산 CCTV 원본', en: 'Hallasan official CCTV' },
     officialPage: 'https://www.jeju.go.kr/tool/halla/cctv_03.html',
+    sourceType: 'hls',
     sourceUrl: 'https://hallacctv.kr/live/cctv03.stream_360p/playlist.m3u8',
     thumbnail: 'https://www.jeju.go.kr/tool/halla/images/cctv03.png',
   },
@@ -173,8 +172,8 @@ export const feeds: Feed[] = [
     kind: 'access',
     region: { ko: '제주', en: 'Jeju' },
     provider: { ko: '제주특별자치도', en: 'Jeju Special Self-Governing Province' },
-    officialLabel: { ko: '한라산 CCTV 원본', en: 'Hallasan official CCTV' },
     officialPage: 'https://www.jeju.go.kr/tool/halla/cctv_04.html',
+    sourceType: 'hls',
     sourceUrl: 'https://hallacctv.kr/live/cctv04.stream_360p/playlist.m3u8',
     thumbnail: 'https://www.jeju.go.kr/tool/halla/images/cctv04.png',
   },
@@ -185,8 +184,8 @@ export const feeds: Feed[] = [
     kind: 'access',
     region: { ko: '제주', en: 'Jeju' },
     provider: { ko: '제주특별자치도', en: 'Jeju Special Self-Governing Province' },
-    officialLabel: { ko: '한라산 CCTV 원본', en: 'Hallasan official CCTV' },
     officialPage: 'https://www.jeju.go.kr/tool/halla/cctv_05.html',
+    sourceType: 'hls',
     sourceUrl: 'https://hallacctv.kr/live/cctv05.stream_360p/playlist.m3u8',
     thumbnail: 'https://www.jeju.go.kr/tool/halla/images/cctv05.png',
   },
@@ -197,7 +196,6 @@ export const feeds: Feed[] = [
     kind: 'access',
     region: { ko: '제주', en: 'Jeju' },
     provider: { ko: '제주 교통정보센터', en: 'Jeju ITS' },
-    officialLabel: { ko: '제주 ITS CCTV', en: 'Jeju ITS CCTV' },
     officialPage: 'https://www.jejuits.go.kr/jido/mainView.do?DEVICE_KIND=CCTV',
     sourceType: 'its',
     sourceUrl: '',
@@ -210,7 +208,6 @@ export const feeds: Feed[] = [
     kind: 'access',
     region: { ko: '제주', en: 'Jeju' },
     provider: { ko: '제주 교통정보센터', en: 'Jeju ITS' },
-    officialLabel: { ko: '제주 ITS CCTV', en: 'Jeju ITS CCTV' },
     officialPage: 'https://www.jejuits.go.kr/jido/mainView.do?DEVICE_KIND=CCTV',
     sourceType: 'its',
     sourceUrl: '',
@@ -223,7 +220,6 @@ export const feeds: Feed[] = [
     kind: 'access',
     region: { ko: '제주', en: 'Jeju' },
     provider: { ko: '제주 교통정보센터', en: 'Jeju ITS' },
-    officialLabel: { ko: '제주 ITS CCTV', en: 'Jeju ITS CCTV' },
     officialPage: 'https://www.jejuits.go.kr/jido/mainView.do?DEVICE_KIND=CCTV',
     sourceType: 'its',
     sourceUrl: '',
@@ -236,7 +232,6 @@ export const feeds: Feed[] = [
     kind: 'access',
     region: { ko: '제주', en: 'Jeju' },
     provider: { ko: '제주 교통정보센터', en: 'Jeju ITS' },
-    officialLabel: { ko: '제주 ITS CCTV', en: 'Jeju ITS CCTV' },
     officialPage: 'https://www.jejuits.go.kr/jido/mainView.do?DEVICE_KIND=CCTV',
     sourceType: 'its',
     sourceUrl: '',
@@ -249,7 +244,6 @@ export const feeds: Feed[] = [
     kind: 'access',
     region: { ko: '제주', en: 'Jeju' },
     provider: { ko: '제주 교통정보센터', en: 'Jeju ITS' },
-    officialLabel: { ko: '제주 ITS CCTV', en: 'Jeju ITS CCTV' },
     officialPage: 'https://www.jejuits.go.kr/jido/mainView.do?DEVICE_KIND=CCTV',
     sourceType: 'its',
     sourceUrl: '',
@@ -262,8 +256,8 @@ export const feeds: Feed[] = [
     kind: 'summit',
     region: { ko: '강원', en: 'Gangwon' },
     provider: { ko: '강원지방기상청 · 모나용평', en: 'Gangwon Weather Office · Mona Yongpyong' },
-    officialLabel: { ko: '강원 기상청 원본', en: 'Gangwon Weather Office source' },
     officialPage: 'https://www.weather.go.kr/gangwon/maple/cctv2.php',
+    sourceType: 'hls',
     sourceUrl: 'https://live.yongpyong.co.kr/Ycam1/cam14.stream/playlist.m3u8',
   },
   {
@@ -273,8 +267,8 @@ export const feeds: Feed[] = [
     kind: 'summit',
     region: { ko: '강원', en: 'Gangwon' },
     provider: { ko: '강원지방기상청 · 모나용평', en: 'Gangwon Weather Office · Mona Yongpyong' },
-    officialLabel: { ko: '강원 기상청 원본', en: 'Gangwon Weather Office source' },
     officialPage: 'https://www.weather.go.kr/gangwon/maple/cctv2.php',
+    sourceType: 'hls',
     sourceUrl: 'https://live.yongpyong.co.kr/Ycam1/cam15.stream/playlist.m3u8',
   },
   {
@@ -284,8 +278,8 @@ export const feeds: Feed[] = [
     kind: 'view',
     region: { ko: '강원', en: 'Gangwon' },
     provider: { ko: '강원지방기상청 · 모나용평', en: 'Gangwon Weather Office · Mona Yongpyong' },
-    officialLabel: { ko: '강원 기상청 원본', en: 'Gangwon Weather Office source' },
     officialPage: 'https://www.weather.go.kr/gangwon/maple/cctv2.php',
+    sourceType: 'hls',
     sourceUrl: 'https://live.yongpyong.co.kr/Ycam1/cam08.stream/playlist.m3u8',
   },
   {
@@ -295,8 +289,8 @@ export const feeds: Feed[] = [
     kind: 'access',
     region: { ko: '강원', en: 'Gangwon' },
     provider: { ko: '강원지방기상청 · 모나용평', en: 'Gangwon Weather Office · Mona Yongpyong' },
-    officialLabel: { ko: '강원 기상청 원본', en: 'Gangwon Weather Office source' },
     officialPage: 'https://www.weather.go.kr/gangwon/maple/cctv2.php',
+    sourceType: 'hls',
     sourceUrl: 'https://live.yongpyong.co.kr/Ycam1/cam01.stream/playlist.m3u8',
   },
   {
@@ -306,8 +300,8 @@ export const feeds: Feed[] = [
     kind: 'view',
     region: { ko: '강원', en: 'Gangwon' },
     provider: { ko: '강원지방기상청 · 모나용평', en: 'Gangwon Weather Office · Mona Yongpyong' },
-    officialLabel: { ko: '강원 기상청 원본', en: 'Gangwon Weather Office source' },
     officialPage: 'https://www.weather.go.kr/gangwon/maple/cctv2.php',
+    sourceType: 'hls',
     sourceUrl: 'https://live.yongpyong.co.kr/Ycam1/cam07.stream/playlist.m3u8',
   },
   {
@@ -317,8 +311,8 @@ export const feeds: Feed[] = [
     kind: 'summit',
     region: { ko: '강원', en: 'Gangwon' },
     provider: { ko: '국립공원공단', en: 'Korea National Park Service' },
-    officialLabel: { ko: '강원 기상청 원본', en: 'Gangwon Weather Office source' },
     officialPage: 'https://www.weather.go.kr/gangwon/maple/cctv.php',
+    sourceType: 'hls',
     sourceUrl: 'https://live.knps.or.kr/cctv/hls/solak.m3u8',
   },
   {
@@ -328,8 +322,8 @@ export const feeds: Feed[] = [
     kind: 'access',
     region: { ko: '강원', en: 'Gangwon' },
     provider: { ko: '강원지방기상청 · 하이원리조트', en: 'Gangwon Weather Office · High1 Resort' },
-    officialLabel: { ko: '강원 기상청 원본', en: 'Gangwon Weather Office source' },
     officialPage: 'https://www.weather.go.kr/gangwon/maple/cctv3.php',
+    sourceType: 'hls',
     sourceUrl: withProxyBase('/api/proxy?target=http%3A%2F%2F59.30.12.195%3A1935%2Flive%2F_definst_%2Fch4.stream%2Fplaylist.m3u8'),
   },
   {
@@ -339,8 +333,8 @@ export const feeds: Feed[] = [
     kind: 'access',
     region: { ko: '강원', en: 'Gangwon' },
     provider: { ko: '강원지방기상청 · 하이원리조트', en: 'Gangwon Weather Office · High1 Resort' },
-    officialLabel: { ko: '강원 기상청 원본', en: 'Gangwon Weather Office source' },
     officialPage: 'https://www.weather.go.kr/gangwon/maple/cctv3.php',
+    sourceType: 'hls',
     sourceUrl: withProxyBase('/api/proxy?target=http%3A%2F%2F59.30.12.195%3A1935%2Flive%2Fch12.stream%2Fplaylist.m3u8'),
   },
   {
@@ -350,8 +344,8 @@ export const feeds: Feed[] = [
     kind: 'view',
     region: { ko: '강원', en: 'Gangwon' },
     provider: { ko: '강원지방기상청 · 하이원리조트', en: 'Gangwon Weather Office · High1 Resort' },
-    officialLabel: { ko: '강원 기상청 원본', en: 'Gangwon Weather Office source' },
     officialPage: 'https://www.weather.go.kr/gangwon/maple/cctv3.php',
+    sourceType: 'hls',
     sourceUrl: withProxyBase('/api/proxy?target=http%3A%2F%2F59.30.12.195%3A1935%2Flive%2Fch10.stream%2Fplaylist.m3u8'),
   },
   {
@@ -361,8 +355,8 @@ export const feeds: Feed[] = [
     kind: 'summit',
     region: { ko: '강원', en: 'Gangwon' },
     provider: { ko: '강원지방기상청 · 하이원리조트', en: 'Gangwon Weather Office · High1 Resort' },
-    officialLabel: { ko: '강원 기상청 원본', en: 'Gangwon Weather Office source' },
     officialPage: 'https://www.weather.go.kr/gangwon/maple/cctv3.php',
+    sourceType: 'hls',
     sourceUrl: withProxyBase('/api/proxy?target=http%3A%2F%2F59.30.12.195%3A1935%2Flive%2Fch9.stream%2Fplaylist.m3u8'),
   },
   {
@@ -372,8 +366,8 @@ export const feeds: Feed[] = [
     kind: 'access',
     region: { ko: '강원', en: 'Gangwon' },
     provider: { ko: '강원지방기상청 · 하이원리조트', en: 'Gangwon Weather Office · High1 Resort' },
-    officialLabel: { ko: '강원 기상청 원본', en: 'Gangwon Weather Office source' },
     officialPage: 'https://www.weather.go.kr/gangwon/maple/cctv3.php',
+    sourceType: 'hls',
     sourceUrl: withProxyBase('/api/proxy?target=http%3A%2F%2F59.30.12.195%3A1935%2Flive%2Fch2.stream%2Fplaylist.m3u8'),
   },
   {
@@ -383,8 +377,8 @@ export const feeds: Feed[] = [
     kind: 'summit',
     region: { ko: '강원', en: 'Gangwon' },
     provider: { ko: '국립공원공단', en: 'Korea National Park Service' },
-    officialLabel: { ko: '강원 기상청 원본', en: 'Gangwon Weather Office source' },
     officialPage: 'https://www.weather.go.kr/gangwon/maple/cctv.php',
+    sourceType: 'hls',
     sourceUrl: 'https://live.knps.or.kr/cctv/hls/zduro.m3u8',
   },
   {
@@ -394,8 +388,8 @@ export const feeds: Feed[] = [
     kind: 'summit',
     region: { ko: '강원', en: 'Gangwon' },
     provider: { ko: '국립공원공단', en: 'Korea National Park Service' },
-    officialLabel: { ko: '강원 기상청 원본', en: 'Gangwon Weather Office source' },
     officialPage: 'https://www.weather.go.kr/gangwon/maple/cctv.php',
+    sourceType: 'hls',
     sourceUrl: 'https://live.knps.or.kr/cctv/hls/sangwonsa.m3u8',
   },
   {
@@ -405,8 +399,8 @@ export const feeds: Feed[] = [
     kind: 'summit',
     region: { ko: '강원', en: 'Gangwon' },
     provider: { ko: '국립공원공단', en: 'Korea National Park Service' },
-    officialLabel: { ko: '강원 기상청 원본', en: 'Gangwon Weather Office source' },
     officialPage: 'https://www.weather.go.kr/gangwon/maple/cctv.php',
+    sourceType: 'hls',
     sourceUrl: 'https://live.knps.or.kr/cctv/hls/zchunje.m3u8',
   },
 ]
@@ -419,7 +413,6 @@ export const worldPicks: Feed[] = [
     kind: 'view',
     region: { ko: '프랑스', en: 'France' },
     provider: { ko: 'Chamonix Mont-Blanc Tourisme', en: 'Chamonix Mont-Blanc Tourisme' },
-    officialLabel: { ko: '몽블랑 최신 이미지 원본', en: 'Latest Mont Blanc image source' },
     officialPage: 'https://en.chamonix.com/argentiere-view-of-mont-blanc',
     sourceType: 'image',
     sourceUrl: 'https://docs.chamonix.com/webcam/webcam-ota-1.jpg',

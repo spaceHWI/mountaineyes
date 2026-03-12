@@ -71,6 +71,8 @@ export const appCopy = {
 export const playerCopy = {
   ko: {
     capture: '화면 캡쳐',
+    itsDirectLink: '제주 ITS에서 직접 보기',
+    itsStreamPreparing: 'ITS 스트림 준비 중...',
     connectionCheck: '연결 확인 필요',
     live: 'LIVE',
     loadingBody: (seconds: number) => `스트림 연결 중입니다. ${seconds}초째 기다리는 중이에요.`,
@@ -88,6 +90,8 @@ export const playerCopy = {
   },
   en: {
     capture: 'Capture',
+    itsDirectLink: 'View on Jeju ITS',
+    itsStreamPreparing: 'Preparing ITS stream...',
     connectionCheck: 'Check stream',
     live: 'LIVE',
     loadingBody: (seconds: number) => `Connecting to the stream. Waiting for ${seconds}s.`,

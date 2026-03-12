@@ -3,11 +3,28 @@ import type { Feed } from '../data/feeds'
 import { useItsStreamUrl } from '../hooks/useItsUrls'
 import { localize, playerCopy, type Language } from '../i18n'
 
+type StreamStatus = 'loading' | 'ready' | 'error'
+
 type StreamPlayerProps = {
   compact?: boolean
   feed: Feed
   language: Language
   priority?: boolean
+}
+
+const IMAGE_REFRESH_MS = 60_000
+const LOADING_TICK_MS = 1_000
+
+const getStatusTone = (status: StreamStatus, isPlaying: boolean) => {
+  if (status === 'error') {
+    return 'error'
+  }
+
+  if (isPlaying) {
+    return 'playing'
+  }
+
+  return status
 }
 
 export function StreamPlayer({
@@ -19,7 +36,7 @@ export function StreamPlayer({
   const videoRef = useRef<HTMLVideoElement | null>(null)
   const imageUrlRef = useRef(feed.sourceUrl)
   const hasStartedPlaybackRef = useRef(false)
-  const [status, setStatus] = useState<'loading' | 'ready' | 'error'>('loading')
+  const [status, setStatus] = useState<StreamStatus>('loading')
   const [isPlaying, setIsPlaying] = useState(false)
   const [captureMessage, setCaptureMessage] = useState('')
   const [imageVersion, setImageVersion] = useState(0)
@@ -27,8 +44,10 @@ export function StreamPlayer({
   const copy = playerCopy[language]
   const feedName = localize(feed.name, language)
 
+  const isImageFeed = feed.sourceType === 'image'
   const isIts = feed.sourceType === 'its'
   const itsStreamUrl = useItsStreamUrl(isIts ? feed.itsDeviceId : undefined)
+  const playerTone = getStatusTone(status, isPlaying)
 
   const playbackUrl = useMemo(() => {
     if (isIts) return itsStreamUrl ? `/api/proxy?target=${encodeURIComponent(itsStreamUrl)}` : ''
@@ -46,7 +65,7 @@ export function StreamPlayer({
   }, [feed.id, language])
 
   useEffect(() => {
-    if (status !== 'loading' || feed.sourceType === 'image') {
+    if (status !== 'loading' || isImageFeed) {
       setLoadingElapsed(0)
       return
     }
@@ -54,15 +73,15 @@ export function StreamPlayer({
     setLoadingElapsed(1)
     const timer = window.setInterval(() => {
       setLoadingElapsed((current) => current + 1)
-    }, 1000)
+    }, LOADING_TICK_MS)
 
     return () => {
       window.clearInterval(timer)
     }
-  }, [feed.sourceType, status])
+  }, [isImageFeed, status])
 
   useEffect(() => {
-    if (feed.sourceType !== 'image') {
+    if (!isImageFeed) {
       return
     }
 
@@ -72,15 +91,15 @@ export function StreamPlayer({
 
     const interval = window.setInterval(() => {
       setImageVersion((current) => current + 1)
-    }, 60000)
+    }, IMAGE_REFRESH_MS)
 
     return () => {
       window.clearInterval(interval)
     }
-  }, [feed.sourceType, refreshedImageUrl])
+  }, [isImageFeed, refreshedImageUrl])
 
   useEffect(() => {
-    if (feed.sourceType === 'image') {
+    if (isImageFeed) {
       return
     }
 
@@ -183,10 +202,10 @@ export function StreamPlayer({
       video.removeEventListener('waiting', handleWaiting)
       teardown?.()
     }
-  }, [feed, playbackUrl])
+  }, [feed, isImageFeed, isIts, playbackUrl])
 
   const togglePlayback = async () => {
-    if (feed.sourceType === 'image') {
+    if (isImageFeed) {
       return
     }
 
@@ -218,7 +237,7 @@ export function StreamPlayer({
         return
       }
 
-      if (feed.sourceType === 'image') {
+      if (isImageFeed) {
         const image = new Image()
         image.crossOrigin = 'anonymous'
         image.src = imageUrlRef.current
@@ -289,11 +308,7 @@ export function StreamPlayer({
   return (
     <div className="stream-shell">
       <div className="stream-meta">
-        <span
-          className={`stream-pill ${
-            status === 'error' ? 'error' : isPlaying ? 'playing' : status === 'loading' ? 'loading' : 'ready'
-          }`}
-        >
+        <span className={`stream-pill ${playerTone}`}>
           {status === 'error' ? copy.connectionCheck : copy.live}
         </span>
         <span className="stream-area">{localize(feed.region, language)}</span>
@@ -301,17 +316,17 @@ export function StreamPlayer({
       <div className={compact ? 'stream-player compact' : 'stream-player'}>
         {isIts && !playbackUrl ? (
           <div className="stream-its-fallback">
-            <p>{language === 'ko' ? 'ITS 스트림 준비 중...' : 'Preparing ITS stream...'}</p>
+            <p>{copy.itsStreamPreparing}</p>
             <a
               className="inline-link"
               href={feed.officialPage}
               rel="noreferrer"
               target="_blank"
             >
-              {language === 'ko' ? '제주 ITS에서 직접 보기' : 'View on Jeju ITS'}
+              {copy.itsDirectLink}
             </a>
           </div>
-        ) : feed.sourceType === 'image' ? (
+        ) : isImageFeed ? (
           <img
             alt={copy.streamImageAlt(feedName)}
             className="stream-image"
@@ -333,7 +348,7 @@ export function StreamPlayer({
             ref={videoRef}
           />
         )}
-        {feed.sourceType !== 'image' && status === 'loading' ? (
+        {!isImageFeed && status === 'loading' ? (
           <div className="stream-loading-overlay" aria-live="polite">
             <div className="stream-loading-card">
               <strong>{copy.loadingTitle}</strong>

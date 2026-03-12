@@ -31,6 +31,7 @@ const DEER_SVG = (
 )
 
 const FIRST_DELAY_MS = 3_000
+const HIDE_DELAY_MS = 4_500
 const MIN_INTERVAL_MS = 30_000
 const MAX_INTERVAL_MS = 120_000
 
@@ -40,11 +41,12 @@ export function DeerEasterEgg() {
 
   useEffect(() => {
     let timerId: ReturnType<typeof setTimeout>
+    let hideTimerId: ReturnType<typeof setTimeout>
 
     const show = () => {
       setFromRight(Math.random() > 0.5)
       setVisible(true)
-      setTimeout(() => setVisible(false), 4500)
+      hideTimerId = setTimeout(() => setVisible(false), HIDE_DELAY_MS)
     }
 
     const scheduleNext = () => {
@@ -55,13 +57,15 @@ export function DeerEasterEgg() {
       }, delay)
     }
 
-    // 첫 접속 3초 후 깜짝 등장
     timerId = setTimeout(() => {
       show()
       scheduleNext()
     }, FIRST_DELAY_MS)
 
-    return () => clearTimeout(timerId)
+    return () => {
+      clearTimeout(timerId)
+      clearTimeout(hideTimerId)
+    }
   }, [])
 
   if (!visible) return null
