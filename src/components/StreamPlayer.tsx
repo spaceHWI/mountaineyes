@@ -243,7 +243,6 @@ export function StreamPlayer({ compact = false, feed, priority = false }: Stream
           <img
             alt={`${feed.name} 실시간 이미지`}
             className="stream-image"
-            crossOrigin="anonymous"
             onError={() => setStatus('error')}
             src={refreshedImageUrl}
           />

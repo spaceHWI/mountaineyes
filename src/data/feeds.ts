@@ -252,15 +252,15 @@ export const feeds: Feed[] = [
 
 export const worldPicks: Feed[] = [
   {
-    id: 'fujisan-oshinohakkai',
-    name: '후지산 오시노핫카이',
+    id: 'hotaka-kamikochi',
+    name: '호타카',
     mountainId: 'fujisan' as MountainId,
     kind: '풍경',
     region: '일본',
-    provider: 'Fujigoko.TV · Mt. Fuji Climbing Official Site linked source',
-    officialLabel: '후지산 라이브카메라 원본',
-    officialPage: 'https://live.fujigoko.tv/?n=1&e=1',
+    provider: '환경성 생물다양성센터 · 인터넷 자연연구소',
+    officialLabel: '호타카 최신 이미지 원본',
+    officialPage: 'https://www.sizenken.biodic.go.jp/view_new.php?no=93',
     sourceType: 'image',
-    sourceUrl: 'https://cam.fujigoko.tv/livecam1/s/cam.jpg',
+    sourceUrl: 'https://www.sizenken.biodic.go.jp/camera_img/93_c/image/2026/03/12/NCS20260312100001000.jpg',
   },
 ]

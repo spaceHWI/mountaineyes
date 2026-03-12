@@ -450,8 +450,8 @@ function App() {
           <div className="world-head">
             <div>
               <p className="eyebrow">World Pick</p>
-              <h2>후지산</h2>
-              <p>공식 후지산 등반 사이트가 연결하는 라이브카메라 한 장면을 함께 보여줍니다.</p>
+              <h2>호타카</h2>
+              <p>일본 공식 공공 자연관측 페이지에서 제공하는 최신 산악 이미지를 함께 보여줍니다.</p>
             </div>
           </div>
           <div className="world-grid">
