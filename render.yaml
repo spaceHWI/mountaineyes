@@ -1,0 +1,13 @@
+services:
+  - type: web
+    name: mountaineyes-proxy
+    env: node
+    buildCommand: npm install
+    startCommand: npm run start
+    healthCheckPath: /healthz
+    autoDeploy: false
+    envVars:
+      - key: NODE_VERSION
+        value: 22
+      - key: CORS_ALLOWED_ORIGINS
+        value: https://mountaineyes.kr

@@ -13,6 +13,24 @@ const JEJU_ITS_CCTV_PAGE = 'https://www.jejuits.go.kr/jido/mainView.do?DEVICE_KI
 const JEJU_ITS_STREAM_URL = 'https://www.jejuits.go.kr/jido/streamUrl.do'
 const JEJU_ITS_STREAM_TTL_MS = 1000 * 45
 const USER_AGENT = 'JejuEye/1.0'
+const corsOrigins = (process.env.CORS_ALLOWED_ORIGINS ?? '*')
+  .split(',')
+  .map((origin) => origin.trim())
+  .filter(Boolean)
+
+const applyCors = (request, response) => {
+  const requestOrigin = request.headers.origin
+
+  if (corsOrigins.includes('*')) {
+    response.setHeader('Access-Control-Allow-Origin', '*')
+  } else if (requestOrigin && corsOrigins.includes(requestOrigin)) {
+    response.setHeader('Access-Control-Allow-Origin', requestOrigin)
+    response.setHeader('Vary', 'Origin')
+  }
+
+  response.setHeader('Access-Control-Allow-Headers', 'Content-Type, Range')
+  response.setHeader('Access-Control-Allow-Methods', 'GET, HEAD, OPTIONS')
+}
 
 const isPlaylistResponse = (target, contentType) => {
   const normalizedType = contentType.toLowerCase()
@@ -117,6 +135,25 @@ const rewritePlaylist = (text, target) =>
     })
     .join('\n')
 
+app.use('/api', (request, response, next) => {
+  applyCors(request, response)
+
+  if (request.method === 'OPTIONS') {
+    response.status(204).end()
+    return
+  }
+
+  next()
+})
+
+app.get('/healthz', (_, response) => {
+  response.json({
+    ok: true,
+    service: 'mountaineyes-proxy',
+    timestamp: new Date().toISOString(),
+  })
+})
+
 app.get('/api/proxy', async (request, response) => {
   const target = request.query.target
 
@@ -141,6 +178,7 @@ app.get('/api/proxy', async (request, response) => {
     const buffer = Buffer.from(await upstream.arrayBuffer())
 
     if (isPlaylistResponse(target, contentType)) {
+      response.setHeader('Cache-Control', 'public, max-age=5')
       response.type('application/x-mpegURL').send(rewritePlaylist(buffer.toString('utf-8'), target))
       return
     }
@@ -202,6 +240,7 @@ app.get('/api/jejuits/stream', async (request, response) => {
     const buffer = Buffer.from(await upstream.arrayBuffer())
 
     if (isPlaylistResponse(target, contentType)) {
+      response.setHeader('Cache-Control', 'public, max-age=5')
       response.type('application/x-mpegURL').send(rewritePlaylist(buffer.toString('utf-8'), target))
       return
     }

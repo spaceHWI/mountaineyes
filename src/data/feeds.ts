@@ -1,5 +1,8 @@
 import type { LocalizedText } from '../i18n'
 
+const proxyBaseUrl = (import.meta.env.VITE_PROXY_BASE_URL ?? '').replace(/\/$/, '')
+const withProxyBase = (path: string) => `${proxyBaseUrl}${path}`
+
 export type MountainId =
   | 'hallasan'
   | 'balwangsan'
@@ -259,7 +262,7 @@ export const feeds: Feed[] = [
     provider: { ko: '강원지방기상청 · 하이원리조트', en: 'Gangwon Weather Office · High1 Resort' },
     officialLabel: { ko: '강원 기상청 원본', en: 'Gangwon Weather Office source' },
     officialPage: 'https://www.weather.go.kr/gangwon/maple/cctv3.php',
-    sourceUrl: 'http://59.30.12.195:1935/live/_definst_/ch4.stream/playlist.m3u8',
+    sourceUrl: withProxyBase('/api/proxy?target=http%3A%2F%2F59.30.12.195%3A1935%2Flive%2F_definst_%2Fch4.stream%2Fplaylist.m3u8'),
   },
   {
     id: 'high1-victoria-lower',
@@ -270,7 +273,7 @@ export const feeds: Feed[] = [
     provider: { ko: '강원지방기상청 · 하이원리조트', en: 'Gangwon Weather Office · High1 Resort' },
     officialLabel: { ko: '강원 기상청 원본', en: 'Gangwon Weather Office source' },
     officialPage: 'https://www.weather.go.kr/gangwon/maple/cctv3.php',
-    sourceUrl: 'http://59.30.12.195:1935/live/ch12.stream/playlist.m3u8',
+    sourceUrl: withProxyBase('/api/proxy?target=http%3A%2F%2F59.30.12.195%3A1935%2Flive%2Fch12.stream%2Fplaylist.m3u8'),
   },
   {
     id: 'high1-zeus',
@@ -281,7 +284,7 @@ export const feeds: Feed[] = [
     provider: { ko: '강원지방기상청 · 하이원리조트', en: 'Gangwon Weather Office · High1 Resort' },
     officialLabel: { ko: '강원 기상청 원본', en: 'Gangwon Weather Office source' },
     officialPage: 'https://www.weather.go.kr/gangwon/maple/cctv3.php',
-    sourceUrl: 'http://59.30.12.195:1935/live/ch10.stream/playlist.m3u8',
+    sourceUrl: withProxyBase('/api/proxy?target=http%3A%2F%2F59.30.12.195%3A1935%2Flive%2Fch10.stream%2Fplaylist.m3u8'),
   },
   {
     id: 'high1-victoria-upper',
@@ -292,7 +295,7 @@ export const feeds: Feed[] = [
     provider: { ko: '강원지방기상청 · 하이원리조트', en: 'Gangwon Weather Office · High1 Resort' },
     officialLabel: { ko: '강원 기상청 원본', en: 'Gangwon Weather Office source' },
     officialPage: 'https://www.weather.go.kr/gangwon/maple/cctv3.php',
-    sourceUrl: 'http://59.30.12.195:1935/live/ch9.stream/playlist.m3u8',
+    sourceUrl: withProxyBase('/api/proxy?target=http%3A%2F%2F59.30.12.195%3A1935%2Flive%2Fch9.stream%2Fplaylist.m3u8'),
   },
   {
     id: 'high1-hera',
@@ -303,7 +306,7 @@ export const feeds: Feed[] = [
     provider: { ko: '강원지방기상청 · 하이원리조트', en: 'Gangwon Weather Office · High1 Resort' },
     officialLabel: { ko: '강원 기상청 원본', en: 'Gangwon Weather Office source' },
     officialPage: 'https://www.weather.go.kr/gangwon/maple/cctv3.php',
-    sourceUrl: 'http://59.30.12.195:1935/live/ch2.stream/playlist.m3u8',
+    sourceUrl: withProxyBase('/api/proxy?target=http%3A%2F%2F59.30.12.195%3A1935%2Flive%2Fch2.stream%2Fplaylist.m3u8'),
   },
   {
     id: 'odaesan-duro',
