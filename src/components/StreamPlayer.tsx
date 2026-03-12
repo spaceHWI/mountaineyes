@@ -36,6 +36,7 @@ export function StreamPlayer({
   const videoRef = useRef<HTMLVideoElement | null>(null)
   const imageUrlRef = useRef(feed.sourceUrl)
   const hasStartedPlaybackRef = useRef(false)
+  const [activeItsStreamUrl, setActiveItsStreamUrl] = useState<string | null>(null)
   const [status, setStatus] = useState<StreamStatus>('loading')
   const [isPlaying, setIsPlaying] = useState(false)
   const [captureMessage, setCaptureMessage] = useState('')
@@ -50,15 +51,34 @@ export function StreamPlayer({
   const playerTone = getStatusTone(status, isPlaying)
   const playerStatusLabel = status === 'error' ? copy.connectionCheck : copy.live
 
+  useEffect(() => {
+    if (!isItsFeed) {
+      setActiveItsStreamUrl(null)
+      return
+    }
+
+    if (!itsStreamUrl) {
+      return
+    }
+
+    setActiveItsStreamUrl((current) => {
+      if (!current || status === 'error') {
+        return itsStreamUrl
+      }
+
+      return current
+    })
+  }, [isItsFeed, itsStreamUrl, status])
+
   const playbackUrl = useMemo(() => {
     if (isItsFeed) {
-      return itsStreamUrl ?? ''
+      return activeItsStreamUrl ?? ''
     }
 
     return feed.sourceUrl.startsWith('http://')
       ? `/api/proxy?target=${encodeURIComponent(feed.sourceUrl)}`
       : feed.sourceUrl
-  }, [feed.sourceUrl, isItsFeed, itsStreamUrl])
+  }, [activeItsStreamUrl, feed.sourceUrl, isItsFeed])
   const refreshedImageUrl = useMemo(
     () => `${feed.sourceUrl}${feed.sourceUrl.includes('?') ? '&' : '?'}t=${imageVersion}`,
     [feed.sourceUrl, imageVersion],
