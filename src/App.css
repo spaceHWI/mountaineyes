@@ -566,9 +566,25 @@
   display: block;
 }
 
+.stream-loading-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+}
+
 .stream-loading-card strong {
   font-size: 0.95rem;
   font-weight: 800;
+}
+
+.stream-loading-head span {
+  color: rgba(244, 250, 246, 0.68);
+  font-size: 0.74rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  white-space: nowrap;
 }
 
 .stream-loading-card p {

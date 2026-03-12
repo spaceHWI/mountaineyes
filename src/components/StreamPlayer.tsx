@@ -16,6 +16,7 @@ type StreamPlayerProps = {
 
 const IMAGE_REFRESH_MS = 60_000
 const LOADING_TICK_MS = 1_000
+const ITS_WAITING_GRACE_MS = 2_500
 
 const getStatusTone = (status: StreamStatus, isPlaying: boolean) => {
   if (status === 'error') {
@@ -40,6 +41,7 @@ export function StreamPlayer({
   const videoRef = useRef<HTMLVideoElement | null>(null)
   const imageUrlRef = useRef(feed.sourceUrl)
   const hasStartedPlaybackRef = useRef(false)
+  const waitingTimerRef = useRef<number | null>(null)
   const [activeItsStreamUrl, setActiveItsStreamUrl] = useState<string | null>(null)
   const [status, setStatus] = useState<StreamStatus>('loading')
   const [isPlaying, setIsPlaying] = useState(false)
@@ -160,6 +162,14 @@ export function StreamPlayer({
 
     let cancelled = false
     let teardown: (() => void) | undefined
+
+    const clearWaitingTimer = () => {
+      if (waitingTimerRef.current !== null) {
+        window.clearTimeout(waitingTimerRef.current)
+        waitingTimerRef.current = null
+      }
+    }
+
     hasStartedPlaybackRef.current = false
     setStatus('loading')
     setIsPlaying(false)
@@ -169,6 +179,7 @@ export function StreamPlayer({
 
     const handleError = () => setStatus('error')
     const markReady = () => {
+      clearWaitingTimer()
       hasStartedPlaybackRef.current = true
       setStatus('ready')
     }
@@ -177,11 +188,26 @@ export function StreamPlayer({
       setIsPlaying(true)
       markReady()
     }
-    const handlePause = () => setIsPlaying(false)
+    const handlePause = () => {
+      clearWaitingTimer()
+      setIsPlaying(false)
+    }
     const handleWaiting = () => {
-      if (hasStartedPlaybackRef.current) {
-        setStatus('loading')
+      if (!hasStartedPlaybackRef.current) {
+        return
       }
+
+      clearWaitingTimer()
+
+      if (isItsFeed) {
+        waitingTimerRef.current = window.setTimeout(() => {
+          setStatus('loading')
+          waitingTimerRef.current = null
+        }, ITS_WAITING_GRACE_MS)
+        return
+      }
+
+      setStatus('loading')
     }
     const handleTimeUpdate = () => {
       if (video.currentTime > 0) {
@@ -238,6 +264,7 @@ export function StreamPlayer({
 
     return () => {
       cancelled = true
+      clearWaitingTimer()
       video.removeEventListener('error', handleError)
       video.removeEventListener('play', handlePlay)
       video.removeEventListener('playing', handlePlaying)
@@ -405,7 +432,10 @@ export function StreamPlayer({
         {!isImageFeed && status === 'loading' ? (
           <div className="stream-loading-overlay" aria-live="polite">
             <div className="stream-loading-card">
-              <strong>{copy.loadingTitle}</strong>
+              <div className="stream-loading-head">
+                <strong>{copy.loadingTitle}</strong>
+                <span>{copy.loadingAverage}</span>
+              </div>
               <p>{copy.loadingBody(loadingElapsed)}</p>
               <div className="stream-loading-bar" aria-hidden="true">
                 <span />
