@@ -219,6 +219,13 @@
   padding: 1rem;
 }
 
+.section-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
 .card-copy {
   margin: 0;
 }
@@ -268,6 +275,14 @@
   margin: 0.7rem 0 0;
   color: #4d6154;
   line-height: 1.6;
+}
+
+.inline-link {
+  color: #587165;
+  font-size: 0.82rem;
+  font-weight: 700;
+  text-decoration: none;
+  white-space: nowrap;
 }
 
 .toolbar-block {
@@ -503,6 +518,7 @@
   }
 
   .mountain-summary,
+  .section-head,
   .card-head,
   .card-actions {
     flex-direction: column;

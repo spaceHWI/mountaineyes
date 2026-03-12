@@ -267,15 +267,16 @@ function App() {
         </section>
 
         <section className="mountain-summary panel">
-          <div>
+          <div className="section-head">
+            <div>
             <p className="eyebrow">Live Mountain</p>
             <h2>{activeMountain.name}</h2>
             <p>{activeMountain.description}</p>
+            </div>
+            <a className="inline-link" href={activeMountain.officialPage} rel="noreferrer" target="_blank">
+              공식 정보
+            </a>
           </div>
-          <a className="action tertiary" href={activeMountain.officialPage} rel="noreferrer" target="_blank">
-            <Icon name="link" />
-            공식 정보
-          </a>
         </section>
 
         <section className="simul-grid">
@@ -283,22 +284,14 @@ function App() {
             <article key={feed.id} className="simul-card">
               <div className="card-head">
                 <h3>{feed.name}</h3>
+                <a className="inline-link" href={feed.officialPage} rel="noreferrer" target="_blank">
+                  공식 원본
+                </a>
               </div>
               <p className="card-copy">
                 {feed.provider} · {feed.kind}
               </p>
               <StreamPlayer compact feed={feed} priority={index < 4} />
-              <div className="card-actions">
-                <a
-                  className="action tertiary"
-                  href={feed.officialPage}
-                  rel="noreferrer"
-                  target="_blank"
-                >
-                  <Icon name="link" />
-                  공식 원본
-                </a>
-              </div>
             </article>
           ))}
         </section>
@@ -316,20 +309,12 @@ function App() {
               <article key={feed.id} className="simul-card">
                 <div className="card-head">
                   <h3>{feed.name}</h3>
-                </div>
-                <p className="card-copy">{feed.provider}</p>
-                <StreamPlayer compact feed={feed} />
-                <div className="card-actions">
-                  <a
-                    className="action tertiary"
-                    href={feed.officialPage}
-                    rel="noreferrer"
-                    target="_blank"
-                  >
-                    <Icon name="link" />
+                  <a className="inline-link" href={feed.officialPage} rel="noreferrer" target="_blank">
                     공식 원본
                   </a>
                 </div>
+                <p className="card-copy">{feed.provider}</p>
+                <StreamPlayer compact feed={feed} />
               </article>
             ))}
           </div>
