@@ -21,6 +21,7 @@ export function StreamPlayer({
   const [isPlaying, setIsPlaying] = useState(false)
   const [captureMessage, setCaptureMessage] = useState('')
   const [imageVersion, setImageVersion] = useState(0)
+  const [loadingElapsed, setLoadingElapsed] = useState(0)
   const copy = playerCopy[language]
   const feedName = localize(feed.name, language)
   const playbackUrl = useMemo(
@@ -38,6 +39,22 @@ export function StreamPlayer({
   useEffect(() => {
     setCaptureMessage('')
   }, [feed.id, language])
+
+  useEffect(() => {
+    if (status !== 'loading' || feed.sourceType === 'image') {
+      setLoadingElapsed(0)
+      return
+    }
+
+    setLoadingElapsed(1)
+    const timer = window.setInterval(() => {
+      setLoadingElapsed((current) => current + 1)
+    }, 1000)
+
+    return () => {
+      window.clearInterval(timer)
+    }
+  }, [feed.sourceType, status])
 
   useEffect(() => {
     if (feed.sourceType !== 'image') {
@@ -274,6 +291,17 @@ export function StreamPlayer({
             ref={videoRef}
           />
         )}
+        {feed.sourceType !== 'image' && status === 'loading' ? (
+          <div className="stream-loading-overlay" aria-live="polite">
+            <div className="stream-loading-card">
+              <strong>{copy.loadingTitle}</strong>
+              <p>{copy.loadingBody(loadingElapsed)}</p>
+              <div className="stream-loading-bar" aria-hidden="true">
+                <span />
+              </div>
+            </div>
+          </div>
+        ) : null}
       </div>
 
       <div className="stream-tools">
