@@ -4,10 +4,9 @@ import { feeds, mountains, worldPicks, type FeedKind, type MountainId } from './
 import { StreamPlayer } from './components/StreamPlayer'
 
 const EARTH_RADIUS_KM = 6371
-const FAVORITE_MOUNTAIN_KEY = 'mountaineyes-favorite-mountain'
 const RECENT_MOUNTAINS_KEY = 'mountaineyes-recent-mountains'
 
-function Icon({ name }: { name: 'mountain' | 'path' | 'grid' | 'camera' | 'link' | 'pin' | 'view' | 'star' }) {
+function Icon({ name }: { name: 'mountain' | 'path' | 'grid' | 'camera' | 'link' | 'pin' | 'view' }) {
   const commonProps = {
     fill: 'none',
     stroke: 'currentColor',
@@ -64,14 +63,6 @@ function Icon({ name }: { name: 'mountain' | 'path' | 'grid' | 'camera' | 'link'
         <path {...commonProps} d="m20.5 7.5-6.2 6.2" />
       </>
     ),
-    star: (
-      <>
-        <path
-          {...commonProps}
-          d="m12 4.5 2.2 4.6 5.1.7-3.7 3.6.9 5.1-4.5-2.4-4.5 2.4.9-5.1L4.7 9.8l5.1-.7L12 4.5Z"
-        />
-      </>
-    ),
   }
 
   return (
@@ -107,14 +98,6 @@ const rememberRecentMountains = (current: MountainId[], next: MountainId) => {
 }
 
 function App() {
-  const [favoriteMountainId, setFavoriteMountainId] = useState<MountainId | null>(() => {
-    if (typeof window === 'undefined') {
-      return null
-    }
-
-    const stored = window.localStorage.getItem(FAVORITE_MOUNTAIN_KEY)
-    return mountains.some((mountain) => mountain.id === stored) ? (stored as MountainId) : null
-  })
   const [recentMountainIds, setRecentMountainIds] = useState<MountainId[]>(() => {
     if (typeof window === 'undefined') {
       return []
@@ -138,12 +121,6 @@ function App() {
   const [activeMountainId, setActiveMountainId] = useState<MountainId>(() => {
     if (typeof window === 'undefined') {
       return 'hallasan'
-    }
-
-    const favoriteStored = window.localStorage.getItem(FAVORITE_MOUNTAIN_KEY)
-
-    if (mountains.some((mountain) => mountain.id === favoriteStored)) {
-      return favoriteStored as MountainId
     }
 
     const recentStored = window.localStorage.getItem(RECENT_MOUNTAINS_KEY)
@@ -176,26 +153,10 @@ function App() {
       return
     }
 
-    if (favoriteMountainId) {
-      window.localStorage.setItem(FAVORITE_MOUNTAIN_KEY, favoriteMountainId)
-      return
-    }
-
-    window.localStorage.removeItem(FAVORITE_MOUNTAIN_KEY)
-  }, [favoriteMountainId])
-
-  useEffect(() => {
-    if (typeof window === 'undefined') {
-      return
-    }
-
     window.localStorage.setItem(RECENT_MOUNTAINS_KEY, JSON.stringify(recentMountainIds))
   }, [recentMountainIds])
 
   useEffect(() => {
-    if (favoriteMountainId) {
-      return
-    }
     if (recentMountainIds.length > 0) {
       return
     }
@@ -231,18 +192,15 @@ function App() {
         timeout: 5000,
       },
     )
-  }, [favoriteMountainId, recentMountainIds.length])
+  }, [recentMountainIds.length])
 
-  const locationLabel = favoriteMountainId
-    ? '즐겨찾는 산부터 먼저 보여드려요'
-    : recentMountainIds.length > 0
+  const locationLabel = recentMountainIds.length > 0
       ? `최근 본 ${mountains.find((mountain) => mountain.id === recentMountainIds[0])?.name ?? '산'}부터 먼저 보여드려요`
-    : nearestMountainName
+      : nearestMountainName
       ? `지금 위치에서 가까운 ${nearestMountainName}부터 보여드려요`
       : '위치를 허용하면 가까운 산부터 먼저 보여드려요'
 
   const activeMountain = mountains.find((mountain) => mountain.id === activeMountainId) ?? mountains[0]
-  const isFavoriteMountain = favoriteMountainId === activeMountainId
   const recentMountains = recentMountainIds
     .filter((mountainId) => mountainId !== activeMountainId)
     .map((mountainId) => mountains.find((mountain) => mountain.id === mountainId))
@@ -271,10 +229,6 @@ function App() {
       }),
     [activeMountainId, visibleKind],
   )
-
-  const toggleFavoriteMountain = () => {
-    setFavoriteMountainId((current) => (current === activeMountainId ? null : activeMountainId))
-  }
 
   return (
     <div className="app-shell">
@@ -316,8 +270,6 @@ function App() {
             </div>
             <p className="hero-text">
               전국 산 CCTV를 한눈에 보고 한손에 캡쳐하세요.
-              <br />
-              가까운 산이 먼저 보이고, 다른 산들도 계속 업데이트됩니다.
             </p>
             <div className="hero-badges">
               <span className="soft-badge compact">
@@ -347,14 +299,6 @@ function App() {
                     ))}
                   </select>
                 </label>
-                <button
-                  className={isFavoriteMountain ? 'favorite-toggle active' : 'favorite-toggle'}
-                  onClick={toggleFavoriteMountain}
-                  type="button"
-                >
-                  <Icon name="star" />
-                  {isFavoriteMountain ? '즐겨찾기됨' : '즐겨찾기'}
-                </button>
               </div>
               {recentMountains.length > 0 ? (
                 <div className="recent-row">
@@ -420,12 +364,7 @@ function App() {
           {visibleFeeds.map((feed, index) => (
             <article key={feed.id} className="simul-card">
               <div className="card-head">
-                <div className="card-title-wrap">
-                  <h3>{feed.name}</h3>
-                  {feed.id === 'hallasan-baengnokdam' ? (
-                    <span className="card-notice">공식 CCTV에도 백록담이 나오고 있지 않네요?</span>
-                  ) : null}
-                </div>
+                <h3>{feed.name}</h3>
               </div>
               <p className="card-copy">
                 {feed.provider} · {feed.kind}
