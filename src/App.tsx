@@ -1,6 +1,5 @@
 import { useEffect, useMemo, useState } from 'react'
 import './App.css'
-import { DeerEasterEgg } from './components/DeerEasterEgg'
 import { FeedCard } from './components/FeedCard'
 import { Icon } from './components/Icon'
 import { feeds, mountains, worldPicks, type FeedKind, type MountainId } from './data/feeds'
@@ -285,7 +284,6 @@ function App() {
           </a>
         </footer>
       </main>
-      <DeerEasterEgg />
     </div>
   )
 }
