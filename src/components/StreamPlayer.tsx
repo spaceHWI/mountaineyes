@@ -42,6 +42,7 @@ export function StreamPlayer({
   const imageUrlRef = useRef(feed.sourceUrl)
   const hasStartedPlaybackRef = useRef(false)
   const waitingTimerRef = useRef<number | null>(null)
+  const latestItsStreamUrlRef = useRef<string | null>(null)
   const [activeItsStreamUrl, setActiveItsStreamUrl] = useState<string | null>(null)
   const [status, setStatus] = useState<StreamStatus>('loading')
   const [isPlaying, setIsPlaying] = useState(false)
@@ -60,6 +61,10 @@ export function StreamPlayer({
     : status === 'error'
       ? copy.connectionCheck
       : copy.live
+
+  useEffect(() => {
+    latestItsStreamUrlRef.current = itsStreamUrl
+  }, [itsStreamUrl])
 
   useEffect(() => {
     if (!isItsFeed) {
@@ -201,6 +206,12 @@ export function StreamPlayer({
 
       if (isItsFeed) {
         waitingTimerRef.current = window.setTimeout(() => {
+          const nextItsStreamUrl = latestItsStreamUrlRef.current
+
+          if (nextItsStreamUrl && nextItsStreamUrl !== activeItsStreamUrl) {
+            setActiveItsStreamUrl(nextItsStreamUrl)
+          }
+
           setStatus('loading')
           waitingTimerRef.current = null
         }, ITS_WAITING_GRACE_MS)
@@ -273,7 +284,7 @@ export function StreamPlayer({
       video.removeEventListener('waiting', handleWaiting)
       teardown?.()
     }
-  }, [feed, isImageFeed, isItsActive, isItsFeed, playbackUrl])
+  }, [activeItsStreamUrl, feed, isImageFeed, isItsActive, isItsFeed, playbackUrl])
 
   const togglePlayback = async () => {
     if (isImageFeed) {
