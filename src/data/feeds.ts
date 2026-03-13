@@ -31,6 +31,14 @@ export type MountainId =
   | 'dachstein'
   | 'banff'
   | 'glaciernp'
+  | 'dolomites'
+  | 'titlis'
+  | 'pilatus'
+  | 'montventoux'
+  | 'aletsch'
+  | 'berchtesgaden'
+  | 'stmoritz'
+  | 'hintertux'
 
 export type FeedKind = 'summit' | 'access' | 'view'
 
@@ -1788,5 +1796,71 @@ export const worldPicks: Feed[] = [
     officialPage: 'https://www.jungfrau.ch/en-gb/live/webcams/',
     sourceType: 'image',
     sourceUrl: 'https://backend.roundshot.com/cams/877919abdb23eb59f63908ab8b300f1f/thumbnail',
+  },
+  {
+    id: 'dolomites-altabadia',
+    name: { ko: '알타 바디아 리푸지오 (2100m)', en: 'Alta Badia Rifugio Ütia de Bioch (2100m)' },
+    mountainId: 'dolomites',
+    kind: 'view',
+    region: { ko: '이탈리아', en: 'Italy' },
+    provider: { ko: 'Panomax', en: 'Panomax' },
+    officialPage: 'https://dolomites.panomax.com/',
+    sourceType: 'image',
+    sourceUrl: 'https://panodata.panomax.com/cams/1134/recent_small.jpg',
+  },
+  {
+    id: 'dolomites-marmolada',
+    name: { ko: '마르몰라다 푼타 세라우타 (2950m)', en: 'Marmolada Punta Serauta (2950m)' },
+    mountainId: 'dolomites',
+    kind: 'summit',
+    region: { ko: '이탈리아', en: 'Italy' },
+    provider: { ko: 'Panomax', en: 'Panomax' },
+    officialPage: 'https://marmolada.panomax.com/',
+    sourceType: 'image',
+    sourceUrl: 'https://panodata.panomax.com/cams/2111/recent_small.jpg',
+  },
+  {
+    id: 'dolomites-cortina',
+    name: { ko: '코르티나 담페초 스트라토파나', en: 'Cortina d\'Ampezzo Stratofana' },
+    mountainId: 'dolomites',
+    kind: 'view',
+    region: { ko: '이탈리아', en: 'Italy' },
+    provider: { ko: 'Panomax', en: 'Panomax' },
+    officialPage: 'https://cortina.panomax.com/',
+    sourceType: 'image',
+    sourceUrl: 'https://panodata.panomax.com/cams/2880/recent_small.jpg',
+  },
+  {
+    id: 'dolomites-canazei',
+    name: { ko: '카나체이 콜 데이 로시', en: 'Canazei Col dei Rossi' },
+    mountainId: 'dolomites',
+    kind: 'view',
+    region: { ko: '이탈리아', en: 'Italy' },
+    provider: { ko: 'Panomax', en: 'Panomax' },
+    officialPage: 'https://canazei.panomax.com/',
+    sourceType: 'image',
+    sourceUrl: 'https://panodata.panomax.com/cams/1343/recent_small.jpg',
+  },
+  {
+    id: 'zugspitze-garmisch',
+    name: { ko: '추크슈피체 가르미슈 파노라마', en: 'Zugspitze Garmisch Panorama' },
+    mountainId: 'zugspitze',
+    kind: 'view',
+    region: { ko: '독일', en: 'Germany' },
+    provider: { ko: 'Panomax', en: 'Panomax' },
+    officialPage: 'https://zugspitze.panomax.com/',
+    sourceType: 'image',
+    sourceUrl: 'https://panodata.panomax.com/cams/128/recent_small.jpg',
+  },
+  {
+    id: 'hintertux-glacier',
+    name: { ko: '힌터툭스 빙하 게프로레네 반트 (3250m)', en: 'Hintertux Glacier Gefrorene Wand (3250m)' },
+    mountainId: 'hintertux',
+    kind: 'summit',
+    region: { ko: '오스트리아', en: 'Austria' },
+    provider: { ko: 'Panomax', en: 'Panomax' },
+    officialPage: 'https://hintertux.panomax.com/',
+    sourceType: 'image',
+    sourceUrl: 'https://panodata.panomax.com/cams/1039/recent_small.jpg',
   },
 ]
