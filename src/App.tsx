@@ -226,6 +226,7 @@ function App() {
                     <span className="weather-icon">{getWeatherIcon(weather.weatherCode)}</span>
                     <span className="weather-temp">{weather.temperature}°</span>
                     <span className="weather-humidity">{weather.humidity}%</span>
+                    <span className="weather-wind">{weather.windSpeed}km/h</span>
                   </span>
                 )}
               </div>

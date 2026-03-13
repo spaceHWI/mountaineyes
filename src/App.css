@@ -393,6 +393,17 @@
   margin-right: 0.1rem;
 }
 
+.weather-wind {
+  color: #6b8a74;
+  font-size: 0.75rem;
+}
+
+.weather-wind::before {
+  content: '🌬️';
+  font-size: 0.65rem;
+  margin-right: 0.1rem;
+}
+
 .mountain-summary p {
   margin: 0.7rem 0 0;
   color: #4d6154;

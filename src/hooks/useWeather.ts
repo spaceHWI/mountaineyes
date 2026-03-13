@@ -4,6 +4,7 @@ export type WeatherData = {
   humidity: number
   temperature: number
   weatherCode: number
+  windSpeed: number
 }
 
 const WEATHER_REFRESH_MS = 10 * 60_000 // 10분
@@ -32,7 +33,7 @@ export function useWeather(lat: number, lng: number): WeatherData | null {
 
     const fetchWeather = async () => {
       try {
-        const url = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lng}&current=temperature_2m,relative_humidity_2m,weather_code`
+        const url = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lng}&current=temperature_2m,relative_humidity_2m,weather_code,wind_speed_10m`
         const res = await fetch(url)
         if (!res.ok) return
         const json = await res.json()
@@ -42,6 +43,7 @@ export function useWeather(lat: number, lng: number): WeatherData | null {
             humidity: c.relative_humidity_2m,
             temperature: Math.round(c.temperature_2m),
             weatherCode: c.weather_code,
+            windSpeed: Math.round(c.wind_speed_10m),
           })
         }
       } catch {
