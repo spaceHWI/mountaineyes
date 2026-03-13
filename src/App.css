@@ -158,6 +158,17 @@
   height: 2.8rem;
 }
 
+.logo-eye-group {
+  transform-origin: 32px 35px;
+  animation: eye-blink 4s ease-in-out infinite;
+}
+
+@keyframes eye-blink {
+  0%, 90%, 100% { transform: scaleY(1); }
+  93% { transform: scaleY(0.05); }
+  96% { transform: scaleY(1); }
+}
+
 .eyebrow,
 .panel-title,
 .card-head p {

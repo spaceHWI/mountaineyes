@@ -157,12 +157,14 @@ function App() {
             </div>
             <div className="title-row">
               <span className="title-logo" aria-hidden="true">
-                <svg viewBox="0 0 64 64">
+                <svg viewBox="0 0 64 64" className="logo-eyes-svg">
                   <path d="M32 6 C26 6 6 40 2 48 Q8 52 14 48 Q20 52 26 48 Q32 52 38 48 Q44 52 50 48 Q56 52 62 48 C58 40 38 6 32 6Z" fill="#1a4a2e"/>
-                  <ellipse cx="23" cy="34" rx="7" ry="8" fill="white"/>
-                  <ellipse cx="41" cy="34" rx="7" ry="8" fill="white"/>
-                  <ellipse cx="25" cy="35" rx="3.5" ry="4.5" fill="#1a4a2e"/>
-                  <ellipse cx="43" cy="35" rx="3.5" ry="4.5" fill="#1a4a2e"/>
+                  <g className="logo-eye-group">
+                    <ellipse cx="23" cy="34" rx="7" ry="8" fill="white"/>
+                    <ellipse cx="41" cy="34" rx="7" ry="8" fill="white"/>
+                    <ellipse cx="25" cy="35" rx="3.5" ry="4.5" fill="#1a4a2e"/>
+                    <ellipse cx="43" cy="35" rx="3.5" ry="4.5" fill="#1a4a2e"/>
+                  </g>
                 </svg>
               </span>
               <h1>MountainEyes<sup className="version-tag">V1.2</sup></h1>
