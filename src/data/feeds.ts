@@ -26,6 +26,10 @@ export type MountainId =
   | 'jungfrau'
   | 'schilthorn'
   | 'tablemountain'
+  | 'longspeak'
+  | 'grossglockner'
+  | 'dachstein'
+  | 'banff'
 
 export type FeedKind = 'summit' | 'access' | 'view'
 
@@ -969,5 +973,60 @@ export const worldPicks: Feed[] = [
     officialPage: 'https://tablemountain.panomax.com/',
     sourceType: 'image',
     sourceUrl: 'https://panodata.panomax.com/cams/5058/recent_small.jpg',
+  },
+  {
+    id: 'longspeak-summit',
+    name: { ko: '롱스 피크 (4346m)', en: 'Longs Peak (4346m)' },
+    mountainId: 'longspeak',
+    kind: 'view',
+    region: { ko: '미국 콜로라도', en: 'Colorado, USA' },
+    provider: { ko: '미국 국립공원관리청', en: 'U.S. National Park Service' },
+    officialPage: 'https://www.nps.gov/romo/learn/photosmultimedia/webcams.htm',
+    sourceType: 'image',
+    sourceUrl: 'https://www.nps.gov/webcams-romo/longs_peak.jpg',
+  },
+  {
+    id: 'longspeak-bearlake',
+    name: { ko: '베어레이크 입구', en: 'Bear Lake Entrance' },
+    mountainId: 'longspeak',
+    kind: 'access',
+    region: { ko: '미국 콜로라도', en: 'Colorado, USA' },
+    provider: { ko: '미국 국립공원관리청', en: 'U.S. National Park Service' },
+    officialPage: 'https://www.nps.gov/romo/learn/photosmultimedia/webcams.htm',
+    sourceType: 'image',
+    sourceUrl: 'https://www.nps.gov/webcams-romo/bme.jpeg',
+  },
+  {
+    id: 'grossglockner-panorama',
+    name: { ko: '그로스글로크너 파노라마 (3798m)', en: 'Grossglockner Panorama (3798m)' },
+    mountainId: 'grossglockner',
+    kind: 'summit',
+    region: { ko: '오스트리아', en: 'Austria' },
+    provider: { ko: 'Panomax', en: 'Panomax' },
+    officialPage: 'https://grossglockner.panomax.com/',
+    sourceType: 'image',
+    sourceUrl: 'https://panodata.panomax.com/cams/7/recent_small.jpg',
+  },
+  {
+    id: 'dachstein-panorama',
+    name: { ko: '다흐슈타인 파노라마 (2995m)', en: 'Dachstein Panorama (2995m)' },
+    mountainId: 'dachstein',
+    kind: 'summit',
+    region: { ko: '오스트리아', en: 'Austria' },
+    provider: { ko: 'Panomax', en: 'Panomax' },
+    officialPage: 'https://dachstein.panomax.com/',
+    sourceType: 'image',
+    sourceUrl: 'https://panodata.panomax.com/cams/505/recent_small.jpg',
+  },
+  {
+    id: 'banff-rockies',
+    name: { ko: '밴프 캐나디안 로키', en: 'Banff Canadian Rockies' },
+    mountainId: 'banff',
+    kind: 'view',
+    region: { ko: '캐나다', en: 'Canada' },
+    provider: { ko: 'Roundshot / Fairmont Banff Springs', en: 'Roundshot / Fairmont Banff Springs' },
+    officialPage: 'https://fairmont.roundshot.com/banff-springs/',
+    sourceType: 'image',
+    sourceUrl: 'https://backend.roundshot.com/cams/733/thumbnail',
   },
 ]
