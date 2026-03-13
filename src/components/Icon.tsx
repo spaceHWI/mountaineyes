@@ -1,7 +1,7 @@
 export function Icon({
   name,
 }: {
-  name: 'mountain' | 'path' | 'grid' | 'pin' | 'view' | 'instagram'
+  name: 'mountain' | 'path' | 'grid' | 'pin' | 'view' | 'instagram' | 'megaphone'
 }) {
   const commonProps = {
     fill: 'none',
@@ -51,6 +51,12 @@ export function Icon({
         <rect {...commonProps} x="4.5" y="4.5" width="15" height="15" rx="4.2" />
         <circle {...commonProps} cx="12" cy="12" r="3.3" />
         <circle {...commonProps} cx="17" cy="7.8" r="0.8" fill="currentColor" stroke="none" />
+      </>
+    ),
+    megaphone: (
+      <>
+        <path {...commonProps} d="M18 8V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v4a2 2 0 0 0 2 2h2l4 5v-5h2a2 2 0 0 0 2-2Z" />
+        <path {...commonProps} d="M20 8a3 3 0 0 1 0 4" />
       </>
     ),
   }

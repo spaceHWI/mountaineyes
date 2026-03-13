@@ -90,13 +90,6 @@ function App() {
     )
   }, [])
 
-  const nearestMountainName = nearestMountainId
-    ? localize(mountains.find((mountain) => mountain.id === nearestMountainId)?.name ?? mountains[0].name, language)
-    : null
-  const locationLabel = nearestMountainName
-    ? copy.locationWithNearest(nearestMountainName)
-    : copy.locationPrompt
-
   const worldMountainIds = useMemo(() => {
     const ids = new Set<string>()
     worldPicks.forEach((f) => ids.add(f.mountainId))
@@ -196,8 +189,10 @@ function App() {
             <p className="hero-text">{copy.heroText}</p>
             <div className="hero-badges">
               <span className="soft-badge compact">
-                <Icon name="pin" />
-                {locationLabel}
+                <Icon name="megaphone" />
+                {language === 'ko'
+                  ? '2026.03.13 — 전국 14개 산 + 세계 7개 산 웹캠 추가, 실시간 날씨 표시'
+                  : '2026.03.13 — 14 Korean + 7 world mountain webcams added, live weather'}
               </span>
             </div>
           </div>
