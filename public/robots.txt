@@ -1,4 +1,29 @@
 User-agent: *
 Allow: /
 
+# AI Crawlers - explicitly allowed for GEO/AEO
+User-agent: GPTBot
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
+User-agent: ChatGPT-User
+Allow: /
+
+User-agent: anthropic-ai
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: Bytespider
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: cohere-ai
+Allow: /
+
 Sitemap: https://mountaineyes.kr/sitemap.xml
