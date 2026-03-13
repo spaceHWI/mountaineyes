@@ -164,7 +164,7 @@ function App() {
                   <ellipse cx="43" cy="35" rx="3.5" ry="4.5" fill="#1a4a2e"/>
                 </svg>
               </span>
-              <h1>{copy.pageTitle}</h1>
+              <h1>MountainEyes<sup className="version-tag">V1.2</sup></h1>
             </div>
             <p className="hero-text">{copy.heroText}</p>
             <div className="hero-badges">
