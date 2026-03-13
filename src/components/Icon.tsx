@@ -1,3 +1,20 @@
+export function PinIcon({ active }: { active: boolean }) {
+  if (active) {
+    return (
+      <svg viewBox="0 0 24 24" fill="currentColor" stroke="none">
+        <path d="M12 20s6-5.4 6-10a6 6 0 1 0-12 0c0 4.6 6 10 6 10Z" />
+        <circle cx="12" cy="10" r="2.2" fill="#214632" />
+      </svg>
+    )
+  }
+  return (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M12 20s6-5.4 6-10a6 6 0 1 0-12 0c0 4.6 6 10 6 10Z" />
+      <circle cx="12" cy="10" r="2.2" />
+    </svg>
+  )
+}
+
 export function Icon({
   name,
 }: {

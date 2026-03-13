@@ -2,7 +2,7 @@ import { useEffect, useMemo, useState } from 'react'
 import './App.css'
 import { DeerEasterEgg } from './components/DeerEasterEgg'
 import { FeedCard } from './components/FeedCard'
-import { Icon } from './components/Icon'
+import { Icon, PinIcon } from './components/Icon'
 import { MountainPicker } from './components/MountainPicker'
 import { Sparkline } from './components/Sparkline'
 import { feeds, mountains, worldPicks, type FeedKind, type MountainId } from './data/feeds'
@@ -193,7 +193,7 @@ function App() {
                     }
                   }}
                 >
-                  <Icon name="pin" />
+                  <PinIcon active={pinned} />
                 </button>
               </div>
             </div>
