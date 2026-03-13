@@ -4,18 +4,14 @@ import { StreamPlayer } from './StreamPlayer'
 
 type FeedCardProps = {
   feed: Feed
-  isItsActive?: boolean
   language: Language
-  onItsPlaybackChange?: (nextActive: boolean) => void
   priority?: boolean
   showKind?: boolean
 }
 
 export function FeedCard({
   feed,
-  isItsActive = false,
   language,
-  onItsPlaybackChange,
   priority = false,
   showKind = false,
 }: FeedCardProps) {
@@ -26,7 +22,6 @@ export function FeedCard({
       <div className="card-head">
         <div className="card-title-row">
           <h3>{localize(feed.name, language)}</h3>
-          {feed.sourceType === 'its' ? <span className="feed-badge its">ITS</span> : null}
         </div>
         <a className="inline-link" href={feed.officialPage} rel="noreferrer" target="_blank">
           {copy.officialSource}
@@ -39,9 +34,7 @@ export function FeedCard({
       <StreamPlayer
         compact
         feed={feed}
-        isItsActive={isItsActive}
         language={language}
-        onItsPlaybackChange={onItsPlaybackChange}
         priority={priority}
       />
     </article>

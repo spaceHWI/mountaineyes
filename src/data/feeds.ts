@@ -31,9 +31,8 @@ export type Feed = {
   officialPage: string
   provider: LocalizedText
   region: LocalizedText
-  sourceType: 'hls' | 'image' | 'its'
+  sourceType: 'hls' | 'image'
   sourceUrl: string
-  itsDeviceId?: string
   thumbnail?: string
 }
 
@@ -184,66 +183,6 @@ export const feeds: Feed[] = [
     sourceType: 'hls',
     sourceUrl: 'https://hallacctv.kr/live/cctv05.stream_360p/playlist.m3u8',
     thumbnail: 'https://www.jeju.go.kr/tool/halla/images/cctv05.png',
-  },
-  {
-    id: 'hallasan-its-1100',
-    name: { ko: '1100고지 도로', en: '1100 Highland Road' },
-    mountainId: 'hallasan',
-    kind: 'access',
-    region: { ko: '제주', en: 'Jeju' },
-    provider: { ko: '제주 교통정보센터', en: 'Jeju ITS' },
-    officialPage: 'https://www.jejuits.go.kr/jido/mainView.do?DEVICE_KIND=CCTV',
-    sourceType: 'its',
-    sourceUrl: '',
-    itsDeviceId: '0ce6ae92-c6d2-78ed-cf34-f0c6f119bdca',
-  },
-  {
-    id: 'hallasan-its-seongpanak',
-    name: { ko: '성판악 도로', en: 'Seongpanak Road' },
-    mountainId: 'hallasan',
-    kind: 'access',
-    region: { ko: '제주', en: 'Jeju' },
-    provider: { ko: '제주 교통정보센터', en: 'Jeju ITS' },
-    officialPage: 'https://www.jejuits.go.kr/jido/mainView.do?DEVICE_KIND=CCTV',
-    sourceType: 'its',
-    sourceUrl: '',
-    itsDeviceId: 'fc4a8973-eda7-7c81-bd51-851cf452ac86',
-  },
-  {
-    id: 'hallasan-its-eorimok',
-    name: { ko: '어리목 입구', en: 'Eorimok Entrance' },
-    mountainId: 'hallasan',
-    kind: 'access',
-    region: { ko: '제주', en: 'Jeju' },
-    provider: { ko: '제주 교통정보센터', en: 'Jeju ITS' },
-    officialPage: 'https://www.jejuits.go.kr/jido/mainView.do?DEVICE_KIND=CCTV',
-    sourceType: 'its',
-    sourceUrl: '',
-    itsDeviceId: '9261f807-613e-5feb-e772-4b36d255fe27',
-  },
-  {
-    id: 'hallasan-its-donnaeko',
-    name: { ko: '돈내코 입구', en: 'Donnaeko Entrance' },
-    mountainId: 'hallasan',
-    kind: 'access',
-    region: { ko: '제주', en: 'Jeju' },
-    provider: { ko: '제주 교통정보센터', en: 'Jeju ITS' },
-    officialPage: 'https://www.jejuits.go.kr/jido/mainView.do?DEVICE_KIND=CCTV',
-    sourceType: 'its',
-    sourceUrl: '',
-    itsDeviceId: '30326b0b-606b-f9ea-f1a0-c121a26eab96',
-  },
-  {
-    id: 'hallasan-its-sallok',
-    name: { ko: '산록남로', en: 'Sallok South Road' },
-    mountainId: 'hallasan',
-    kind: 'access',
-    region: { ko: '제주', en: 'Jeju' },
-    provider: { ko: '제주 교통정보센터', en: 'Jeju ITS' },
-    officialPage: 'https://www.jejuits.go.kr/jido/mainView.do?DEVICE_KIND=CCTV',
-    sourceType: 'its',
-    sourceUrl: '',
-    itsDeviceId: '549855ee-ee60-7c21-20ac-377385832c4f',
   },
   {
     id: 'balwangsan-skywalk',

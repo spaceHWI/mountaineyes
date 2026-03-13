@@ -5,7 +5,6 @@ import { Icon } from './components/Icon'
 import { MountainPicker } from './components/MountainPicker'
 import { feeds, mountains, worldPicks, type FeedKind, type MountainId } from './data/feeds'
 import { useFeedHealth } from './hooks/useFeedHealth'
-import { useItsAvailable } from './hooks/useItsUrls'
 import { appCopy, kindLabels, localize, type Language } from './i18n'
 import { setMetaContent } from './utils/dom'
 import { getDistanceKm } from './utils/geo'
@@ -33,11 +32,9 @@ function App() {
   const [language, setLanguage] = useState<Language>(getInitialLanguage)
   const [activeMountainId, setActiveMountainId] = useState<MountainId>(getInitialMountainId)
   const [activeKind, setActiveKind] = useState<'all' | FeedKind>('all')
-  const [activeItsFeedId, setActiveItsFeedId] = useState<string | null>(null)
   const [nearestMountainId, setNearestMountainId] = useState<MountainId | null>(null)
-  const itsAvailable = useItsAvailable()
   const mountainIds = useMemo(() => mountains.map((m) => m.id), [])
-  const feedHealth = useFeedHealth(mountainIds, itsAvailable)
+  const feedHealth = useFeedHealth(mountainIds)
 
   const copy = appCopy[language]
 
@@ -114,20 +111,12 @@ function App() {
   const visibleFeeds = useMemo(
     () =>
       feeds.filter((feed) => {
-        if (feed.sourceType === 'its' && !itsAvailable) {
-          return false
-        }
-
         const sameMountain = feed.mountainId === activeMountainId
         const sameKind = visibleKind === 'all' || feed.kind === visibleKind
         return sameMountain && sameKind
       }),
-    [activeMountainId, itsAvailable, visibleKind],
+    [activeMountainId, visibleKind],
   )
-  const hasVisibleItsFeeds = visibleFeeds.some((feed) => feed.sourceType === 'its')
-  const visibleActiveItsFeedId = visibleFeeds.some((feed) => feed.id === activeItsFeedId)
-    ? activeItsFeedId
-    : null
 
   return (
     <div className="app-shell">
@@ -237,23 +226,12 @@ function App() {
           </div>
         </section>
 
-        {hasVisibleItsFeeds ? (
-          <section className="its-notice panel">
-            <span className="feed-badge its">{copy.itsNoticeBadge}</span>
-            <p>{copy.itsNoticeText}</p>
-          </section>
-        ) : null}
-
         <section className="simul-grid">
           {visibleFeeds.map((feed, index) => (
             <FeedCard
               key={feed.id}
               feed={feed}
-              isItsActive={feed.sourceType === 'its' && visibleActiveItsFeedId === feed.id}
               language={language}
-              onItsPlaybackChange={(nextActive) => {
-                setActiveItsFeedId(nextActive ? feed.id : (current) => (current === feed.id ? null : current))
-              }}
               priority={index < 4}
               showKind
             />

@@ -62,16 +62,10 @@ async function checkImageFeed(url: string): Promise<boolean> {
 
 async function checkMountainHealth(
   mountainId: MountainId,
-  itsAvailable: boolean,
 ): Promise<boolean> {
   const mountainFeeds = feeds.filter((f) => f.mountainId === mountainId)
 
   for (const feed of mountainFeeds) {
-    if (feed.sourceType === 'its') {
-      if (itsAvailable) return true
-      continue
-    }
-
     if (feed.sourceType === 'image') {
       const ok = await checkImageFeed(feed.sourceUrl)
       if (ok) return true
@@ -94,7 +88,6 @@ async function checkMountainHealth(
 
 export function useFeedHealth(
   mountainIds: MountainId[],
-  itsAvailable: boolean,
 ): Record<MountainId, HealthStatus> {
   const [health, setHealth] = useState<Record<string, HealthStatus>>(() => {
     const initial: Record<string, HealthStatus> = {}
@@ -110,7 +103,7 @@ export function useFeedHealth(
     const runChecks = async () => {
       const results = await Promise.all(
         mountainIds.map(async (id) => {
-          const ok = await checkMountainHealth(id, itsAvailable)
+          const ok = await checkMountainHealth(id)
           return [id, ok ? 'live' : 'offline'] as const
         }),
       )
@@ -127,7 +120,7 @@ export function useFeedHealth(
       cancelled = true
       window.clearInterval(timer)
     }
-  }, [mountainIds, itsAvailable])
+  }, [mountainIds])
 
   return health as Record<MountainId, HealthStatus>
 }

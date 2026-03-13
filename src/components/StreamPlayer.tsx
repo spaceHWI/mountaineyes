@@ -1,6 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
 import type { Feed } from '../data/feeds'
-import { useItsStreamUrl } from '../hooks/useItsUrls'
 import { localize, playerCopy, type Language } from '../i18n'
 
 type StreamStatus = 'loading' | 'ready' | 'error'
@@ -8,15 +7,12 @@ type StreamStatus = 'loading' | 'ready' | 'error'
 type StreamPlayerProps = {
   compact?: boolean
   feed: Feed
-  isItsActive?: boolean
   language: Language
-  onItsPlaybackChange?: (nextActive: boolean) => void
   priority?: boolean
 }
 
 const IMAGE_REFRESH_MS = 60_000
 const LOADING_TICK_MS = 1_000
-const ITS_WAITING_GRACE_MS = 10_000
 
 const getStatusTone = (status: StreamStatus, isPlaying: boolean) => {
   if (status === 'error') {
@@ -33,18 +29,13 @@ const getStatusTone = (status: StreamStatus, isPlaying: boolean) => {
 export function StreamPlayer({
   compact = false,
   feed,
-  isItsActive = false,
   language,
-  onItsPlaybackChange,
   priority = false,
 }: StreamPlayerProps) {
   const videoRef = useRef<HTMLVideoElement | null>(null)
   const imageUrlRef = useRef(feed.sourceUrl)
   const hasStartedPlaybackRef = useRef(false)
   const waitingTimerRef = useRef<number | null>(null)
-  const latestItsStreamUrlRef = useRef<string | null>(null)
-  const [activeItsStreamUrl, setActiveItsStreamUrl] = useState<string | null>(null)
-  const [itsSessionExpired, setItsSessionExpired] = useState(false)
   const [status, setStatus] = useState<StreamStatus>('loading')
   const [isPlaying, setIsPlaying] = useState(false)
   const [captureMessage, setCaptureMessage] = useState('')
@@ -54,48 +45,16 @@ export function StreamPlayer({
   const feedName = localize(feed.name, language)
 
   const isImageFeed = feed.sourceType === 'image'
-  const isItsFeed = feed.sourceType === 'its'
-  const itsStreamUrl = useItsStreamUrl(isItsFeed ? feed.itsDeviceId : undefined)
   const playerTone = getStatusTone(status, isPlaying)
-  const playerStatusLabel = isItsFeed && !isItsActive
-    ? copy.itsStandby
-    : status === 'error'
-      ? copy.connectionCheck
-      : copy.live
-
-  useEffect(() => {
-    latestItsStreamUrlRef.current = itsStreamUrl
-  }, [itsStreamUrl])
-
-  useEffect(() => {
-    if (!isItsFeed) {
-      setActiveItsStreamUrl(null)
-      setItsSessionExpired(false)
-      return
-    }
-
-    if (!itsStreamUrl) {
-      return
-    }
-
-    setActiveItsStreamUrl((current) => {
-      if (!current || status === 'error') {
-        return itsStreamUrl
-      }
-
-      return current
-    })
-  }, [isItsFeed, itsStreamUrl, status])
+  const playerStatusLabel = status === 'error'
+    ? copy.connectionCheck
+    : copy.live
 
   const playbackUrl = useMemo(() => {
-    if (isItsFeed) {
-      return activeItsStreamUrl ?? ''
-    }
-
     return feed.sourceUrl.startsWith('http://')
       ? `/api/proxy?target=${encodeURIComponent(feed.sourceUrl)}`
       : feed.sourceUrl
-  }, [activeItsStreamUrl, feed.sourceUrl, isItsFeed])
+  }, [feed.sourceUrl])
   const refreshedImageUrl = useMemo(
     () => `${feed.sourceUrl}${feed.sourceUrl.includes('?') ? '&' : '?'}t=${imageVersion}`,
     [feed.sourceUrl, imageVersion],
@@ -104,12 +63,6 @@ export function StreamPlayer({
   useEffect(() => {
     setCaptureMessage('')
   }, [feed.id, language])
-
-  useEffect(() => {
-    if (!isItsActive) {
-      setItsSessionExpired(false)
-    }
-  }, [isItsActive])
 
   useEffect(() => {
     if (status !== 'loading' || isImageFeed) {
@@ -152,23 +105,6 @@ export function StreamPlayer({
 
     const video = videoRef.current
 
-    if (isItsFeed && !isItsActive) {
-      hasStartedPlaybackRef.current = false
-      setStatus('ready')
-      setIsPlaying(false)
-      if (video) {
-        video.pause()
-        video.removeAttribute('src')
-        video.load()
-      }
-      return
-    }
-
-    if (isItsFeed && !playbackUrl) {
-      setStatus('loading')
-      return
-    }
-
     if (!video) {
       return
     }
@@ -184,32 +120,18 @@ export function StreamPlayer({
     }
 
     hasStartedPlaybackRef.current = false
-    setItsSessionExpired(false)
     setStatus('loading')
     setIsPlaying(false)
     video.pause()
     video.removeAttribute('src')
     video.load()
 
-    const expireItsSession = () => {
-      clearWaitingTimer()
-      setStatus('error')
-      setIsPlaying(false)
-      setItsSessionExpired(true)
-    }
-
     const handleError = () => {
-      if (isItsFeed && hasStartedPlaybackRef.current) {
-        expireItsSession()
-        return
-      }
-
       setStatus('error')
     }
     const markReady = () => {
       clearWaitingTimer()
       hasStartedPlaybackRef.current = true
-      setItsSessionExpired(false)
       setStatus('ready')
     }
     const handlePlay = () => setIsPlaying(true)
@@ -227,15 +149,6 @@ export function StreamPlayer({
       }
 
       clearWaitingTimer()
-
-      if (isItsFeed) {
-        waitingTimerRef.current = window.setTimeout(() => {
-          expireItsSession()
-          waitingTimerRef.current = null
-        }, ITS_WAITING_GRACE_MS)
-        return
-      }
-
       setStatus('loading')
     }
     const handleTimeUpdate = () => {
@@ -302,7 +215,7 @@ export function StreamPlayer({
       video.removeEventListener('waiting', handleWaiting)
       teardown?.()
     }
-  }, [activeItsStreamUrl, feed, isImageFeed, isItsActive, isItsFeed, playbackUrl])
+  }, [feed, isImageFeed, playbackUrl])
 
   const togglePlayback = async () => {
     if (isImageFeed) {
@@ -327,37 +240,7 @@ export function StreamPlayer({
     video.pause()
   }
 
-  const handleItsPlaybackToggle = () => {
-    if (!isItsFeed || !onItsPlaybackChange) {
-      return
-    }
-
-    if (isItsActive) {
-      onItsPlaybackChange(false)
-      return
-    }
-
-    setStatus('loading')
-    onItsPlaybackChange(true)
-  }
-
-  const handleItsRetry = () => {
-    const nextItsStreamUrl = latestItsStreamUrlRef.current
-
-    if (nextItsStreamUrl) {
-      setActiveItsStreamUrl(nextItsStreamUrl)
-    }
-
-    setItsSessionExpired(false)
-    setStatus('loading')
-  }
-
   const handleCapture = async () => {
-    if (isItsFeed && !isItsActive) {
-      setCaptureMessage(copy.statusStartPlaybackFirst)
-      return
-    }
-
     try {
       const canvas = document.createElement('canvas')
       const context = canvas.getContext('2d')
@@ -442,39 +325,7 @@ export function StreamPlayer({
         <span className="stream-area">{localize(feed.region, language)}</span>
       </div>
       <div className={compact ? 'stream-player compact' : 'stream-player'}>
-        {isItsFeed && !isItsActive ? (
-          <div className="stream-its-gate">
-            <button
-              className="stream-its-play-button"
-              onClick={handleItsPlaybackToggle}
-              type="button"
-            >
-              {copy.itsPlay}
-            </button>
-          </div>
-        ) : isItsFeed && itsSessionExpired ? (
-          <div className="stream-its-expired">
-            <strong>{copy.itsExpiredTitle}</strong>
-            <p>{copy.itsExpiredBody}</p>
-            <div className="stream-its-expired-actions">
-              <button
-                className="stream-its-play-button"
-                onClick={handleItsRetry}
-                type="button"
-              >
-                {copy.itsRetry}
-              </button>
-              <a
-                className="stream-its-button"
-                href={feed.officialPage}
-                rel="noreferrer"
-                target="_blank"
-              >
-                {copy.itsOpenOfficial}
-              </a>
-            </div>
-          </div>
-        ) : isImageFeed ? (
+        {isImageFeed ? (
           <img
             alt={copy.streamImageAlt(feedName)}
             className="stream-image"
@@ -525,7 +376,7 @@ export function StreamPlayer({
           </button>
         </div>
         <span className="capture-message" aria-live="polite">
-          {isItsFeed && !isItsActive ? '' : captureMessage}
+          {captureMessage}
         </span>
       </div>
     </div>

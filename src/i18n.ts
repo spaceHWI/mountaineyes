@@ -20,8 +20,6 @@ export const appCopy = {
     heroText: '전국 산 CCTV를 한눈에 보고 한손에 캡쳐하세요.',
     instagramAriaLabel: 'Instagram에서 @spacehwi로 피드백 보내기',
     instagramTitle: 'Instagram에서 피드백 보내기',
-    itsNoticeBadge: 'ITS',
-    itsNoticeText: '제주 ITS는 한 번에 하나만 재생됩니다. 보고 싶은 카드에서 재생 버튼을 눌러주세요.',
     languageLabel: '언어',
     languageOptions: {
       ko: '한국어',
@@ -48,8 +46,6 @@ export const appCopy = {
     heroText: 'Browse mountain CCTV feeds across Korea and capture them in one tap.',
     instagramAriaLabel: 'Send feedback to @spacehwi on Instagram',
     instagramTitle: 'Send feedback on Instagram',
-    itsNoticeBadge: 'ITS',
-    itsNoticeText: 'Jeju ITS plays one stream at a time. Use the play button on the card you want to watch.',
     languageLabel: 'Language',
     languageOptions: {
       ko: 'KR',
@@ -76,12 +72,6 @@ export const playerCopy = {
   ko: {
     capture: '화면 캡쳐',
     connectionCheck: '연결 확인 필요',
-    itsExpiredBody: 'ITS 세션이 만료된 것 같아요. 다시 재생하거나 공식 원본으로 이어보세요.',
-    itsExpiredTitle: '세션이 만료됐어요',
-    itsOpenOfficial: '공식 원본 보기',
-    itsPlay: '재생',
-    itsRetry: '다시 재생',
-    itsStandby: 'READY',
     live: 'LIVE',
     loadingAverage: '평균 5-10초',
     loadingBody: (seconds: number) => `스트림 연결 중입니다. ${seconds}초째 기다리는 중이에요.`,
@@ -101,12 +91,6 @@ export const playerCopy = {
   en: {
     capture: 'Capture',
     connectionCheck: 'Check stream',
-    itsExpiredBody: 'The ITS session seems to have expired. Retry here or continue on the official page.',
-    itsExpiredTitle: 'Session expired',
-    itsOpenOfficial: 'Open official source',
-    itsPlay: 'Play',
-    itsRetry: 'Retry',
-    itsStandby: 'READY',
     live: 'LIVE',
     loadingAverage: 'avg. 5-10s',
     loadingBody: (seconds: number) => `Connecting to the stream. Waiting for ${seconds}s.`,
