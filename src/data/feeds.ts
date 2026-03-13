@@ -43,6 +43,8 @@ export type MountainId =
   | 'stmoritz'
   | 'hintertux'
   | 'mthood'
+  | 'kitzsteinhorn'
+  | 'arlberg'
 
 export type FeedKind = 'summit' | 'access' | 'view'
 
@@ -2393,5 +2395,49 @@ export const worldPicks: Feed[] = [
     officialPage: 'https://www.timberlinelodge.com/webcams',
     sourceType: 'image',
     sourceUrl: 'https://www.timberlinelodge.com/snowcameras/lodge.jpg',
+  },
+  {
+    id: 'kitzsteinhorn-nationalpark',
+    name: { ko: '키츠슈타인호른 국립공원 갤러리 (3029m)', en: 'Kitzsteinhorn Nationalpark Gallery (3029m)' },
+    mountainId: 'kitzsteinhorn',
+    kind: 'summit',
+    region: { ko: '오스트리아', en: 'Austria' },
+    provider: { ko: 'Panomax', en: 'Panomax' },
+    officialPage: 'https://kitzsteinhorn.panomax.com/',
+    sourceType: 'image',
+    sourceUrl: 'https://panodata.panomax.com/cams/11024/recent_small.jpg',
+  },
+  {
+    id: 'arlberg-ischgl',
+    name: { ko: '이쉬글 팔린코프 (2864m)', en: 'Ischgl Palinkopf (2864m)' },
+    mountainId: 'arlberg',
+    kind: 'summit',
+    region: { ko: '오스트리아', en: 'Austria' },
+    provider: { ko: 'Panomax', en: 'Panomax' },
+    officialPage: 'https://ischgl.panomax.com/',
+    sourceType: 'image',
+    sourceUrl: 'https://panodata.panomax.com/cams/101/recent_small.jpg',
+  },
+  {
+    id: 'arlberg-lech',
+    name: { ko: '레흐 크리거호른 (2173m)', en: 'Lech Kriegerhorn (2173m)' },
+    mountainId: 'arlberg',
+    kind: 'view',
+    region: { ko: '오스트리아', en: 'Austria' },
+    provider: { ko: 'Panomax', en: 'Panomax' },
+    officialPage: 'https://lech.panomax.com/',
+    sourceType: 'image',
+    sourceUrl: 'https://panodata.panomax.com/cams/982/recent_small.jpg',
+  },
+  {
+    id: 'arlberg-stanton',
+    name: { ko: '잣텔코프 상트안톤 (2240m)', en: 'Sattelkopf St. Anton (2240m)' },
+    mountainId: 'arlberg',
+    kind: 'view',
+    region: { ko: '오스트리아', en: 'Austria' },
+    provider: { ko: 'Panomax', en: 'Panomax' },
+    officialPage: 'https://st-anton.panomax.com/',
+    sourceType: 'image',
+    sourceUrl: 'https://panodata.panomax.com/cams/5366/recent_small.jpg',
   },
 ]
