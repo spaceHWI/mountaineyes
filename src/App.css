@@ -245,7 +245,7 @@
 .simul-grid,
 .world-block,
 .empty-state {
-  margin-top: 0.35rem;
+  margin-top: 0.8rem;
 }
 
 .toolbar {
@@ -342,7 +342,7 @@
 .simul-grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 0.35rem;
+  gap: 0.8rem;
 }
 
 .simul-card {
@@ -424,7 +424,7 @@
   align-items: flex-start;
   justify-content: space-between;
   gap: 1rem;
-  margin-top: 0.35rem;
+  margin-top: 0.8rem;
   padding: 1rem 1.1rem;
 }
 
