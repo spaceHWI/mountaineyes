@@ -1815,17 +1815,6 @@ export const worldPicks: Feed[] = [
     sourceUrl: 'https://www.nps.gov/webcams-glac/StMaryPTZ.jpg',
   },
   {
-    id: 'banff-gondola-summit',
-    name: { ko: '밴프 곤돌라 정상', en: 'Banff Gondola Summit' },
-    mountainId: 'banff',
-    kind: 'summit',
-    region: { ko: '캐나다', en: 'Canada' },
-    provider: { ko: 'Pursuit / Banff Gondola', en: 'Pursuit / Banff Gondola' },
-    officialPage: 'https://banffgondola.com/',
-    sourceType: 'image',
-    sourceUrl: 'https://banffgondola.com/assets/webcam/banff-gondola-top.jpg',
-  },
-  {
     id: 'montblanc-brevent-summit',
     name: { ko: '브레방 정상 파노라마 (2525m)', en: 'Brevent Summit Panorama (2525m)' },
     mountainId: 'montblanc',
