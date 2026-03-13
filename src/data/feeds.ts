@@ -20,6 +20,9 @@ export type MountainId =
   | 'mtfuji'
   | 'maunakea'
   | 'kilauea'
+  | 'mtrainier'
+  | 'matterhorn'
+  | 'zugspitze'
 
 export type FeedKind = 'summit' | 'access' | 'view'
 
@@ -721,5 +724,82 @@ export const worldPicks: Feed[] = [
     officialPage: 'https://volcanoes.usgs.gov/observatories/hvo/',
     sourceType: 'image',
     sourceUrl: 'https://volcanoes.usgs.gov/observatories/hvo/cams/MLcam/images/M.jpg',
+  },
+  {
+    id: 'mtrainier-mountain',
+    name: { ko: '레이니어 산 정상', en: 'Mt Rainier Summit View' },
+    mountainId: 'mtrainier',
+    kind: 'summit',
+    region: { ko: '미국 워싱턴', en: 'Washington, USA' },
+    provider: { ko: '미국 국립공원관리청', en: 'U.S. National Park Service' },
+    officialPage: 'https://www.nps.gov/mora/learn/photosmultimedia/webcams.htm',
+    sourceType: 'image',
+    sourceUrl: 'https://www.nps.gov/webcams-mora/mountain.jpg',
+  },
+  {
+    id: 'mtrainier-tatoosh',
+    name: { ko: '타투쉬 산맥 전경', en: 'Tatoosh Range View' },
+    mountainId: 'mtrainier',
+    kind: 'view',
+    region: { ko: '미국 워싱턴', en: 'Washington, USA' },
+    provider: { ko: '미국 국립공원관리청', en: 'U.S. National Park Service' },
+    officialPage: 'https://www.nps.gov/mora/learn/photosmultimedia/webcams.htm',
+    sourceType: 'image',
+    sourceUrl: 'https://www.nps.gov/webcams-mora/tatoosh.jpg',
+  },
+  {
+    id: 'mtrainier-east',
+    name: { ko: '동쪽 전경', en: 'East View' },
+    mountainId: 'mtrainier',
+    kind: 'view',
+    region: { ko: '미국 워싱턴', en: 'Washington, USA' },
+    provider: { ko: '미국 국립공원관리청', en: 'U.S. National Park Service' },
+    officialPage: 'https://www.nps.gov/mora/learn/photosmultimedia/webcams.htm',
+    sourceType: 'image',
+    sourceUrl: 'https://www.nps.gov/webcams-mora/east.jpg',
+  },
+  {
+    id: 'mtrainier-longmire',
+    name: { ko: '롱마이어 입구', en: 'Longmire Entrance' },
+    mountainId: 'mtrainier',
+    kind: 'access',
+    region: { ko: '미국 워싱턴', en: 'Washington, USA' },
+    provider: { ko: '미국 국립공원관리청', en: 'U.S. National Park Service' },
+    officialPage: 'https://www.nps.gov/mora/learn/photosmultimedia/webcams.htm',
+    sourceType: 'image',
+    sourceUrl: 'https://www.nps.gov/webcams-mora/longmire.jpg',
+  },
+  {
+    id: 'matterhorn-gornergrat',
+    name: { ko: '고르너그라트 파노라마 (3100m)', en: 'Gornergrat Panorama (3100m)' },
+    mountainId: 'matterhorn',
+    kind: 'view',
+    region: { ko: '스위스', en: 'Switzerland' },
+    provider: { ko: 'Roundshot / Gornergrat Bahn', en: 'Roundshot / Gornergrat Bahn' },
+    officialPage: 'https://www.zermatt.ch/en/Webcams',
+    sourceType: 'image',
+    sourceUrl: 'https://backend.roundshot.com/cams/241/thumbnail',
+  },
+  {
+    id: 'matterhorn-village',
+    name: { ko: '체르마트 마을', en: 'Zermatt Village' },
+    mountainId: 'matterhorn',
+    kind: 'access',
+    region: { ko: '스위스', en: 'Switzerland' },
+    provider: { ko: 'Roundshot / Zermatt Tourismus', en: 'Roundshot / Zermatt Tourismus' },
+    officialPage: 'https://www.zermatt.ch/en/Webcams',
+    sourceType: 'image',
+    sourceUrl: 'https://backend.roundshot.com/cams/242/thumbnail',
+  },
+  {
+    id: 'zugspitze-summit',
+    name: { ko: '추크슈피체 정상 (2962m)', en: 'Zugspitze Summit (2962m)' },
+    mountainId: 'zugspitze',
+    kind: 'summit',
+    region: { ko: '독일', en: 'Germany' },
+    provider: { ko: 'Panomax', en: 'Panomax' },
+    officialPage: 'https://www.zugspitze.de/en/the-mountain/webcam',
+    sourceType: 'image',
+    sourceUrl: 'https://panodata.panomax.com/cams/892/recent_small.jpg',
   },
 ]
