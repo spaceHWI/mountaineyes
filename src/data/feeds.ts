@@ -59,6 +59,25 @@ export type MountainId =
   | 'narvik'
   | 'livigno'
   | 'saalbach'
+  | 'whistler'
+  | 'telluride'
+  | 'aspen'
+  | 'snowbird'
+  | 'stowe'
+  | 'bigwhite'
+  | 'valdisere'
+  | 'courchevel'
+  | 'tignes'
+  | 'grindelwaldrs'
+  | 'laax'
+  | 'lenzerheide'
+  | 'kandersteg'
+  | 'nendaz'
+  | 'anzere'
+  | 'queenstown'
+  | 'coronetpeak'
+  | 'konjiamresort'
+  | 'o2resort'
 
 export type FeedKind = 'summit' | 'access' | 'view'
 
@@ -2977,5 +2996,236 @@ export const worldPicks: Feed[] = [
     officialPage: 'https://saalbach.panomax.com/',
     sourceType: 'image',
     sourceUrl: 'https://panodata.panomax.com/cams/1305/recent_small.jpg',
+  },
+  // --- Sessions 27-30: New mountain webcam feeds ---
+  // === NORTH AMERICA ===
+  // --- Whistler Blackcomb, BC, Canada ---
+  {
+    id: 'whistler-village',
+    name: { ko: '휘슬러 빌리지', en: 'Whistler Village' },
+    mountainId: 'whistler',
+    kind: 'view',
+    region: { ko: '캐나다', en: 'Canada' },
+    provider: { ko: 'Roundshot', en: 'Roundshot' },
+    officialPage: 'https://www.whistlerblackcomb.com/',
+    sourceType: 'image',
+    sourceUrl: 'https://backend.roundshot.com/cams/1114/thumbnail',
+  },
+  {
+    id: 'whistler-blackcomb',
+    name: { ko: '블랙콤 마운틴', en: 'Blackcomb Mountain' },
+    mountainId: 'whistler',
+    kind: 'summit',
+    region: { ko: '캐나다', en: 'Canada' },
+    provider: { ko: 'Roundshot', en: 'Roundshot' },
+    officialPage: 'https://www.whistlerblackcomb.com/',
+    sourceType: 'image',
+    sourceUrl: 'https://backend.roundshot.com/cams/1115/thumbnail',
+  },
+  {
+    id: 'whistler-panorama',
+    name: { ko: '휘슬러 파노라마', en: 'Whistler Panorama' },
+    mountainId: 'whistler',
+    kind: 'view',
+    region: { ko: '캐나다', en: 'Canada' },
+    provider: { ko: 'Panomax', en: 'Panomax' },
+    officialPage: 'https://whistler.panomax.com/',
+    sourceType: 'image',
+    sourceUrl: 'https://panodata.panomax.com/cams/5602/recent_small.jpg',
+  },
+  // --- Big White, BC, Canada ---
+  {
+    id: 'bigwhite-village',
+    name: { ko: '빅화이트 빌리지', en: 'Big White Village' },
+    mountainId: 'bigwhite',
+    kind: 'view',
+    region: { ko: '캐나다', en: 'Canada' },
+    provider: { ko: 'Roundshot', en: 'Roundshot' },
+    officialPage: 'https://www.bigwhite.com/',
+    sourceType: 'image',
+    sourceUrl: 'https://backend.roundshot.com/cams/366/thumbnail',
+  },
+  // --- Telluride, Colorado, USA ---
+  {
+    id: 'telluride-panorama',
+    name: { ko: '텔루라이드 파노라마 (2667m)', en: 'Telluride Panorama (2667m)' },
+    mountainId: 'telluride',
+    kind: 'view',
+    region: { ko: '미국', en: 'USA' },
+    provider: { ko: 'Roundshot', en: 'Roundshot' },
+    officialPage: 'https://www.tellurideskiresort.com/',
+    sourceType: 'image',
+    sourceUrl: 'https://backend.roundshot.com/cams/1058/thumbnail',
+  },
+  // --- Aspen, Colorado, USA ---
+  {
+    id: 'aspen-panorama',
+    name: { ko: '아스펜 마운틴 파노라마 (3418m)', en: 'Aspen Mountain Panorama (3418m)' },
+    mountainId: 'aspen',
+    kind: 'summit',
+    region: { ko: '미국', en: 'USA' },
+    provider: { ko: 'Roundshot', en: 'Roundshot' },
+    officialPage: 'https://www.aspensnowmass.com/',
+    sourceType: 'image',
+    sourceUrl: 'https://backend.roundshot.com/cams/87/thumbnail',
+  },
+  // --- Snowbird, Utah, USA ---
+  {
+    id: 'snowbird-panorama',
+    name: { ko: '스노우버드 파노라마 (3353m)', en: 'Snowbird Panorama (3353m)' },
+    mountainId: 'snowbird',
+    kind: 'summit',
+    region: { ko: '미국', en: 'USA' },
+    provider: { ko: 'Roundshot', en: 'Roundshot' },
+    officialPage: 'https://www.snowbird.com/',
+    sourceType: 'image',
+    sourceUrl: 'https://backend.roundshot.com/cams/1003/thumbnail',
+  },
+  // --- Stowe, Vermont, USA ---
+  {
+    id: 'stowe-panorama',
+    name: { ko: '스토우 마운틴 파노라마 (1339m)', en: 'Stowe Mountain Panorama (1339m)' },
+    mountainId: 'stowe',
+    kind: 'view',
+    region: { ko: '미국', en: 'USA' },
+    provider: { ko: 'Roundshot', en: 'Roundshot' },
+    officialPage: 'https://www.stowe.com/',
+    sourceType: 'image',
+    sourceUrl: 'https://backend.roundshot.com/cams/289/thumbnail',
+  },
+  // === FRANCE ===
+  // --- Val d'Isère, France ---
+  {
+    id: 'valdisere-panorama',
+    name: { ko: '발디제르 파노라마 (1850m)', en: "Val d'Isère Panorama (1850m)" },
+    mountainId: 'valdisere',
+    kind: 'view',
+    region: { ko: '프랑스', en: 'France' },
+    provider: { ko: 'Roundshot', en: 'Roundshot' },
+    officialPage: 'https://www.valdisere.com/',
+    sourceType: 'image',
+    sourceUrl: 'https://backend.roundshot.com/cams/226/thumbnail',
+  },
+  // --- Courchevel, France ---
+  {
+    id: 'courchevel-panorama',
+    name: { ko: '쿠르쉬벨 파노라마 (1850m)', en: 'Courchevel Panorama (1850m)' },
+    mountainId: 'courchevel',
+    kind: 'view',
+    region: { ko: '프랑스', en: 'France' },
+    provider: { ko: 'Roundshot', en: 'Roundshot' },
+    officialPage: 'https://www.courchevel.com/',
+    sourceType: 'image',
+    sourceUrl: 'https://backend.roundshot.com/cams/197/thumbnail',
+  },
+  // --- Tignes, France ---
+  {
+    id: 'tignes-panorama',
+    name: { ko: '티뉴 파노라마 (2100m)', en: 'Tignes Panorama (2100m)' },
+    mountainId: 'tignes',
+    kind: 'view',
+    region: { ko: '프랑스', en: 'France' },
+    provider: { ko: 'Roundshot', en: 'Roundshot' },
+    officialPage: 'https://www.tignes.net/',
+    sourceType: 'image',
+    sourceUrl: 'https://backend.roundshot.com/cams/260/thumbnail',
+  },
+  // === SWITZERLAND (additional) ===
+  // --- Grindelwald, Switzerland ---
+  {
+    id: 'grindelwaldrs-panorama',
+    name: { ko: '그린델발트 파노라마 (1034m)', en: 'Grindelwald Panorama (1034m)' },
+    mountainId: 'grindelwaldrs',
+    kind: 'view',
+    region: { ko: '스위스', en: 'Switzerland' },
+    provider: { ko: 'Roundshot', en: 'Roundshot' },
+    officialPage: 'https://www.grindelwald.swiss/',
+    sourceType: 'image',
+    sourceUrl: 'https://backend.roundshot.com/cams/1314/thumbnail',
+  },
+  // --- LAAX, Switzerland ---
+  {
+    id: 'laax-panorama',
+    name: { ko: 'LAAX 파노라마 (2252m)', en: 'LAAX Panorama (2252m)' },
+    mountainId: 'laax',
+    kind: 'summit',
+    region: { ko: '스위스', en: 'Switzerland' },
+    provider: { ko: 'Roundshot', en: 'Roundshot' },
+    officialPage: 'https://www.laax.com/',
+    sourceType: 'image',
+    sourceUrl: 'https://backend.roundshot.com/cams/42/thumbnail',
+  },
+  // --- Lenzerheide, Switzerland ---
+  {
+    id: 'lenzerheide-panorama',
+    name: { ko: '렌처하이데 파노라마 (1476m)', en: 'Lenzerheide Panorama (1476m)' },
+    mountainId: 'lenzerheide',
+    kind: 'view',
+    region: { ko: '스위스', en: 'Switzerland' },
+    provider: { ko: 'Roundshot', en: 'Roundshot' },
+    officialPage: 'https://www.lenzerheide.com/',
+    sourceType: 'image',
+    sourceUrl: 'https://backend.roundshot.com/cams/51/thumbnail',
+  },
+  // --- Kandersteg, Switzerland ---
+  {
+    id: 'kandersteg-panorama',
+    name: { ko: '칸더슈테크 파노라마 (1176m)', en: 'Kandersteg Panorama (1176m)' },
+    mountainId: 'kandersteg',
+    kind: 'view',
+    region: { ko: '스위스', en: 'Switzerland' },
+    provider: { ko: 'Roundshot', en: 'Roundshot' },
+    officialPage: 'https://www.kandersteg.ch/',
+    sourceType: 'image',
+    sourceUrl: 'https://backend.roundshot.com/cams/1061/thumbnail',
+  },
+  // --- Nendaz, Switzerland ---
+  {
+    id: 'nendaz-panorama',
+    name: { ko: '넨다즈 파노라마 (1365m)', en: 'Nendaz Panorama (1365m)' },
+    mountainId: 'nendaz',
+    kind: 'view',
+    region: { ko: '스위스', en: 'Switzerland' },
+    provider: { ko: 'Roundshot', en: 'Roundshot' },
+    officialPage: 'https://www.nendaz.ch/',
+    sourceType: 'image',
+    sourceUrl: 'https://backend.roundshot.com/cams/1069/thumbnail',
+  },
+  // --- Anzère, Switzerland ---
+  {
+    id: 'anzere-panorama',
+    name: { ko: '앙제르 파노라마 (1500m)', en: 'Anzère Panorama (1500m)' },
+    mountainId: 'anzere',
+    kind: 'view',
+    region: { ko: '스위스', en: 'Switzerland' },
+    provider: { ko: 'Roundshot', en: 'Roundshot' },
+    officialPage: 'https://www.anzere.ch/',
+    sourceType: 'image',
+    sourceUrl: 'https://backend.roundshot.com/cams/2/thumbnail',
+  },
+  // === NEW ZEALAND ===
+  // --- Queenstown / The Remarkables, NZ ---
+  {
+    id: 'queenstown-panorama',
+    name: { ko: '퀸스타운 리마커블스 파노라마', en: 'Queenstown Remarkables Panorama' },
+    mountainId: 'queenstown',
+    kind: 'view',
+    region: { ko: '뉴질랜드', en: 'New Zealand' },
+    provider: { ko: 'Roundshot', en: 'Roundshot' },
+    officialPage: 'https://www.queenstownnz.co.nz/',
+    sourceType: 'image',
+    sourceUrl: 'https://backend.roundshot.com/cams/484/thumbnail',
+  },
+  // --- Coronet Peak, NZ ---
+  {
+    id: 'coronetpeak-panorama',
+    name: { ko: '코로넷 피크 파노라마 (1651m)', en: 'Coronet Peak Panorama (1651m)' },
+    mountainId: 'coronetpeak',
+    kind: 'summit',
+    region: { ko: '뉴질랜드', en: 'New Zealand' },
+    provider: { ko: 'Panomax', en: 'Panomax' },
+    officialPage: 'https://www.nzski.com/queenstown/the-mountains/coronet-peak',
+    sourceType: 'image',
+    sourceUrl: 'https://panodata.panomax.com/cams/2986/recent_small.jpg',
   },
 ]
