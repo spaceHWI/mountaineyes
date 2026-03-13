@@ -32,7 +32,7 @@ export const appCopy = {
     officialSource: '공식 원본',
     pageDescription:
       'MountainEyes는 한라산, 설악산, 발왕산 등 국내 산 CCTV를 한곳에서 보고 가까운 산을 먼저 추천해주는 실시간 산 CCTV 서비스입니다.',
-    pageTitle: 'MountainEyes V1.1',
+    pageTitle: 'MountainEyes V1.2',
     poweredBy: 'Powered by HWI',
     twitterDescription: '전국 산 CCTV를 한눈에 보고 가까운 산을 먼저 추천받는 실시간 산 CCTV 서비스',
     worldPickDescription: '전 세계 유명 산의 실시간 웹캠을 랜덤으로 보여줍니다.',
@@ -58,7 +58,7 @@ export const appCopy = {
     officialSource: 'Official Source',
     pageDescription:
       'MountainEyes is a live mountain CCTV service that brings together official feeds from Hallasan, Seoraksan, Balwangsan, and more.',
-    pageTitle: 'MountainEyes V1.1',
+    pageTitle: 'MountainEyes V1.2',
     poweredBy: 'Powered by HWI',
     twitterDescription: 'Live mountain CCTV feeds with nearest-mountain recommendations',
     worldPickDescription:
