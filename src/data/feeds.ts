@@ -370,18 +370,6 @@ export const mountains: Mountain[] = [
       en: 'A resort at 700-1,100 m in Taebaek city near Taebaeksan. Live webcams cover the ski house and slopes.',
     },
   },
-  {
-    id: 'geilo',
-    name: { ko: '게일로', en: 'Geilo' },
-    region: { ko: '노르웨이', en: 'Norway' },
-    lat: 60.5340,
-    lng: 8.2060,
-    officialPage: 'https://geilo.panomax.com/',
-    description: {
-      ko: '노르웨이 하르당에르비다 고원의 스키 리조트. Panomax 웹캠으로 실시간 확인 가능.',
-      en: 'A ski resort on the Hardangervidda plateau in Norway. Live Panomax webcam available.',
-    },
-  },
 ]
 
 export const feeds: Feed[] = [
