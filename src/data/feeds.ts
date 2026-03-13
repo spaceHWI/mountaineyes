@@ -23,6 +23,9 @@ export type MountainId =
   | 'mtrainier'
   | 'matterhorn'
   | 'zugspitze'
+  | 'jungfrau'
+  | 'schilthorn'
+  | 'tablemountain'
 
 export type FeedKind = 'summit' | 'access' | 'view'
 
@@ -801,5 +804,60 @@ export const worldPicks: Feed[] = [
     officialPage: 'https://www.zugspitze.de/en/the-mountain/webcam',
     sourceType: 'image',
     sourceUrl: 'https://panodata.panomax.com/cams/892/recent_small.jpg',
+  },
+  {
+    id: 'jungfrau-jungfraujoch',
+    name: { ko: '융프라우요흐 (3454m)', en: 'Jungfraujoch Top of Europe (3454m)' },
+    mountainId: 'jungfrau',
+    kind: 'summit',
+    region: { ko: '스위스', en: 'Switzerland' },
+    provider: { ko: 'Roundshot / Jungfrau Railways', en: 'Roundshot / Jungfrau Railways' },
+    officialPage: 'https://www.jungfrau.ch/en-gb/live/webcams/',
+    sourceType: 'image',
+    sourceUrl: 'https://backend.roundshot.com/cams/1087/thumbnail',
+  },
+  {
+    id: 'jungfrau-ostgrat',
+    name: { ko: '융프라우 동릉', en: 'Jungfrau East Ridge' },
+    mountainId: 'jungfrau',
+    kind: 'view',
+    region: { ko: '스위스', en: 'Switzerland' },
+    provider: { ko: 'Roundshot / Jungfrau Railways', en: 'Roundshot / Jungfrau Railways' },
+    officialPage: 'https://www.jungfrau.ch/en-gb/live/webcams/',
+    sourceType: 'image',
+    sourceUrl: 'https://backend.roundshot.com/cams/862/thumbnail',
+  },
+  {
+    id: 'jungfrau-panomax',
+    name: { ko: '융프라우요흐 파노라마', en: 'Jungfraujoch Panorama' },
+    mountainId: 'jungfrau',
+    kind: 'view',
+    region: { ko: '스위스', en: 'Switzerland' },
+    provider: { ko: 'Panomax', en: 'Panomax' },
+    officialPage: 'https://panocam.skiline.cc/jungfraujoch',
+    sourceType: 'image',
+    sourceUrl: 'https://panodata.panomax.com/cams/329/recent_small.jpg',
+  },
+  {
+    id: 'schilthorn-pizgloria',
+    name: { ko: '쉴트호른 피츠 글로리아 (2970m)', en: 'Schilthorn Piz Gloria (2970m)' },
+    mountainId: 'schilthorn',
+    kind: 'summit',
+    region: { ko: '스위스', en: 'Switzerland' },
+    provider: { ko: 'Roundshot / Schilthorn', en: 'Roundshot / Schilthorn' },
+    officialPage: 'https://schilthorn.ch/en/Webcams',
+    sourceType: 'image',
+    sourceUrl: 'https://backend.roundshot.com/cams/428/thumbnail',
+  },
+  {
+    id: 'tablemountain-panorama',
+    name: { ko: '테이블 마운틴 파노라마', en: 'Table Mountain Panorama' },
+    mountainId: 'tablemountain',
+    kind: 'view',
+    region: { ko: '남아프리카공화국', en: 'South Africa' },
+    provider: { ko: 'Panomax', en: 'Panomax' },
+    officialPage: 'https://tablemountain.panomax.com/',
+    sourceType: 'image',
+    sourceUrl: 'https://panodata.panomax.com/cams/5058/recent_small.jpg',
   },
 ]

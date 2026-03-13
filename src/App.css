@@ -441,7 +441,7 @@
   display: flex;
   align-items: center;
   gap: 0.6rem;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
 }
 
 .pin-toggle {
@@ -539,9 +539,12 @@
   background: rgba(0, 0, 0, 0.3);
 }
 
-.mountain-picker-menu {
+.mountain-picker-menu-wrap {
   position: fixed;
   z-index: 1000;
+}
+
+.mountain-picker-menu {
   min-width: 100%;
   max-height: 20rem;
   overflow-y: auto;
@@ -553,6 +556,35 @@
   box-shadow: 0 12px 36px rgba(27, 53, 35, 0.14);
   backdrop-filter: blur(18px);
   list-style: none;
+}
+
+.mountain-picker-scroll-hint {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 2.5rem;
+  pointer-events: none;
+  border-radius: 0 0 1rem 1rem;
+  background: linear-gradient(to bottom, transparent, rgba(255, 255, 255, 0.92));
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  padding-bottom: 0.35rem;
+  transition: opacity 0.2s;
+}
+
+.mountain-picker-scroll-hint svg {
+  width: 16px;
+  height: 16px;
+  color: #3a5a44;
+  opacity: 0.6;
+  animation: scroll-hint-bounce 1.2s ease-in-out infinite;
+}
+
+@keyframes scroll-hint-bounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(3px); }
 }
 
 .mountain-picker-option {
@@ -1007,7 +1039,8 @@
   }
 
   .soft-badge.compact {
-    white-space: normal;
+    white-space: nowrap;
+    font-size: 0.72rem;
   }
 
   .mountain-select {
@@ -1021,8 +1054,8 @@
   }
 
   .mountain-picker-row {
-    flex-direction: column;
-    align-items: stretch;
+    flex-direction: row;
+    align-items: center;
   }
 
   .preset-chip-list.compact {

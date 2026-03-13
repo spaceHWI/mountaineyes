@@ -191,8 +191,8 @@ function App() {
               <span className="soft-badge compact">
                 <Icon name="megaphone" />
                 {language === 'ko'
-                  ? '2026.03.13 — 전국 14개 산 + 세계 7개 산 웹캠 추가, 실시간 날씨 표시'
-                  : '2026.03.13 — 14 Korean + 7 world mountain webcams added, live weather'}
+                  ? '260313 — 14개 산 + 세계 7개 산, 실시간 날씨'
+                  : '260313 — 14 KR + 7 world cams, live weather'}
               </span>
             </div>
           </div>

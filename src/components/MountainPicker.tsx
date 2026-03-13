@@ -30,7 +30,6 @@ export function MountainPicker({ health, language, mountains, onChange, value }:
     if (!triggerRef.current) return
     const rect = triggerRef.current.getBoundingClientRect()
     setMenuStyle({
-      position: 'fixed',
       top: rect.bottom + 6,
       left: rect.left,
       minWidth: rect.width,
@@ -74,33 +73,52 @@ export function MountainPicker({ health, language, mountains, onChange, value }:
       {open && createPortal(
         <>
           <div className="mountain-picker-backdrop" onClick={() => setOpen(false)} />
-          <ul className="mountain-picker-menu" role="listbox" ref={menuRef} style={menuStyle}>
-            {mountains.map((mountain) => {
-              const status = health[mountain.id] ?? 'checking'
-              const isActive = mountain.id === value
+          <div className="mountain-picker-menu-wrap" style={menuStyle}>
+            <ul
+              className="mountain-picker-menu"
+              role="listbox"
+              ref={menuRef}
+              onScroll={(e) => {
+                const el = e.currentTarget
+                const hint = el.parentElement?.querySelector('.mountain-picker-scroll-hint') as HTMLElement | null
+                if (hint) {
+                  const atBottom = el.scrollHeight - el.scrollTop - el.clientHeight < 8
+                  hint.style.opacity = atBottom ? '0' : '1'
+                }
+              }}
+            >
+              {mountains.map((mountain) => {
+                const status = health[mountain.id] ?? 'checking'
+                const isActive = mountain.id === value
 
-              return (
-                <li key={mountain.id} role="option" aria-selected={isActive}>
-                  <button
-                    className={`mountain-picker-option ${isActive ? 'active' : ''}`}
-                    onClick={() => {
-                      onChange(mountain.id)
-                      setOpen(false)
-                    }}
-                    type="button"
-                  >
-                    <span className={statusDotClass[status]} />
-                    <span className="mountain-picker-option-name">
-                      {localize(mountain.name, language)}
-                    </span>
-                    <span className="mountain-picker-option-region">
-                      {localize(mountain.region, language)}
-                    </span>
-                  </button>
-                </li>
-              )
-            })}
-          </ul>
+                return (
+                  <li key={mountain.id} role="option" aria-selected={isActive}>
+                    <button
+                      className={`mountain-picker-option ${isActive ? 'active' : ''}`}
+                      onClick={() => {
+                        onChange(mountain.id)
+                        setOpen(false)
+                      }}
+                      type="button"
+                    >
+                      <span className={statusDotClass[status]} />
+                      <span className="mountain-picker-option-name">
+                        {localize(mountain.name, language)}
+                      </span>
+                      <span className="mountain-picker-option-region">
+                        {localize(mountain.region, language)}
+                      </span>
+                    </button>
+                  </li>
+                )
+              })}
+            </ul>
+            <div className="mountain-picker-scroll-hint">
+              <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M4 6l4 4 4-4" />
+              </svg>
+            </div>
+          </div>
         </>,
         document.body,
       )}
