@@ -9,6 +9,7 @@ export type MountainId =
   | 'odaesan'
   | 'chiaksan'
   | 'taebaeksan'
+  | 'bukhansan'
   | 'montblanc'
 
 export type FeedKind = 'summit' | 'access' | 'view'
@@ -119,6 +120,18 @@ export const mountains: Mountain[] = [
     description: {
       ko: '국립공원공단 공식 실시간영상에서 천제단 화면을 확인할 수 있습니다.',
       en: 'The official live stream provides the Cheonjedan summit view.',
+    },
+  },
+  {
+    id: 'bukhansan',
+    name: { ko: '북한산', en: 'Bukhansan' },
+    region: { ko: '서울·경기', en: 'Seoul · Gyeonggi' },
+    lat: 37.6586,
+    lng: 126.9780,
+    officialPage: 'https://www.knps.or.kr/front/portal/visit/visitCctvList.do',
+    description: {
+      ko: '수도권 대표 국립공원으로, 국립공원공단 실시간 CCTV를 통해 산 풍경을 확인할 수 있습니다.',
+      en: 'Seoul\'s iconic national park with a live CCTV feed provided by the Korea National Park Service.',
     },
   },
 ]
@@ -337,6 +350,17 @@ export const feeds: Feed[] = [
     officialPage: 'https://www.weather.go.kr/gangwon/maple/cctv.php',
     sourceType: 'hls',
     sourceUrl: 'https://live.knps.or.kr/cctv/hls/zchunje.m3u8',
+  },
+  {
+    id: 'bukhansan-main',
+    name: { ko: '북한산', en: 'Bukhansan' },
+    mountainId: 'bukhansan',
+    kind: 'view',
+    region: { ko: '서울·경기', en: 'Seoul · Gyeonggi' },
+    provider: { ko: '국립공원공단', en: 'Korea National Park Service' },
+    officialPage: 'https://www.knps.or.kr/front/portal/visit/visitCctvList.do',
+    sourceType: 'hls',
+    sourceUrl: 'https://live.knps.or.kr/cctv/hls/bukhan.m3u8',
   },
 ]
 
