@@ -16,28 +16,15 @@ import { getInitialLanguage, getInitialMountainId, isPinnedOnLoad, LANGUAGE_STOR
 
 const LANGUAGE_OPTIONS = ['ko', 'en'] as const
 
-const getKindIcon = (kind: FeedKind | 'all') => {
-  if (kind === 'all') {
-    return 'grid'
-  }
-
-  if (kind === 'summit') {
-    return 'mountain'
-  }
-
-  if (kind === 'view') {
-    return 'view'
-  }
-
-  return 'path'
-}
+const KIND_ICONS = {
+  all: 'grid', summit: 'mountain', view: 'view', access: 'path',
+} as const
 
 function App() {
   const [language, setLanguage] = useState<Language>(getInitialLanguage)
   const [activeMountainId, setActiveMountainId] = useState<MountainId>(getInitialMountainId)
   const [pinned, setPinned] = useState(isPinnedOnLoad)
   const [activeKind, setActiveKind] = useState<'all' | FeedKind>('all')
-  const [, setNearestMountainId] = useState<MountainId | null>(null)
   const mountainIds = useMemo(() => mountains.map((m) => m.id), [])
   const feedHealth = useFeedHealth(mountainIds)
 
@@ -79,11 +66,8 @@ function App() {
         if (!isPinnedOnLoad()) {
           setActiveMountainId(nearestMountain.mountainId)
         }
-        setNearestMountainId(nearestMountain.mountainId)
       },
-      () => {
-        setNearestMountainId(null)
-      },
+      () => {},
       {
         enableHighAccuracy: false,
         maximumAge: 1000 * 60 * 10,
@@ -92,11 +76,7 @@ function App() {
     )
   }, [])
 
-  const worldMountainIds = useMemo(() => {
-    const ids = new Set<string>()
-    worldPicks.forEach((f) => ids.add(f.mountainId))
-    return Array.from(ids)
-  }, [])
+  const worldMountainIds = useMemo(() => [...new Set(worldPicks.map((f) => f.mountainId))] as MountainId[], [])
 
   const [activeWorldMountainId, setActiveWorldMountainId] = useState(() => {
     const idx = Math.floor(Math.random() * worldMountainIds.length)
@@ -124,6 +104,7 @@ function App() {
   }, [activeMountainId])
 
   const visibleKind = availableKinds.includes(activeKind) ? activeKind : 'all'
+  const sunLabel = weather ? getSunLabel(weather.sunrise, weather.sunset) : null
 
   const visibleFeeds = useMemo(
     () =>
@@ -226,7 +207,7 @@ function App() {
                     onClick={() => setActiveKind(preset)}
                     type="button"
                   >
-                    <Icon name={getKindIcon(preset)} />
+                    <Icon name={KIND_ICONS[preset]} />
                     {preset === 'all' ? copy.allLabel : localize(kindLabels[preset], language)}
                   </button>
                 ))}
@@ -241,19 +222,16 @@ function App() {
               <p className="eyebrow">{copy.liveMountainEyebrow}</p>
               <div className="mountain-title-row">
                 <h2>{localize(activeMountain.name, language)}</h2>
-                {weather && (() => {
-                  const sun = getSunLabel(weather.sunrise, weather.sunset)
-                  return (
-                    <span className="weather-badge">
-                      <span className="weather-icon"><WeatherIcon code={weather.weatherCode} /></span>
-                      <span className="weather-temp">{weather.temperature}°</span>
-                      <span className="weather-humidity">{weather.humidity}%</span>
-                      <span className="weather-wind">{weather.windSpeed}km/h</span>
-                      <span className="weather-sun"><SunIcon type={sun.type} />{sun.time}</span>
-                      <Sparkline data={weather.hourly} />
-                    </span>
-                  )
-                })()}
+                {weather && sunLabel && (
+                  <span className="weather-badge">
+                    <span className="weather-icon"><WeatherIcon code={weather.weatherCode} /></span>
+                    <span className="weather-temp">{weather.temperature}°</span>
+                    <span className="weather-humidity">{weather.humidity}%</span>
+                    <span className="weather-wind">{weather.windSpeed}km/h</span>
+                    <span className="weather-sun"><SunIcon type={sunLabel.type} />{sunLabel.time}</span>
+                    <Sparkline data={weather.hourly} />
+                  </span>
+                )}
               </div>
               <p>{localize(activeMountain.description, language)}</p>
             </div>
@@ -282,7 +260,7 @@ function App() {
               <select
                 className="world-picker-select"
                 value={activeWorldMountainId}
-                onChange={(e) => setActiveWorldMountainId(e.target.value)}
+                onChange={(e) => setActiveWorldMountainId(e.target.value as MountainId)}
               >
                 {worldMountainIds.map((mId) => {
                   const feed = worldPicks.find((f) => f.mountainId === mId)

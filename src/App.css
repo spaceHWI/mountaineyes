@@ -1,3 +1,12 @@
+:root {
+  --color-primary: #214632;
+  --color-accent: #2f6a53;
+  --color-muted: #567060;
+  --color-surface: #f4faf6;
+  --radius-pill: 999px;
+  --transition-fast: 180ms ease;
+}
+
 .app-shell {
   min-height: 100vh;
   background: linear-gradient(180deg, #eef4ef 0%, #f8fbf7 100%);
@@ -1148,25 +1157,9 @@
     min-width: 0;
   }
 
-  .mountain-picker-row {
-    flex-direction: row;
-    align-items: center;
-  }
-
-  .preset-chip-list.compact {
-    grid-template-columns: repeat(4, minmax(0, 1fr));
-  }
-
   .stream-tools {
     flex-direction: column;
     align-items: stretch;
-  }
-
-  .stream-action-group {
-    display: flex;
-    align-items: center;
-    gap: 0.55rem;
-    flex-wrap: wrap;
   }
 
   .capture-button {

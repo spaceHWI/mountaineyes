@@ -34,23 +34,23 @@ export function useWeather(lat: number, lng: number): WeatherData | null {
         const res = await fetch(url)
         if (!res.ok) return
         const json = await res.json()
-        const c = json.current
+        const current = json.current
         if (!cancelled) {
-          const d = json.daily
-          const h = json.hourly
+          const daily = json.daily
+          const hourlyData = json.hourly
           const currentHour = new Date().getHours()
           const hourly: HourlyPoint[] = []
           for (let i = Math.max(0, currentHour - 3); i <= Math.min(23, currentHour + 3); i++) {
-            hourly.push({ temp: Math.round(h.temperature_2m[i]), wind: Math.round(h.wind_speed_10m[i]) })
+            hourly.push({ temp: Math.round(hourlyData.temperature_2m[i]), wind: Math.round(hourlyData.wind_speed_10m[i]) })
           }
           setData({
             hourly,
-            humidity: c.relative_humidity_2m,
-            sunrise: d.sunrise[0].slice(11, 16),
-            sunset: d.sunset[0].slice(11, 16),
-            temperature: Math.round(c.temperature_2m),
-            weatherCode: c.weather_code,
-            windSpeed: Math.round(c.wind_speed_10m),
+            humidity: current.relative_humidity_2m,
+            sunrise: daily.sunrise[0].slice(11, 16),
+            sunset: daily.sunset[0].slice(11, 16),
+            temperature: Math.round(current.temperature_2m),
+            weatherCode: current.weather_code,
+            windSpeed: Math.round(current.wind_speed_10m),
           })
         }
       } catch {
