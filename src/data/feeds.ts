@@ -1305,6 +1305,9 @@ export const feeds: Feed[] = [
     sourceType: 'hls',
     sourceUrl: withProxyBase('/api/proxy?target=http%3A%2F%2F118.46.149.144%3A8080%2Framdisk%2Fcam23.m3u8'),
   },
+]
+
+export const worldPicks: Feed[] = [
   {
     id: 'geilo-panomax',
     name: { ko: '게일로 파노라마', en: 'Geilo Panorama' },
@@ -1316,9 +1319,6 @@ export const feeds: Feed[] = [
     sourceType: 'image',
     sourceUrl: 'https://panodata.panomax.com/cams/5174/recent_small.jpg',
   },
-]
-
-export const worldPicks: Feed[] = [
   {
     id: 'montblanc-argentiere',
     name: { ko: '몽블랑', en: 'Mont Blanc' },
@@ -2241,7 +2241,7 @@ export const worldPicks: Feed[] = [
     provider: { ko: 'Panomax', en: 'Panomax' },
     officialPage: 'https://kitzsteinhorn.panomax.com/',
     sourceType: 'image',
-    sourceUrl: 'https://panodata.panomax.com/cams/1305/recent_small.jpg',
+    sourceUrl: 'https://panodata.panomax.com/cams/11024/recent_small.jpg',
   },
   {
     id: 'zugspitze-lermoos',
@@ -2535,29 +2535,6 @@ export const worldPicks: Feed[] = [
     officialPage: 'https://st-anton.panomax.com/',
     sourceType: 'image',
     sourceUrl: 'https://panodata.panomax.com/cams/5366/recent_small.jpg',
-  },
-  // --- Additional Korean ski resorts ---
-  {
-    id: 'wellihilli-cam07',
-    name: { ko: '웰리힐리 캠 7', en: 'Welli Hilli Cam 7' },
-    mountainId: 'wellihilli',
-    kind: 'view',
-    region: { ko: '강원', en: 'Gangwon' },
-    provider: { ko: '웰리힐리파크', en: 'Welli Hilli Park' },
-    officialPage: 'https://www.wellihillipark.com/',
-    sourceType: 'hls',
-    sourceUrl: 'https://live.wellihillipark.com/wellihillipark/_definst_/cam07.stream/playlist.m3u8',
-  },
-  {
-    id: 'oakvalley-slope-e',
-    name: { ko: 'E 슬로프', en: 'E Slope' },
-    mountainId: 'oakvalley',
-    kind: 'view',
-    region: { ko: '강원', en: 'Gangwon' },
-    provider: { ko: '오크밸리', en: 'Oak Valley' },
-    officialPage: 'https://www.oakvalley.co.kr/',
-    sourceType: 'hls',
-    sourceUrl: 'https://cctv-oak9.ktcdn.co.kr/cctv/ch5.stream/chunklist.m3u8',
   },
   // --- Additional Chamonix / Mont Blanc (Flegere & Prarion) ---
   {

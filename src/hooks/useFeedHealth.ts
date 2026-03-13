@@ -42,24 +42,6 @@ async function checkDirectFeed(url: string): Promise<boolean> {
   }
 }
 
-async function checkImageFeed(url: string): Promise<boolean> {
-  try {
-    const controller = new AbortController()
-    const timer = setTimeout(() => controller.abort(), FETCH_TIMEOUT_MS)
-
-    const response = await fetch(url, {
-      method: 'HEAD',
-      mode: 'no-cors',
-      signal: controller.signal,
-    })
-
-    clearTimeout(timer)
-    return response.ok || response.type === 'opaque'
-  } catch {
-    return false
-  }
-}
-
 async function checkMountainHealth(
   mountainId: MountainId,
 ): Promise<boolean> {
@@ -67,7 +49,7 @@ async function checkMountainHealth(
 
   for (const feed of mountainFeeds) {
     if (feed.sourceType === 'image') {
-      const ok = await checkImageFeed(feed.sourceUrl)
+      const ok = await checkDirectFeed(feed.sourceUrl)
       if (ok) return true
       continue
     }
