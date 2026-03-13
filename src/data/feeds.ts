@@ -56,6 +56,9 @@ export type MountainId =
   | 'lakelouise'
   | 'saentis'
   | 'verbier'
+  | 'narvik'
+  | 'livigno'
+  | 'saalbach'
 
 export type FeedKind = 'summit' | 'access' | 'view'
 
@@ -2941,5 +2944,38 @@ export const worldPicks: Feed[] = [
     officialPage: 'https://www.engelberg.ch/en/live/webcams/',
     sourceType: 'image',
     sourceUrl: 'https://backend.roundshot.com/cams/142/thumbnail',
+  },
+  {
+    id: 'narvik-gondol',
+    name: { ko: '나르비크 곤돌 (1012m)', en: 'Narvik Gondol (1012m)' },
+    mountainId: 'narvik',
+    kind: 'summit',
+    region: { ko: '노르웨이', en: 'Norway' },
+    provider: { ko: 'Panomax', en: 'Panomax' },
+    officialPage: 'https://narvik.panomax.com/',
+    sourceType: 'image',
+    sourceUrl: 'https://panodata.panomax.com/cams/11759/recent_small.jpg',
+  },
+  {
+    id: 'livigno-carosello',
+    name: { ko: '리비뇨 카로셀로 3000 (2797m)', en: 'Livigno Carosello 3000 (2797m)' },
+    mountainId: 'livigno',
+    kind: 'summit',
+    region: { ko: '이탈리아', en: 'Italy' },
+    provider: { ko: 'Panomax', en: 'Panomax' },
+    officialPage: 'https://livigno.panomax.com/',
+    sourceType: 'image',
+    sourceUrl: 'https://panodata.panomax.com/cams/1628/recent_small.jpg',
+  },
+  {
+    id: 'saalbach-schattberg',
+    name: { ko: '잘바흐 샤트베르크 (2097m)', en: 'Saalbach Schattberg (2097m)' },
+    mountainId: 'saalbach',
+    kind: 'summit',
+    region: { ko: '오스트리아', en: 'Austria' },
+    provider: { ko: 'Panomax', en: 'Panomax' },
+    officialPage: 'https://saalbach.panomax.com/',
+    sourceType: 'image',
+    sourceUrl: 'https://panodata.panomax.com/cams/1305/recent_small.jpg',
   },
 ]
