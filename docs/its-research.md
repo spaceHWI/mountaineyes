@@ -85,7 +85,7 @@ http://59.8.86.94:8080/media/api/v1/hls/vurix/192871/{CAMERA_ID}/0/0
 **Integration Approach**:
 These feeds can be proxied through the existing Cloudflare Workers proxy at `functions/api/proxy.ts` since `59.8.86.94:8080` is already in the allowed hosts list. However, the TS segments use relative paths, so the proxy must rewrite the playlist to use absolute proxy URLs (this logic already exists).
 
-**Status**: CONFIRMED WORKING from datacenter IPs (Render proxy, US-based). No IP blocking detected. 5 cameras added to the app (2026-03-13).
+**Status**: CONFIRMED WORKING from datacenter IPs (Render proxy, US-based). No IP blocking detected. 16 cameras added to the app (2026-03-13).
 
 ---
 
@@ -256,12 +256,71 @@ The Cloudflare Pages function at `mountaineyes.kr/api/proxy` returns `text/html`
 
 ### Feeds Added to App
 
-5 Vurix cameras added to `src/data/feeds.ts` under Hallasan:
-- **hallasan-yeongsil** (영실) - Hallasan trail snow monitoring
-- **hallasan-sancheondan** (산천단입구) - Mountain access snow monitoring
-- **hallasan-pyeonghwaro** (평화로입구) - Road access snow monitoring
-- **hallasan-bijarim** (비자림) - Forest snow monitoring
-- **hallasan-sanbangsan** (산방산) - Mountain disaster monitoring
+16 Vurix cameras added to `src/data/feeds.ts` under Hallasan:
+
+**Snow Monitoring (적설감시):**
+- **hallasan-yeongsil** (영실, 100023) - Hallasan trail snow monitoring
+- **hallasan-sancheondan** (산천단입구, 100016) - Mountain access snow monitoring
+- **hallasan-pyeonghwaro** (평화로입구, 100017) - Road access snow monitoring
+- **hallasan-bijarim** (비자림, 100015) - Forest snow monitoring
+- **hallasan-jewon-ranch** (제원목장, 100216) - Highland ranch snow monitoring
+- **hallasan-samdasoo** (삼다수공장, 100217) - Samdasoo (mountain water source) snow monitoring
+- **hallasan-geumak-ranch** (금악이시돌목장, 100218) - Highland ranch snow monitoring
+
+**Disaster Monitoring (재해위험지구):**
+- **hallasan-sanbangsan** (산방산, 100012) - Mountain disaster monitoring
+- **hallasan-jungmun-beach** (중문해수욕장, 100010) - Scenic beach disaster monitoring
+- **hallasan-seogwipo-port** (서귀항, 100009) - Seogwipo port disaster monitoring
+- **hallasan-tapdong** (탑동, 100001) - Jeju City coast disaster monitoring
+- **hallasan-ongpo-port** (옹포항, 100005) - Coastal port disaster monitoring
+- **hallasan-sinchang-port** (신창리포구, 100004) - Coastal port disaster monitoring
+- **hallasan-beophwan** (법환포구, 100007) - Coastal port disaster monitoring
+- **hallasan-namwon** (남원어촌계, 100006) - Coastal disaster monitoring
+
+---
+
+## Session 3 Results (2026-03-13)
+
+### Camera Discovery: Massive Vurix Camera Network Found
+
+Tested camera IDs 100001-100100 and 100200-100240. The Vurix server at 59.8.86.94:8080 hosts far more cameras than documented on the bangjae.jeju.go.kr website.
+
+**Working camera ranges (HTTP 200 via Render proxy):**
+- 100001-100027: All working (27 cameras)
+- 100028: timeout
+- 100029-100039: All working (11 cameras)
+- 100040: HTTP 500
+- 100041-100046: All working (6 cameras)
+- 100047: HTTP 500
+- 100048-100100: All working (53 cameras)
+- 100200-100204, 100206, 100208-100211, 100213-100220: Working
+- 100223-100226, 100230-100234, 100239: Working
+
+**Total working cameras found**: ~120+ cameras on this single Vurix server
+
+**Documented cameras (from bangjae.jeju.go.kr):**
+- Snow monitoring page: 10 cameras (100015-100023, 100216-100220)
+- Disaster/danger page: 12 cameras (100001-100013)
+- Undocumented IDs (100024-100100+): Likely additional Jeju municipal CCTV (traffic, facilities, etc.)
+
+**Session 3 feeds added**: 11 new cameras (total 16 Vurix cameras in app)
+- 3 snow monitoring: 제원목장 (100216), 삼다수공장 (100217), 금악이시돌목장 (100218)
+- 8 disaster monitoring: 중문해수욕장 (100010), 서귀항 (100009), 탑동 (100001), 옹포항 (100005), 신창리포구 (100004), 법환포구 (100007), 남원어촌계 (100006)
+
+**Not added (lower priority):**
+- 100018 (해병9여단) - Military area, less scenic
+- 100219 (모슬포예비군훈련장 입구) - Military training ground
+- 100220 (토평감귤유통센터앞) - Distribution center
+- 100002 (구좌읍사무소) - Town office
+- 100003 (라마다호텔) - Hotel area
+- 100008 (법환어촌계) - Similar to 법환포구
+- 100011 (온평어촌계) - Fishing area
+- 100013 (평화교) - Bridge
+- 100024-100100+ - Unknown names, likely municipal CCTV
+
+### Other Vurix Servers
+
+No additional Vurix media servers found at different IPs/ports. The single server at 59.8.86.94:8080 hosts all cameras.
 
 ---
 
