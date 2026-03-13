@@ -156,32 +156,12 @@ function App() {
             </div>
             <div className="title-row">
               <span className="title-logo" aria-hidden="true">
-                <svg viewBox="0 0 48 48">
-                  <defs>
-                    <linearGradient id="hallasanPeak" x1="0%" x2="100%" y1="0%" y2="100%">
-                      <stop offset="0%" stopColor="#7fc18f" />
-                      <stop offset="100%" stopColor="#2f6a53" />
-                    </linearGradient>
-                  </defs>
-                  <path
-                    d="M7 35.5 19.2 17l6.4 9.2 4.8-7.2L41 35.5H7Z"
-                    fill="url(#hallasanPeak)"
-                  />
-                  <path
-                    d="m17.2 20.2 2.4-3.6 2.6 3.6"
-                    fill="none"
-                    stroke="#f6fffa"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth="2"
-                  />
-                  <path
-                    d="M12 35.5c3.5-3 7.3-4.5 11.3-4.5 4.2 0 7.9 1.5 12.7 4.5"
-                    fill="none"
-                    stroke="#d8f2de"
-                    strokeLinecap="round"
-                    strokeWidth="2"
-                  />
+                <svg viewBox="0 0 64 64">
+                  <path d="M32 6 C26 6 8 38 4 48 Q10 52 16 48 Q20 52 24 48 Q28 52 32 48 Q36 52 40 48 Q44 52 48 48 Q52 52 56 48 L60 48 C56 38 38 6 32 6Z" fill="#1a4a2e"/>
+                  <ellipse cx="23" cy="34" rx="7" ry="8" fill="white"/>
+                  <ellipse cx="41" cy="34" rx="7" ry="8" fill="white"/>
+                  <ellipse cx="25" cy="35" rx="3.5" ry="4.5" fill="#1a4a2e"/>
+                  <ellipse cx="43" cy="35" rx="3.5" ry="4.5" fill="#1a4a2e"/>
                 </svg>
               </span>
               <h1>{copy.pageTitle}</h1>
