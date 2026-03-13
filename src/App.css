@@ -444,6 +444,37 @@
   flex-wrap: wrap;
 }
 
+.pin-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2rem;
+  height: 2rem;
+  border: 1px solid rgba(22, 37, 29, 0.12);
+  border-radius: 0.5rem;
+  background: transparent;
+  color: #8ca696;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  flex-shrink: 0;
+}
+
+.pin-toggle:hover {
+  background: rgba(22, 37, 29, 0.04);
+  color: #3a5a44;
+}
+
+.pin-toggle.active {
+  background: #3a5a44;
+  border-color: #3a5a44;
+  color: #fff;
+}
+
+.pin-toggle svg {
+  width: 14px;
+  height: 14px;
+}
+
 .mountain-select {
   min-width: 12rem;
   min-height: 2.7rem;
@@ -839,6 +870,23 @@
   margin: 0.7rem 0 0;
   color: #4d6154;
   line-height: 1.6;
+}
+
+.world-picker-select {
+  margin-top: 0.5rem;
+  padding: 0.4rem 0.6rem;
+  border: 1px solid rgba(22, 37, 29, 0.12);
+  border-radius: 0.5rem;
+  background: rgba(255, 255, 255, 0.6);
+  color: #16251d;
+  font-size: 0.82rem;
+  font-weight: 500;
+  cursor: pointer;
+  outline: none;
+}
+
+.world-picker-select:focus {
+  border-color: #3a5a44;
 }
 
 .world-grid {

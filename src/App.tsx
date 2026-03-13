@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from 'react'
 import './App.css'
+import { DeerEasterEgg } from './components/DeerEasterEgg'
 import { FeedCard } from './components/FeedCard'
 import { Icon } from './components/Icon'
 import { MountainPicker } from './components/MountainPicker'
@@ -9,7 +10,7 @@ import { getWeatherIcon, useWeather } from './hooks/useWeather'
 import { appCopy, kindLabels, localize, type Language } from './i18n'
 import { setMetaContent } from './utils/dom'
 import { getDistanceKm } from './utils/geo'
-import { getInitialLanguage, getInitialMountainId, LANGUAGE_STORAGE_KEY } from './utils/init'
+import { getInitialLanguage, getInitialMountainId, isPinnedOnLoad, LANGUAGE_STORAGE_KEY, PINNED_MOUNTAIN_KEY } from './utils/init'
 
 const LANGUAGE_OPTIONS = ['ko', 'en'] as const
 
@@ -32,6 +33,7 @@ const getKindIcon = (kind: FeedKind | 'all') => {
 function App() {
   const [language, setLanguage] = useState<Language>(getInitialLanguage)
   const [activeMountainId, setActiveMountainId] = useState<MountainId>(getInitialMountainId)
+  const [pinned, setPinned] = useState(isPinnedOnLoad)
   const [activeKind, setActiveKind] = useState<'all' | FeedKind>('all')
   const [nearestMountainId, setNearestMountainId] = useState<MountainId | null>(null)
   const mountainIds = useMemo(() => mountains.map((m) => m.id), [])
@@ -72,7 +74,9 @@ function App() {
           return
         }
 
-        setActiveMountainId(nearestMountain.mountainId)
+        if (!isPinnedOnLoad()) {
+          setActiveMountainId(nearestMountain.mountainId)
+        }
         setNearestMountainId(nearestMountain.mountainId)
       },
       () => {
@@ -93,20 +97,21 @@ function App() {
     ? copy.locationWithNearest(nearestMountainName)
     : copy.locationPrompt
 
-  const randomWorldPicks = useMemo(() => {
-    const grouped = new Map<string, typeof worldPicks>()
-    worldPicks.forEach((feed) => {
-      const existing = grouped.get(feed.mountainId) ?? []
-      existing.push(feed)
-      grouped.set(feed.mountainId, existing)
-    })
-    const picked: typeof worldPicks = []
-    grouped.forEach((feeds) => {
-      const randomFeed = feeds[Math.floor(Math.random() * feeds.length)]
-      picked.push(randomFeed)
-    })
-    return picked.sort(() => Math.random() - 0.5)
+  const worldMountainIds = useMemo(() => {
+    const ids = new Set<string>()
+    worldPicks.forEach((f) => ids.add(f.mountainId))
+    return Array.from(ids)
   }, [])
+
+  const [activeWorldMountainId, setActiveWorldMountainId] = useState(() => {
+    const idx = Math.floor(Math.random() * worldMountainIds.length)
+    return worldMountainIds[idx] ?? 'montblanc'
+  })
+
+  const activeWorldFeed = useMemo(() => {
+    const candidates = worldPicks.filter((f) => f.mountainId === activeWorldMountainId)
+    return candidates[Math.floor(Math.random() * candidates.length)] ?? worldPicks[0]
+  }, [activeWorldMountainId])
 
   const activeMountain = mountains.find((mountain) => mountain.id === activeMountainId) ?? mountains[0]
   const weather = useWeather(activeMountain.lat, activeMountain.lng)
@@ -206,9 +211,30 @@ function App() {
                   health={feedHealth}
                   language={language}
                   mountains={mountains}
-                  onChange={setActiveMountainId}
+                  onChange={(id: MountainId) => {
+                    setActiveMountainId(id)
+                    if (pinned) {
+                      window.localStorage.setItem(PINNED_MOUNTAIN_KEY, id)
+                    }
+                  }}
                   value={activeMountainId}
                 />
+                <button
+                  className={`pin-toggle ${pinned ? 'active' : ''}`}
+                  type="button"
+                  title={pinned ? (language === 'ko' ? '고정 해제' : 'Unpin') : (language === 'ko' ? '이 산 고정' : 'Pin this mountain')}
+                  onClick={() => {
+                    if (pinned) {
+                      window.localStorage.removeItem(PINNED_MOUNTAIN_KEY)
+                      setPinned(false)
+                    } else {
+                      window.localStorage.setItem(PINNED_MOUNTAIN_KEY, activeMountainId)
+                      setPinned(true)
+                    }
+                  }}
+                >
+                  <Icon name="pin" />
+                </button>
               </div>
             </div>
 
@@ -269,12 +295,24 @@ function App() {
           <div className="world-head">
             <div>
               <p className="eyebrow">{copy.worldPickEyebrow}</p>
+              <select
+                className="world-picker-select"
+                value={activeWorldMountainId}
+                onChange={(e) => setActiveWorldMountainId(e.target.value)}
+              >
+                {worldMountainIds.map((mId) => {
+                  const feed = worldPicks.find((f) => f.mountainId === mId)
+                  return (
+                    <option key={mId} value={mId}>
+                      {feed ? localize(feed.region, language) + ' — ' + localize(feed.name, language) : mId}
+                    </option>
+                  )
+                })}
+              </select>
             </div>
           </div>
           <div className="world-grid">
-            {randomWorldPicks.map((feed) => (
-              <FeedCard key={feed.id} feed={feed} language={language} />
-            ))}
+            <FeedCard feed={activeWorldFeed} language={language} />
           </div>
         </section>
 
@@ -300,6 +338,7 @@ function App() {
           </a>
         </footer>
       </main>
+      <DeerEasterEgg />
     </div>
   )
 }
