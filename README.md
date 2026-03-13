@@ -1,99 +1,84 @@
-# Jeju Eye
+# MountainEyes
 
-한라산 등산 관련 공식 공개 CCTV를 한 페이지에서 동시에 볼 수 있도록 만든 대시보드입니다.
+실시간 산 CCTV 대시보드 — [mountaineyes.kr](https://mountaineyes.kr)
 
-## 현재 데모 구성
+## 구조
 
-- 한라산 공식 CCTV 5개
-- 백록담, 왕관릉, 윗세오름, 어승생악, 1100고지
-- 정적 빌드로도 재생 가능해서 VS Code `Go Live` 데모에 적합
+```
+Cloudflare Workers (mountaineyes.kr)     ← 프론트엔드 (프로덕션)
+Render (mountaineyes-proxy.onrender.com) ← API 프록시 + 프론트엔드 (스테이징)
+Mac (Cloudflare Tunnel → localhost:3847) ← ITS CCTV 전용 프록시
+```
 
-## 실행
+## 개발
 
 ```bash
 npm install
 npm run dev
 ```
 
-개발 서버
+- 프론트엔드: `http://localhost:5173`
+- API 서버: `http://localhost:8787`
 
-- 프런트엔드: `http://localhost:5173`
-- 선택적 프록시 서버: `http://localhost:8787`
-- ITS를 프로덕션에서도 보이게 하려면, 로컬 릴레이가 Render 프록시에 세션 URL을 계속 push해야 합니다.
-
-프로덕션 빌드 후 실행
+## 배포
 
 ```bash
-npm run build
-npm run start
+# 1. 코드 push → Render 스테이징 자동 배포
+git push origin main
+
+# 2. 스테이징 확인
+#    https://mountaineyes-proxy.onrender.com
+
+# 3. 프로덕션 배포
+npm run deploy   # = npm run build && wrangler deploy
 ```
 
-## 방문자 수 보기
+## 환경변수
 
-Cloudflare Web Analytics를 쓰면 봇이 아닌 실제 방문자와 페이지뷰를 볼 수 있습니다.
+| 변수 | 위치 | 설명 |
+|---|---|---|
+| `VITE_PROXY_BASE_URL` | `.env` (빌드타임) | Render 프록시 URL |
+| `VITE_ITS_PROXY_URL` | `.env` (빌드타임) | Mac ITS 터널 URL |
+| `CORS_ALLOWED_ORIGINS` | Render | 허용 도메인 (쉼표 구분) |
+| `ITS_RELAY_TOKEN` | Render + Mac | ITS URL push 인증 토큰 |
+| `NODE_VERSION` | Render | Node.js 버전 (22) |
 
-현재는 Cloudflare에서 발급한 Web Analytics JS snippet을 `index.html`에 직접 넣는 방식으로 연결되어 있습니다.
+## 주요 파일
 
-1. Cloudflare 대시보드에서 `Web Analytics`를 엽니다.
-2. `Enable with JS Snippet installation`을 선택합니다.
-3. 발급된 snippet의 `data-cf-beacon` token 값을 확인합니다.
-4. 사이트를 다시 배포합니다.
+| 파일 | 역할 |
+|---|---|
+| `src/App.tsx` | 메인 앱 |
+| `src/data/feeds.ts` | 피드 정의 (산, 카메라) |
+| `src/components/StreamPlayer.tsx` | HLS/이미지 플레이어 |
+| `src/i18n.ts` | 다국어 텍스트 (한/영) |
+| `server/server.js` | API 프록시 + 정적 파일 서빙 |
+| `render.yaml` | Render 배포 설정 |
+| `wrangler.jsonc` | Cloudflare Workers 설정 |
 
-방문 데이터는 보통 반영까지 몇 분 정도 걸릴 수 있습니다.
+## ITS CCTV
 
-## Render Proxy Deploy
+ITS WAF가 데이터센터 IP를 차단하므로 Mac(주거용 IP)을 프록시로 사용합니다.
 
-Cloudflare에서 직접 되지 않는 스트림은 별도 Node 프록시로 분리하는 편이 더 현실적입니다.
-
-Render에서 프록시를 붙이는 순서는 아래와 같습니다.
-
-1. Render에서 `Blueprint` 또는 `New Web Service`로 이 저장소를 연결합니다.
-2. 루트 디렉터리는 현재 저장소 루트 그대로 사용합니다.
-3. `render.yaml` 기준으로 `mountaineyes-proxy` 서비스를 생성합니다.
-4. 배포가 끝나면 Render 서비스 URL을 확인합니다.
-5. 프런트엔드 빌드 시 `VITE_PROXY_BASE_URL`에 그 URL을 넣습니다.
-6. 메인 사이트를 다시 빌드/배포합니다.
-
-프런트엔드에서 프록시 URL을 쓰려면:
-
-```bash
-VITE_PROXY_BASE_URL=https://your-render-service.onrender.com
+```
+브라우저 → Cloudflare Tunnel → Mac(its-proxy.js:3847) → ITS 미디어서버
 ```
 
-예시:
-
-```bash
-VITE_PROXY_BASE_URL=https://mountaineyes-proxy.onrender.com
-```
-
-ITS를 프로덕션 경로로 연결하려면:
-
-```bash
-VITE_PROXY_BASE_URL=https://mountaineyes-proxy.onrender.com
-```
-
-그리고 로컬 Mac에서 릴레이를 켭니다:
-
-```bash
-ITS_RELAY_TOKEN=... ITS_RELAY_TARGET=https://mountaineyes-proxy.onrender.com npm run its-relay
-```
-
-릴레이가 켜져 있으면 Render의 `/api/jejuits/urls` 캐시에 ITS 세션 URL이 쌓이고, 프론트는 그때만 ITS 피드를 노출합니다.
-릴레이가 꺼지면 캐시가 만료된 뒤 ITS 피드는 자동으로 다시 숨겨집니다.
-
-Mac을 재부팅해도 자동으로 다시 시작하려면 이 저장소의 launchd 설정을 사용합니다.
+Mac에서 ITS 프록시 자동시작:
 
 ```bash
 launchctl load ~/Library/LaunchAgents/com.spacehwi.mountaineyes.its-relay.plist
 ```
 
-릴레이 실행 스크립트는 `scripts/run-its-relay.sh`이고, `web/.env`에서 `ITS_RELAY_TOKEN`을 읽습니다.
+## 디버깅
 
-프록시 서버는 `/healthz` 헬스체크를 지원하고, `CORS_ALLOWED_ORIGINS`로 허용 도메인을 제어합니다.
+```bash
+# 헬스체크
+curl https://mountaineyes-proxy.onrender.com/healthz
 
-기본 Blueprint 설정은 `render.yaml`에 들어 있습니다.
+# ITS 진단
+curl 'https://mountaineyes-proxy.onrender.com/api/jejuits/debug?deviceId=<id>'
+```
 
-## 참고
+## 방문자 분석
 
-- 현재 메인 데모는 한라산 공식 `https` 스트림만 사용합니다.
-- `http` 기반 스트림을 다시 포함하고 싶으면 `/api/proxy` 서버를 함께 사용하면 됩니다.
+Cloudflare Web Analytics 사용. `index.html`의 `data-cf-beacon` snippet으로 연결.

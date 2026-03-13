@@ -417,6 +417,136 @@
   font-weight: 700;
 }
 
+/* Custom Mountain Picker */
+.mountain-picker {
+  position: relative;
+}
+
+.mountain-picker-trigger {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  min-width: 12rem;
+  min-height: 2.7rem;
+  padding: 0 0.8rem 0 0.9rem;
+  border: 1px solid rgba(24, 72, 45, 0.14);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.92);
+  color: #214632;
+  font: inherit;
+  font-weight: 700;
+  cursor: pointer;
+  transition:
+    border-color 180ms ease,
+    box-shadow 180ms ease;
+}
+
+.mountain-picker-trigger:hover {
+  border-color: rgba(24, 72, 45, 0.28);
+  box-shadow: 0 2px 8px rgba(27, 53, 35, 0.08);
+}
+
+.mountain-picker-label {
+  flex: 1;
+  text-align: left;
+}
+
+.mountain-picker-arrow {
+  display: inline-flex;
+  align-items: center;
+  color: #567060;
+  transition: transform 200ms ease;
+}
+
+.mountain-picker-arrow.open {
+  transform: rotate(180deg);
+}
+
+.mountain-picker-menu {
+  position: absolute;
+  top: calc(100% + 0.4rem);
+  left: 0;
+  z-index: 100;
+  min-width: 100%;
+  max-height: 20rem;
+  overflow-y: auto;
+  margin: 0;
+  padding: 0.35rem;
+  border: 1px solid rgba(22, 37, 29, 0.1);
+  border-radius: 1rem;
+  background: rgba(255, 255, 255, 0.96);
+  box-shadow: 0 12px 36px rgba(27, 53, 35, 0.14);
+  backdrop-filter: blur(18px);
+  list-style: none;
+}
+
+.mountain-picker-option {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  width: 100%;
+  min-height: 2.5rem;
+  padding: 0 0.75rem;
+  border: 0;
+  border-radius: 0.7rem;
+  background: transparent;
+  color: #214632;
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 120ms ease;
+}
+
+.mountain-picker-option:hover {
+  background: #f0f6f2;
+}
+
+.mountain-picker-option.active {
+  background: #214632;
+  color: #f4faf6;
+}
+
+.mountain-picker-option.active .mountain-picker-option-region {
+  color: rgba(244, 250, 246, 0.7);
+}
+
+.mountain-picker-option-name {
+  flex: 1;
+  text-align: left;
+}
+
+.mountain-picker-option-region {
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: #7a9484;
+}
+
+.status-dot {
+  width: 0.5rem;
+  height: 0.5rem;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.status-dot.live {
+  background: #34c759;
+  box-shadow: 0 0 4px rgba(52, 199, 89, 0.5);
+}
+
+.status-dot.offline {
+  background: #b0b8b3;
+}
+
+.status-dot.checking {
+  background: #f3c45e;
+  animation: dot-pulse 1.2s ease-in-out infinite;
+}
+
+@keyframes dot-pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.4; }
+}
+
 .preset-chip-list.compact {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
@@ -887,6 +1017,11 @@
   }
 
   .mountain-select {
+    width: 100%;
+    min-width: 0;
+  }
+
+  .mountain-picker-trigger {
     width: 100%;
     min-width: 0;
   }

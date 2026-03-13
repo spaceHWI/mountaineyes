@@ -2,7 +2,9 @@ import { useEffect, useMemo, useState } from 'react'
 import './App.css'
 import { FeedCard } from './components/FeedCard'
 import { Icon } from './components/Icon'
+import { MountainPicker } from './components/MountainPicker'
 import { feeds, mountains, worldPicks, type FeedKind, type MountainId } from './data/feeds'
+import { useFeedHealth } from './hooks/useFeedHealth'
 import { useItsAvailable } from './hooks/useItsUrls'
 import { appCopy, kindLabels, localize, type Language } from './i18n'
 import { setMetaContent } from './utils/dom'
@@ -34,6 +36,8 @@ function App() {
   const [activeItsFeedId, setActiveItsFeedId] = useState<string | null>(null)
   const [nearestMountainId, setNearestMountainId] = useState<MountainId | null>(null)
   const itsAvailable = useItsAvailable()
+  const mountainIds = useMemo(() => mountains.map((m) => m.id), [])
+  const feedHealth = useFeedHealth(mountainIds, itsAvailable)
 
   const copy = appCopy[language]
 
@@ -192,20 +196,13 @@ function App() {
           <div className="toolbar-stack">
             <div className="toolbar-block">
               <div className="mountain-picker-row">
-                <label className="mountain-select-wrap" htmlFor="mountain-select">
-                  <select
-                    id="mountain-select"
-                    className="mountain-select"
-                    onChange={(event) => setActiveMountainId(event.target.value as MountainId)}
-                    value={activeMountainId}
-                  >
-                    {mountains.map((mountain) => (
-                      <option key={mountain.id} value={mountain.id}>
-                        {localize(mountain.name, language)}
-                      </option>
-                    ))}
-                  </select>
-                </label>
+                <MountainPicker
+                  health={feedHealth}
+                  language={language}
+                  mountains={mountains}
+                  onChange={setActiveMountainId}
+                  value={activeMountainId}
+                />
               </div>
             </div>
 
