@@ -905,6 +905,19 @@
     align-items: stretch;
   }
 
+  .stream-action-group {
+    display: flex;
+    align-items: center;
+    gap: 0.55rem;
+    flex-wrap: wrap;
+  }
+
+  .capture-button {
+    flex: 1;
+    min-height: 3rem;
+    padding: 0 1.5rem;
+  }
+
   .capture-message {
     text-align: left;
   }
