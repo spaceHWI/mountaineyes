@@ -172,8 +172,8 @@ function App() {
               <span className="soft-badge compact">
                 <Icon name="megaphone" />
                 {language === 'ko'
-                  ? '260313 — 14개 산 + 세계 7개 산, 실시간 날씨'
-                  : '260313 — 14 KR + 7 world cams, live weather'}
+                  ? '260313 — 20개 산 + 세계 26개 산, 실시간 날씨'
+                  : '260313 — 20 KR + 26 world mountains, live weather'}
               </span>
             </div>
           </div>
