@@ -35,7 +35,7 @@ function App() {
   const [activeMountainId, setActiveMountainId] = useState<MountainId>(getInitialMountainId)
   const [pinned, setPinned] = useState(isPinnedOnLoad)
   const [activeKind, setActiveKind] = useState<'all' | FeedKind>('all')
-  const [nearestMountainId, setNearestMountainId] = useState<MountainId | null>(null)
+  const [, setNearestMountainId] = useState<MountainId | null>(null)
   const mountainIds = useMemo(() => mountains.map((m) => m.id), [])
   const feedHealth = useFeedHealth(mountainIds)
 
