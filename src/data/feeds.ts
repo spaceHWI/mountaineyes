@@ -67,7 +67,6 @@ export type MountainId =
   | 'bigwhite'
   | 'valdisere'
   | 'courchevel'
-  | 'tignes'
   | 'grindelwaldrs'
   | 'laax'
   | 'lenzerheide'
@@ -1543,7 +1542,7 @@ export const feeds: Feed[] = [
     provider: { ko: 'Panomax', en: 'Panomax' },
     officialPage: 'https://geilo.panomax.com/',
     sourceType: 'image',
-    sourceUrl: 'https://geilo.panomax.com/current.jpg',
+    sourceUrl: 'https://panodata.panomax.com/cams/5174/recent_small.jpg',
   },
 ]
 
@@ -3273,18 +3272,6 @@ export const worldPicks: Feed[] = [
     sourceType: 'image',
     sourceUrl: 'https://backend.roundshot.com/cams/197/thumbnail',
   },
-  // --- Tignes, France ---
-  {
-    id: 'tignes-panorama',
-    name: { ko: '티뉴 파노라마 (2100m)', en: 'Tignes Panorama (2100m)' },
-    mountainId: 'tignes',
-    kind: 'view',
-    region: { ko: '프랑스', en: 'France' },
-    provider: { ko: 'Roundshot', en: 'Roundshot' },
-    officialPage: 'https://www.tignes.net/',
-    sourceType: 'image',
-    sourceUrl: 'https://backend.roundshot.com/cams/260/thumbnail',
-  },
   // === SWITZERLAND (additional) ===
   // --- Grindelwald, Switzerland ---
   {
@@ -3382,5 +3369,53 @@ export const worldPicks: Feed[] = [
     officialPage: 'https://www.nzski.com/queenstown/the-mountains/coronet-peak',
     sourceType: 'image',
     sourceUrl: 'https://panodata.panomax.com/cams/2986/recent_small.jpg',
+  },
+  // --- Saastal / Saas-Fee, Switzerland ---
+  {
+    id: 'matterhorn-saastal',
+    name: { ko: '자스탈 파노라마 (1800m)', en: 'Saastal Panorama (1800m)' },
+    mountainId: 'matterhorn',
+    kind: 'view',
+    region: { ko: '스위스', en: 'Switzerland' },
+    provider: { ko: 'Roundshot / Saastal', en: 'Roundshot / Saastal' },
+    officialPage: 'https://www.saas-fee.ch/en/webcams',
+    sourceType: 'image',
+    sourceUrl: 'https://backend.roundshot.com/cams/1323/thumbnail',
+  },
+  // --- Jungfrau Official, Switzerland ---
+  {
+    id: 'jungfrau-official-roundshot',
+    name: { ko: '융프라우 공식 파노라마', en: 'Jungfrau Official Panorama' },
+    mountainId: 'jungfrau',
+    kind: 'summit',
+    region: { ko: '스위스', en: 'Switzerland' },
+    provider: { ko: 'Roundshot / Jungfrau', en: 'Roundshot / Jungfrau' },
+    officialPage: 'https://www.jungfrau.ch/en-gb/live/webcams/',
+    sourceType: 'image',
+    sourceUrl: 'https://backend.roundshot.com/cams/740/thumbnail',
+  },
+  // --- Champéry, Switzerland (Portes du Soleil) ---
+  {
+    id: 'verbier-champery',
+    name: { ko: '샹페리 파노라마 (1050m)', en: 'Champéry Panorama (1050m)' },
+    mountainId: 'verbier',
+    kind: 'view',
+    region: { ko: '스위스', en: 'Switzerland' },
+    provider: { ko: 'Roundshot / Champéry', en: 'Roundshot / Champéry' },
+    officialPage: 'https://www.champery.ch/',
+    sourceType: 'image',
+    sourceUrl: 'https://backend.roundshot.com/cams/1226/thumbnail',
+  },
+  // --- Leukerbad, Switzerland ---
+  {
+    id: 'aletsch-leukerbad',
+    name: { ko: '로이커바트 파노라마 (1411m)', en: 'Leukerbad Panorama (1411m)' },
+    mountainId: 'aletsch',
+    kind: 'view',
+    region: { ko: '스위스', en: 'Switzerland' },
+    provider: { ko: 'Roundshot / Leukerbad', en: 'Roundshot / Leukerbad' },
+    officialPage: 'https://www.leukerbad.ch/',
+    sourceType: 'image',
+    sourceUrl: 'https://backend.roundshot.com/cams/1300/thumbnail',
   },
 ]
