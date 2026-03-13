@@ -267,8 +267,6 @@ function App() {
           <div className="world-head">
             <div>
               <p className="eyebrow">{copy.worldPickEyebrow}</p>
-              <h2>{copy.worldPickTitle}</h2>
-              <p>{copy.worldPickDescription}</p>
             </div>
           </div>
           <div className="world-grid">
