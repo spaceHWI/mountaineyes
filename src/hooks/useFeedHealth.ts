@@ -7,7 +7,24 @@ export type HealthStatus = 'checking' | 'live' | 'offline'
 const HEALTH_CHECK_INTERVAL_MS = 60_000
 const FETCH_TIMEOUT_MS = 8_000
 
-async function checkHlsFeed(url: string): Promise<boolean> {
+async function checkViaProxy(url: string): Promise<boolean> {
+  try {
+    const controller = new AbortController()
+    const timer = setTimeout(() => controller.abort(), FETCH_TIMEOUT_MS)
+
+    const response = await fetch(url, { signal: controller.signal })
+    clearTimeout(timer)
+
+    if (!response.ok) return false
+
+    const text = await response.text()
+    return text.includes('#EXTM3U')
+  } catch {
+    return false
+  }
+}
+
+async function checkDirectFeed(url: string): Promise<boolean> {
   try {
     const controller = new AbortController()
     const timer = setTimeout(() => controller.abort(), FETCH_TIMEOUT_MS)
@@ -19,7 +36,6 @@ async function checkHlsFeed(url: string): Promise<boolean> {
     })
 
     clearTimeout(timer)
-    // no-cors returns opaque response (status 0) which still means reachable
     return response.ok || response.type === 'opaque'
   } catch {
     return false
@@ -62,11 +78,14 @@ async function checkMountainHealth(
       continue
     }
 
-    // HLS
-    const url = feed.sourceUrl.startsWith('http://')
-      ? `${getProxyBaseUrl()}/api/proxy?target=${encodeURIComponent(feed.sourceUrl)}`
+    // HLS: 프록시 경유 URL은 실제 m3u8 확인, 직접 URL은 HEAD
+    const proxyBase = getProxyBaseUrl()
+    const isAlreadyProxied = feed.sourceUrl.startsWith(proxyBase)
+    const url = feed.sourceUrl.startsWith('http://') && !isAlreadyProxied
+      ? `${proxyBase}/api/proxy?target=${encodeURIComponent(feed.sourceUrl)}`
       : feed.sourceUrl
-    const ok = await checkHlsFeed(url)
+    const useProxy = isAlreadyProxied || url.startsWith(proxyBase)
+    const ok = useProxy ? await checkViaProxy(url) : await checkDirectFeed(url)
     if (ok) return true
   }
 
