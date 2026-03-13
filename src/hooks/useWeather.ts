@@ -14,28 +14,12 @@ export type WeatherData = {
 
 const WEATHER_REFRESH_MS = 10 * 60_000 // 10분
 
-const WMO_ICONS: Record<number, string> = {
-  0: '☀️', 1: '🌤️', 2: '⛅', 3: '☁️',
-  45: '🌫️', 48: '🌫️',
-  51: '🌦️', 53: '🌦️', 55: '🌧️',
-  61: '🌧️', 63: '🌧️', 65: '🌧️',
-  66: '🌧️', 67: '🌧️',
-  71: '🌨️', 73: '🌨️', 75: '🌨️', 77: '🌨️',
-  80: '🌦️', 81: '🌧️', 82: '🌧️',
-  85: '🌨️', 86: '🌨️',
-  95: '⛈️', 96: '⛈️', 99: '⛈️',
-}
-
-export function getWeatherIcon(code: number): string {
-  return WMO_ICONS[code] ?? '🌡️'
-}
-
-export function getSunLabel(sunrise: string, sunset: string): { icon: string; time: string } {
+export function getSunLabel(sunrise: string, sunset: string): { type: 'sunrise' | 'sunset'; time: string } {
   const now = new Date()
   const hhmm = `${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}`
-  if (hhmm < sunrise) return { icon: '🌅', time: sunrise }
-  if (hhmm < sunset) return { icon: '🌇', time: sunset }
-  return { icon: '🌅', time: sunrise }
+  if (hhmm < sunrise) return { type: 'sunrise', time: sunrise }
+  if (hhmm < sunset) return { type: 'sunset', time: sunset }
+  return { type: 'sunrise', time: sunrise }
 }
 
 export function useWeather(lat: number, lng: number): WeatherData | null {

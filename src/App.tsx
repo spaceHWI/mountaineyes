@@ -7,7 +7,8 @@ import { MountainPicker } from './components/MountainPicker'
 import { Sparkline } from './components/Sparkline'
 import { feeds, mountains, worldPicks, type FeedKind, type MountainId } from './data/feeds'
 import { useFeedHealth } from './hooks/useFeedHealth'
-import { getSunLabel, getWeatherIcon, useWeather } from './hooks/useWeather'
+import { getSunLabel, useWeather } from './hooks/useWeather'
+import { SunIcon, WeatherIcon } from './components/WeatherIcons'
 import { appCopy, kindLabels, localize, type Language } from './i18n'
 import { setMetaContent } from './utils/dom'
 import { getDistanceKm } from './utils/geo'
@@ -244,11 +245,11 @@ function App() {
                   const sun = getSunLabel(weather.sunrise, weather.sunset)
                   return (
                     <span className="weather-badge">
-                      <span className="weather-icon">{getWeatherIcon(weather.weatherCode)}</span>
+                      <span className="weather-icon"><WeatherIcon code={weather.weatherCode} /></span>
                       <span className="weather-temp">{weather.temperature}°</span>
                       <span className="weather-humidity">{weather.humidity}%</span>
                       <span className="weather-wind">{weather.windSpeed}km/h</span>
-                      <span className="weather-sun">{sun.icon}{sun.time}</span>
+                      <span className="weather-sun"><SunIcon type={sun.type} />{sun.time}</span>
                       <Sparkline data={weather.hourly} />
                     </span>
                   )
