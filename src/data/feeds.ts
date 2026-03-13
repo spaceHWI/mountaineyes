@@ -238,6 +238,42 @@ export const mountains: Mountain[] = [
       en: 'A Gyeongbuk national park known for its dramatic rock cliffs and valleys. Live CCTV is available at the Jeoljae ridge.',
     },
   },
+  {
+    id: 'byeonsanbando',
+    name: { ko: '변산반도', en: 'Byeonsanbando' },
+    region: { ko: '전북', en: 'Jeonbuk' },
+    lat: 35.6833,
+    lng: 126.5500,
+    officialPage: 'https://www.knps.or.kr/portal/main/contents.do?menuNo=8000168',
+    description: {
+      ko: '산과 바다를 함께 품은 국립공원. 죽막탐방로 실시간 CCTV를 확인할 수 있습니다.',
+      en: 'A national park embracing both mountains and sea. Live CCTV is available at the Jukmak Trail.',
+    },
+  },
+  {
+    id: 'hallyeohaesang',
+    name: { ko: '한려해상', en: 'Hallyeohaesang' },
+    region: { ko: '경남', en: 'Gyeongnam' },
+    lat: 34.8167,
+    lng: 128.0333,
+    officialPage: 'https://www.knps.or.kr/portal/main/contents.do?menuNo=8000168',
+    description: {
+      ko: '남해안의 아름다운 해상국립공원. 각산(671m) 실시간 CCTV를 확인할 수 있습니다.',
+      en: 'A beautiful marine national park along the southern coast. Live CCTV is available at Gaksan peak (671 m).',
+    },
+  },
+  {
+    id: 'taeanhaean',
+    name: { ko: '태안해안', en: 'Taean Coast' },
+    region: { ko: '충남', en: 'Chungnam' },
+    lat: 36.7833,
+    lng: 126.1333,
+    officialPage: 'https://www.knps.or.kr/portal/main/contents.do?menuNo=8000168',
+    description: {
+      ko: '서해안의 해안 국립공원. 학암포 실시간 CCTV를 확인할 수 있습니다.',
+      en: 'A coastal national park on the western shore. Live CCTV is available at Hakampo.',
+    },
+  },
 ]
 
 export const feeds: Feed[] = [
@@ -1103,6 +1139,39 @@ export const feeds: Feed[] = [
     officialPage: 'https://www.knps.or.kr/portal/main/contents.do?menuNo=8000168',
     sourceType: 'hls',
     sourceUrl: 'https://live.knps.or.kr/cctv/hls/zjulje.m3u8',
+  },
+  {
+    id: 'byeonsanbando-jukmak',
+    name: { ko: '죽막탐방로', en: 'Jukmak Trail' },
+    mountainId: 'byeonsanbando',
+    kind: 'view',
+    region: { ko: '전북', en: 'Jeonbuk' },
+    provider: { ko: '국립공원공단', en: 'Korea National Park Service' },
+    officialPage: 'https://www.knps.or.kr/portal/main/contents.do?menuNo=8000168',
+    sourceType: 'hls',
+    sourceUrl: 'https://live.knps.or.kr/cctv/hls/jukmak.m3u8',
+  },
+  {
+    id: 'hallyeohaesang-gaksan',
+    name: { ko: '각산', en: 'Gaksan' },
+    mountainId: 'hallyeohaesang',
+    kind: 'summit',
+    region: { ko: '경남', en: 'Gyeongnam' },
+    provider: { ko: '국립공원공단', en: 'Korea National Park Service' },
+    officialPage: 'https://www.knps.or.kr/portal/main/contents.do?menuNo=8000168',
+    sourceType: 'hls',
+    sourceUrl: 'https://live.knps.or.kr/cctv/hls/gaksan.m3u8',
+  },
+  {
+    id: 'taeanhaean-hakampo',
+    name: { ko: '학암포', en: 'Hakampo' },
+    mountainId: 'taeanhaean',
+    kind: 'view',
+    region: { ko: '충남', en: 'Chungnam' },
+    provider: { ko: '국립공원공단', en: 'Korea National Park Service' },
+    officialPage: 'https://www.knps.or.kr/portal/main/contents.do?menuNo=8000168',
+    sourceType: 'hls',
+    sourceUrl: 'https://live.knps.or.kr/cctv/hls/hakampo.m3u8',
   },
 ]
 
