@@ -222,6 +222,9 @@ function App() {
               <p className="eyebrow">{copy.liveMountainEyebrow}</p>
               <div className="mountain-title-row">
                 <h2>{localize(activeMountain.name, language)}</h2>
+                <a className="inline-link" href={activeMountain.officialPage} rel="noreferrer" target="_blank">
+                  {copy.officialInfo}
+                </a>
                 {weather && sunLabel && (
                   <span className="weather-badge">
                     <span className="weather-icon"><WeatherIcon code={weather.weatherCode} /></span>
@@ -235,9 +238,6 @@ function App() {
               </div>
               <p>{localize(activeMountain.description, language)}</p>
             </div>
-            <a className="inline-link" href={activeMountain.officialPage} rel="noreferrer" target="_blank">
-              {copy.officialInfo}
-            </a>
           </div>
         </section>
 

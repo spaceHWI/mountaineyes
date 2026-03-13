@@ -21,7 +21,7 @@
   inset: -50% -50%;
   width: 200%;
   height: 200%;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64' fill='none' stroke='%231a4a2e' stroke-width='1.2' opacity='0.06'%3E%3Cpath d='M32 6 C26 6 6 40 2 48 Q8 52 14 48 Q20 52 26 48 Q32 52 38 48 Q44 52 50 48 Q56 52 62 48 C58 40 38 6 32 6Z'/%3E%3Cellipse cx='23' cy='34' rx='7' ry='8'/%3E%3Cellipse cx='41' cy='34' rx='7' ry='8'/%3E%3Cellipse cx='25' cy='35' rx='3.5' ry='4.5'/%3E%3Cellipse cx='43' cy='35' rx='3.5' ry='4.5'/%3E%3C/svg%3E");
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64' fill='none' stroke='%231a4a2e' stroke-width='1.2' opacity='0.13'%3E%3Cpath d='M32 6 C26 6 6 40 2 48 Q8 52 14 48 Q20 52 26 48 Q32 52 38 48 Q44 52 50 48 Q56 52 62 48 C58 40 38 6 32 6Z'/%3E%3Cellipse cx='23' cy='34' rx='7' ry='8'/%3E%3Cellipse cx='41' cy='34' rx='7' ry='8'/%3E%3Cellipse cx='25' cy='35' rx='3.5' ry='4.5'/%3E%3Cellipse cx='43' cy='35' rx='3.5' ry='4.5'/%3E%3C/svg%3E");
   background-size: 80px 80px;
   animation: bg-drift 25s linear infinite;
   pointer-events: none;
@@ -216,9 +216,13 @@
 }
 
 .hero h1,
-.simul-header h2,
-.card-head h3 {
+.simul-header h2 {
   margin: 0.6rem 0 0;
+  letter-spacing: -0.04em;
+}
+
+.card-head h3 {
+  margin: 0;
   letter-spacing: -0.04em;
 }
 
@@ -241,7 +245,7 @@
 .simul-grid,
 .world-block,
 .empty-state {
-  margin-top: 0.6rem;
+  margin-top: 0.35rem;
 }
 
 .toolbar {
@@ -249,12 +253,18 @@
 }
 
 .toolbar-row,
-.card-head,
 .card-actions {
   display: flex;
   align-items: flex-start;
   justify-content: space-between;
   gap: 1rem;
+}
+
+.card-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
 }
 
 .toolbar-stack {
@@ -332,7 +342,7 @@
 .simul-grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 0.6rem;
+  gap: 0.35rem;
 }
 
 .simul-card {
@@ -346,6 +356,19 @@
   align-items: center;
   gap: 0.5rem;
   flex-wrap: wrap;
+  flex: 1;
+  min-width: 0;
+}
+
+.card-provider {
+  color: #4d6154;
+  font-size: 0.84rem;
+  font-weight: 500;
+  line-height: 1.65;
+}
+
+.card-head .inline-link {
+  flex-shrink: 0;
 }
 
 .feed-badge {
@@ -362,10 +385,7 @@
 
 
 .section-head {
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  gap: 1rem;
+  display: block;
 }
 
 .card-copy {
@@ -404,7 +424,7 @@
   align-items: flex-start;
   justify-content: space-between;
   gap: 1rem;
-  margin-top: 1rem;
+  margin-top: 0.35rem;
   padding: 1rem 1.1rem;
 }
 
@@ -1090,8 +1110,6 @@
   }
 
   .mountain-summary,
-  .section-head,
-  .card-head,
   .card-actions {
     flex-direction: column;
   }

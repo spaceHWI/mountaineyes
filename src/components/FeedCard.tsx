@@ -22,15 +22,15 @@ export function FeedCard({
       <div className="card-head">
         <div className="card-title-row">
           <h3>{localize(feed.name, language)}</h3>
+          <span className="card-provider">
+            {localize(feed.provider, language)}
+            {showKind ? ` · ${localize(kindLabels[feed.kind], language)}` : null}
+          </span>
         </div>
         <a className="inline-link" href={feed.officialPage} rel="noreferrer" target="_blank">
           {copy.officialSource}
         </a>
       </div>
-      <p className="card-copy">
-        {localize(feed.provider, language)}
-        {showKind ? ` · ${localize(kindLabels[feed.kind], language)}` : null}
-      </p>
       <StreamPlayer
         compact
         feed={feed}
