@@ -2601,4 +2601,27 @@ export const worldPicks: Feed[] = [
     sourceType: 'image',
     sourceUrl: 'https://panodata.panomax.com/cams/5366/recent_small.jpg',
   },
+  // --- Additional Chamonix / Mont Blanc (Flegere & Prarion) ---
+  {
+    id: 'montblanc-flegere-index',
+    name: { ko: '플레제르 앵덱스 (2396m)', en: 'Flegere Index (2396m)' },
+    mountainId: 'montblanc',
+    kind: 'summit',
+    region: { ko: '프랑스', en: 'France' },
+    provider: { ko: 'Chamonix Mont-Blanc Tourisme', en: 'Chamonix Mont-Blanc Tourisme' },
+    officialPage: 'https://en.chamonix.com/webcams',
+    sourceType: 'image',
+    sourceUrl: 'https://en.chamonix.com/sites/default/files/webcams/live/51.jpg',
+  },
+  {
+    id: 'montblanc-prarion',
+    name: { ko: '레 우쉬 프라리옹 (1850m)', en: 'Les Houches Prarion (1850m)' },
+    mountainId: 'montblanc',
+    kind: 'view',
+    region: { ko: '프랑스', en: 'France' },
+    provider: { ko: 'Chamonix Mont-Blanc Tourisme', en: 'Chamonix Mont-Blanc Tourisme' },
+    officialPage: 'https://en.chamonix.com/webcams',
+    sourceType: 'image',
+    sourceUrl: 'https://en.chamonix.com/sites/default/files/webcams/live/54.jpg',
+  },
 ]
