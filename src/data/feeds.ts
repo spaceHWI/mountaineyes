@@ -1337,6 +1337,29 @@ export const feeds: Feed[] = [
     sourceType: 'hls',
     sourceUrl: 'https://cctv-oak9.ktcdn.co.kr/cctv/ch9.stream/chunklist.m3u8',
   },
+  // --- Session 9-14: New feeds ---
+  {
+    id: 'wellihilli-charlie',
+    name: { ko: '찰리 슬로프', en: 'Charlie Slope' },
+    mountainId: 'wellihilli',
+    kind: 'view',
+    region: { ko: '강원', en: 'Gangwon' },
+    provider: { ko: '웰리힐리파크', en: 'Welli Hilli Park' },
+    officialPage: 'https://www.wellihillipark.com/',
+    sourceType: 'hls',
+    sourceUrl: 'https://live.wellihillipark.com/wellihillipark/_definst_/cam07.stream/playlist.m3u8',
+  },
+  {
+    id: 'oakvalley-slope-e',
+    name: { ko: 'E 슬로프', en: 'E Slope' },
+    mountainId: 'oakvalley',
+    kind: 'view',
+    region: { ko: '강원', en: 'Gangwon' },
+    provider: { ko: '오크밸리', en: 'Oak Valley' },
+    officialPage: 'https://www.oakvalley.co.kr/',
+    sourceType: 'hls',
+    sourceUrl: 'https://cctv-oak9.ktcdn.co.kr/cctv/ch5.stream/chunklist.m3u8',
+  },
 ]
 
 export const worldPicks: Feed[] = [
