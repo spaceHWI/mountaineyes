@@ -2601,6 +2601,29 @@ export const worldPicks: Feed[] = [
     sourceType: 'image',
     sourceUrl: 'https://panodata.panomax.com/cams/5366/recent_small.jpg',
   },
+  // --- Additional Korean ski resorts ---
+  {
+    id: 'wellihilli-cam07',
+    name: { ko: '웰리힐리 캠 7', en: 'Welli Hilli Cam 7' },
+    mountainId: 'wellihilli',
+    kind: 'view',
+    region: { ko: '강원', en: 'Gangwon' },
+    provider: { ko: '웰리힐리파크', en: 'Welli Hilli Park' },
+    officialPage: 'https://www.wellihillipark.com/',
+    sourceType: 'hls',
+    sourceUrl: 'https://live.wellihillipark.com/wellihillipark/_definst_/cam07.stream/playlist.m3u8',
+  },
+  {
+    id: 'oakvalley-slope-e',
+    name: { ko: 'E 슬로프', en: 'E Slope' },
+    mountainId: 'oakvalley',
+    kind: 'view',
+    region: { ko: '강원', en: 'Gangwon' },
+    provider: { ko: '오크밸리', en: 'Oak Valley' },
+    officialPage: 'https://www.oakvalley.co.kr/',
+    sourceType: 'hls',
+    sourceUrl: 'https://cctv-oak9.ktcdn.co.kr/cctv/ch5.stream/chunklist.m3u8',
+  },
   // --- Additional Chamonix / Mont Blanc (Flegere & Prarion) ---
   {
     id: 'montblanc-flegere-index',
