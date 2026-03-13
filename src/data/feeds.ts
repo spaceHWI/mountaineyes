@@ -42,6 +42,7 @@ export type MountainId =
   | 'berchtesgaden'
   | 'stmoritz'
   | 'hintertux'
+  | 'mthood'
 
 export type FeedKind = 'summit' | 'access' | 'view'
 
