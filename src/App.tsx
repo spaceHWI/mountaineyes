@@ -5,6 +5,7 @@ import { Icon } from './components/Icon'
 import { MountainPicker } from './components/MountainPicker'
 import { feeds, mountains, worldPicks, type FeedKind, type MountainId } from './data/feeds'
 import { useFeedHealth } from './hooks/useFeedHealth'
+import { getWeatherIcon, useWeather } from './hooks/useWeather'
 import { appCopy, kindLabels, localize, type Language } from './i18n'
 import { setMetaContent } from './utils/dom'
 import { getDistanceKm } from './utils/geo'
@@ -93,6 +94,7 @@ function App() {
     : copy.locationPrompt
 
   const activeMountain = mountains.find((mountain) => mountain.id === activeMountainId) ?? mountains[0]
+  const weather = useWeather(activeMountain.lat, activeMountain.lng)
 
   const availableKinds = useMemo(() => {
     const kinds = new Set<FeedKind>()
@@ -217,7 +219,16 @@ function App() {
           <div className="section-head">
             <div>
               <p className="eyebrow">{copy.liveMountainEyebrow}</p>
-              <h2>{localize(activeMountain.name, language)}</h2>
+              <div className="mountain-title-row">
+                <h2>{localize(activeMountain.name, language)}</h2>
+                {weather && (
+                  <span className="weather-badge">
+                    <span className="weather-icon">{getWeatherIcon(weather.weatherCode)}</span>
+                    <span className="weather-temp">{weather.temperature}°</span>
+                    <span className="weather-humidity">{weather.humidity}%</span>
+                  </span>
+                )}
+              </div>
               <p>{localize(activeMountain.description, language)}</p>
             </div>
             <a className="inline-link" href={activeMountain.officialPage} rel="noreferrer" target="_blank">
