@@ -10,6 +10,12 @@ export type MountainId =
   | 'chiaksan'
   | 'taebaeksan'
   | 'bukhansan'
+  | 'jirisan'
+  | 'deogyusan'
+  | 'sobaeksan'
+  | 'mudeungsan'
+  | 'gyeryongsan'
+  | 'juwangsan'
   | 'montblanc'
   | 'mtfuji'
   | 'maunakea'
@@ -41,6 +47,7 @@ export type Feed = {
 }
 
 export const mountains: Mountain[] = [
+  // 한라산은 항상 첫 번째, 나머지는 북→남 순
   {
     id: 'hallasan',
     name: { ko: '한라산', en: 'Hallasan' },
@@ -50,31 +57,7 @@ export const mountains: Mountain[] = [
     officialPage: 'https://www.jeju.go.kr/tool/halla/cctv.html',
     description: {
       ko: '제주 대표 산. 정상과 진입부 CCTV가 고르게 있습니다.',
-      en: 'Jeju’s signature mountain with a balanced mix of summit and access-point CCTV feeds.',
-    },
-  },
-  {
-    id: 'balwangsan',
-    name: { ko: '발왕산', en: 'Balwangsan' },
-    region: { ko: '강원', en: 'Gangwon' },
-    lat: 37.6444,
-    lng: 128.6806,
-    officialPage: 'https://www.weather.go.kr/gangwon/maple/cctv2.php',
-    description: {
-      ko: '강원지방기상청 실시간영상 페이지를 통해 확인할 수 있는 대표 산입니다.',
-      en: 'A popular mountain with official live feeds available through the Gangwon Regional Meteorological Administration.',
-    },
-  },
-  {
-    id: 'high1',
-    name: { ko: '하이원', en: 'High1' },
-    region: { ko: '강원', en: 'Gangwon' },
-    lat: 37.2088,
-    lng: 128.8333,
-    officialPage: 'https://www.weather.go.kr/gangwon/maple/cctv3.php',
-    description: {
-      ko: '강원지방기상청이 연결한 하이원리조트 실시간 슬로프 영상입니다. 함백산권 설경 확인용으로 테스트 중입니다.',
-      en: 'Official High1 Resort live slope feeds linked by the Gangwon Regional Meteorological Administration, useful for checking the Hambaeksan snow view.',
+      en: "Jeju's signature mountain with a balanced mix of summit and access-point CCTV feeds.",
     },
   },
   {
@@ -102,6 +85,30 @@ export const mountains: Mountain[] = [
     },
   },
   {
+    id: 'bukhansan',
+    name: { ko: '북한산', en: 'Bukhansan' },
+    region: { ko: '서울·경기', en: 'Seoul · Gyeonggi' },
+    lat: 37.6586,
+    lng: 126.9780,
+    officialPage: 'https://www.knps.or.kr/front/portal/visit/visitCctvList.do',
+    description: {
+      ko: '수도권 대표 국립공원으로, 국립공원공단 실시간 CCTV를 통해 산 풍경을 확인할 수 있습니다.',
+      en: 'Seoul\'s iconic national park with a live CCTV feed provided by the Korea National Park Service.',
+    },
+  },
+  {
+    id: 'balwangsan',
+    name: { ko: '발왕산', en: 'Balwangsan' },
+    region: { ko: '강원', en: 'Gangwon' },
+    lat: 37.6444,
+    lng: 128.6806,
+    officialPage: 'https://www.weather.go.kr/gangwon/maple/cctv2.php',
+    description: {
+      ko: '강원지방기상청 실시간영상 페이지를 통해 확인할 수 있는 대표 산입니다.',
+      en: 'A popular mountain with official live feeds available through the Gangwon Regional Meteorological Administration.',
+    },
+  },
+  {
     id: 'chiaksan',
     name: { ko: '치악산', en: 'Chiaksan' },
     region: { ko: '강원', en: 'Gangwon' },
@@ -111,6 +118,18 @@ export const mountains: Mountain[] = [
     description: {
       ko: '국립공원공단 공식 실시간영상에서 상원사 화면을 확인할 수 있습니다.',
       en: 'Check the Sangwonsa feed through the official Korea National Park Service live stream.',
+    },
+  },
+  {
+    id: 'high1',
+    name: { ko: '하이원', en: 'High1' },
+    region: { ko: '강원', en: 'Gangwon' },
+    lat: 37.2088,
+    lng: 128.8333,
+    officialPage: 'https://www.weather.go.kr/gangwon/maple/cctv3.php',
+    description: {
+      ko: '강원지방기상청이 연결한 하이원리조트 실시간 슬로프 영상입니다. 함백산권 설경 확인용으로 테스트 중입니다.',
+      en: 'Official High1 Resort live slope feeds linked by the Gangwon Regional Meteorological Administration, useful for checking the Hambaeksan snow view.',
     },
   },
   {
@@ -126,15 +145,75 @@ export const mountains: Mountain[] = [
     },
   },
   {
-    id: 'bukhansan',
-    name: { ko: '북한산', en: 'Bukhansan' },
-    region: { ko: '서울·경기', en: 'Seoul · Gyeonggi' },
-    lat: 37.6586,
-    lng: 126.9780,
-    officialPage: 'https://www.knps.or.kr/front/portal/visit/visitCctvList.do',
+    id: 'jirisan',
+    name: { ko: '지리산', en: 'Jirisan' },
+    region: { ko: '전남·전북·경남', en: 'Jeonnam · Jeonbuk · Gyeongnam' },
+    lat: 35.3373,
+    lng: 127.7306,
+    officialPage: 'https://www.knps.or.kr/portal/main/contents.do?menuNo=8000168',
     description: {
-      ko: '수도권 대표 국립공원으로, 국립공원공단 실시간 CCTV를 통해 산 풍경을 확인할 수 있습니다.',
-      en: 'Seoul\'s iconic national park with a live CCTV feed provided by the Korea National Park Service.',
+      ko: '한국 본토 최고봉 천왕봉(1,915m)을 품은 국립공원 1호. 천왕봉과 장터목 실시간 CCTV를 확인할 수 있습니다.',
+      en: "Korea's first national park, home to Cheonwangbong (1,915 m), the highest peak on the mainland. Live CCTV covers both the summit and the Jangtaemok shelter.",
+    },
+  },
+  {
+    id: 'deogyusan',
+    name: { ko: '덕유산', en: 'Deogyusan' },
+    region: { ko: '전북·경남', en: 'Jeonbuk · Gyeongnam' },
+    lat: 35.8519,
+    lng: 127.7454,
+    officialPage: 'https://www.knps.or.kr/portal/main/contents.do?menuNo=8000168',
+    description: {
+      ko: '무주리조트 곤돌라로 설천봉(1,520m)까지 오를 수 있는 산. 설천봉 실시간 CCTV를 확인할 수 있습니다.',
+      en: 'A mountain accessible via the Muju Resort gondola to Seolcheonbong (1,520 m). Live CCTV is available at the Seolcheonbong peak.',
+    },
+  },
+  {
+    id: 'sobaeksan',
+    name: { ko: '소백산', en: 'Sobaeksan' },
+    region: { ko: '충북·경북', en: 'Chungbuk · Gyeongbuk' },
+    lat: 36.9572,
+    lng: 128.4844,
+    officialPage: 'https://www.knps.or.kr/portal/main/contents.do?menuNo=8000168',
+    description: {
+      ko: '철쭉 군락과 겨울 설화로 유명한 소백산. 연화봉 실시간 CCTV를 확인할 수 있습니다.',
+      en: 'Famous for its azalea colonies and winter snow flowers. Live CCTV is available at the Yeonhwabong peak.',
+    },
+  },
+  {
+    id: 'mudeungsan',
+    name: { ko: '무등산', en: 'Mudeungsan' },
+    region: { ko: '광주·전남', en: 'Gwangju · Jeonnam' },
+    lat: 35.1342,
+    lng: 126.9895,
+    officialPage: 'https://www.knps.or.kr/portal/main/contents.do?menuNo=8000168',
+    description: {
+      ko: '광주 시민의 산으로 사랑받는 무등산. 장불재 실시간 CCTV를 확인할 수 있습니다.',
+      en: "A beloved mountain for Gwangju citizens. Live CCTV is available at the Jangbuljae ridge.",
+    },
+  },
+  {
+    id: 'gyeryongsan',
+    name: { ko: '계룡산', en: 'Gyeryongsan' },
+    region: { ko: '대전·충남', en: 'Daejeon · Chungnam' },
+    lat: 36.3427,
+    lng: 127.2037,
+    officialPage: 'https://www.knps.or.kr/portal/main/contents.do?menuNo=8000168',
+    description: {
+      ko: '대전 인근 풍수지리 명산. 신선봉 실시간 CCTV를 확인할 수 있습니다.',
+      en: 'A renowned mountain near Daejeon known for its feng shui significance. Live CCTV is available at the Sinseonbong peak.',
+    },
+  },
+  {
+    id: 'juwangsan',
+    name: { ko: '주왕산', en: 'Juwangsan' },
+    region: { ko: '경북', en: 'Gyeongbuk' },
+    lat: 36.3894,
+    lng: 129.1642,
+    officialPage: 'https://www.knps.or.kr/portal/main/contents.do?menuNo=8000168',
+    description: {
+      ko: '기암절벽과 계곡이 아름다운 경북의 국립공원. 절재 실시간 CCTV를 확인할 수 있습니다.',
+      en: 'A Gyeongbuk national park known for its dramatic rock cliffs and valleys. Live CCTV is available at the Jeoljae ridge.',
     },
   },
 ]
@@ -364,6 +443,138 @@ export const feeds: Feed[] = [
     officialPage: 'https://www.knps.or.kr/front/portal/visit/visitCctvList.do',
     sourceType: 'hls',
     sourceUrl: 'https://live.knps.or.kr/cctv/hls/bukhan.m3u8',
+  },
+  {
+    id: 'hallasan-yeongsil',
+    name: { ko: '영실 (적설)', en: 'Yeongsil (Snow Monitor)' },
+    mountainId: 'hallasan',
+    kind: 'access',
+    region: { ko: '제주', en: 'Jeju' },
+    provider: { ko: '제주특별자치도 방재관리과', en: 'Jeju Disaster Prevention Division' },
+    officialPage: 'http://bangjae.jeju.go.kr/realtimeinfor/cctv/snow.htm',
+    sourceType: 'hls',
+    sourceUrl: withProxyBase('/api/proxy?target=http%3A%2F%2F59.8.86.94%3A8080%2Fmedia%2Fapi%2Fv1%2Fhls%2Fvurix%2F192871%2F100023%2F0%2F0'),
+  },
+  {
+    id: 'hallasan-sancheondan',
+    name: { ko: '산천단입구 (적설)', en: 'Sancheondan Entrance (Snow Monitor)' },
+    mountainId: 'hallasan',
+    kind: 'access',
+    region: { ko: '제주', en: 'Jeju' },
+    provider: { ko: '제주특별자치도 방재관리과', en: 'Jeju Disaster Prevention Division' },
+    officialPage: 'http://bangjae.jeju.go.kr/realtimeinfor/cctv/snow.htm',
+    sourceType: 'hls',
+    sourceUrl: withProxyBase('/api/proxy?target=http%3A%2F%2F59.8.86.94%3A8080%2Fmedia%2Fapi%2Fv1%2Fhls%2Fvurix%2F192871%2F100016%2F0%2F0'),
+  },
+  {
+    id: 'hallasan-pyeonghwaro',
+    name: { ko: '평화로입구 (적설)', en: 'Pyeonghwa-ro Entrance (Snow Monitor)' },
+    mountainId: 'hallasan',
+    kind: 'access',
+    region: { ko: '제주', en: 'Jeju' },
+    provider: { ko: '제주특별자치도 방재관리과', en: 'Jeju Disaster Prevention Division' },
+    officialPage: 'http://bangjae.jeju.go.kr/realtimeinfor/cctv/snow.htm',
+    sourceType: 'hls',
+    sourceUrl: withProxyBase('/api/proxy?target=http%3A%2F%2F59.8.86.94%3A8080%2Fmedia%2Fapi%2Fv1%2Fhls%2Fvurix%2F192871%2F100017%2F0%2F0'),
+  },
+  {
+    id: 'hallasan-bijarim',
+    name: { ko: '비자림 (적설)', en: 'Bijarim Forest (Snow Monitor)' },
+    mountainId: 'hallasan',
+    kind: 'access',
+    region: { ko: '제주', en: 'Jeju' },
+    provider: { ko: '제주특별자치도 방재관리과', en: 'Jeju Disaster Prevention Division' },
+    officialPage: 'http://bangjae.jeju.go.kr/realtimeinfor/cctv/snow.htm',
+    sourceType: 'hls',
+    sourceUrl: withProxyBase('/api/proxy?target=http%3A%2F%2F59.8.86.94%3A8080%2Fmedia%2Fapi%2Fv1%2Fhls%2Fvurix%2F192871%2F100015%2F0%2F0'),
+  },
+  {
+    id: 'hallasan-sanbangsan',
+    name: { ko: '산방산 (재해)', en: 'Sanbangsan (Disaster Monitor)' },
+    mountainId: 'hallasan',
+    kind: 'view',
+    region: { ko: '제주', en: 'Jeju' },
+    provider: { ko: '제주특별자치도 방재관리과', en: 'Jeju Disaster Prevention Division' },
+    officialPage: 'http://bangjae.jeju.go.kr/realtimeinfor/cctv/danger.htm',
+    sourceType: 'hls',
+    sourceUrl: withProxyBase('/api/proxy?target=http%3A%2F%2F59.8.86.94%3A8080%2Fmedia%2Fapi%2Fv1%2Fhls%2Fvurix%2F192871%2F100012%2F0%2F0'),
+  },
+  {
+    id: 'jirisan-cheonwangbong',
+    name: { ko: '천왕봉', en: 'Cheonwangbong' },
+    mountainId: 'jirisan',
+    kind: 'summit',
+    region: { ko: '전남·전북·경남', en: 'Jeonnam · Jeonbuk · Gyeongnam' },
+    provider: { ko: '국립공원공단', en: 'Korea National Park Service' },
+    officialPage: 'https://www.knps.or.kr/portal/main/contents.do?menuNo=8000168',
+    sourceType: 'hls',
+    sourceUrl: 'https://live.knps.or.kr/cctv/hls/wongbong.m3u8',
+  },
+  {
+    id: 'jirisan-jangtaemok',
+    name: { ko: '장터목', en: 'Jangtaemok' },
+    mountainId: 'jirisan',
+    kind: 'summit',
+    region: { ko: '전남·전북·경남', en: 'Jeonnam · Jeonbuk · Gyeongnam' },
+    provider: { ko: '국립공원공단', en: 'Korea National Park Service' },
+    officialPage: 'https://www.knps.or.kr/portal/main/contents.do?menuNo=8000168',
+    sourceType: 'hls',
+    sourceUrl: 'https://live.knps.or.kr/cctv/hls/zjangteo.m3u8',
+  },
+  {
+    id: 'deogyusan-seolcheonbong',
+    name: { ko: '설천봉', en: 'Seolcheonbong' },
+    mountainId: 'deogyusan',
+    kind: 'summit',
+    region: { ko: '전북·경남', en: 'Jeonbuk · Gyeongnam' },
+    provider: { ko: '국립공원공단', en: 'Korea National Park Service' },
+    officialPage: 'https://www.knps.or.kr/portal/main/contents.do?menuNo=8000168',
+    sourceType: 'hls',
+    sourceUrl: 'https://live.knps.or.kr/cctv/hls/zsulchun.m3u8',
+  },
+  {
+    id: 'sobaeksan-yeonhwabong',
+    name: { ko: '연화봉', en: 'Yeonhwabong' },
+    mountainId: 'sobaeksan',
+    kind: 'summit',
+    region: { ko: '충북·경북', en: 'Chungbuk · Gyeongbuk' },
+    provider: { ko: '국립공원공단', en: 'Korea National Park Service' },
+    officialPage: 'https://www.knps.or.kr/portal/main/contents.do?menuNo=8000168',
+    sourceType: 'hls',
+    sourceUrl: 'https://live.knps.or.kr/cctv/hls/sobak.m3u8',
+  },
+  {
+    id: 'mudeungsan-jangbuljae',
+    name: { ko: '장불재', en: 'Jangbuljae' },
+    mountainId: 'mudeungsan',
+    kind: 'summit',
+    region: { ko: '광주·전남', en: 'Gwangju · Jeonnam' },
+    provider: { ko: '국립공원공단', en: 'Korea National Park Service' },
+    officialPage: 'https://www.knps.or.kr/portal/main/contents.do?menuNo=8000168',
+    sourceType: 'hls',
+    sourceUrl: 'https://live.knps.or.kr/cctv/hls/jangbuljai.m3u8',
+  },
+  {
+    id: 'gyeryongsan-sinseonbong',
+    name: { ko: '신선봉', en: 'Sinseonbong' },
+    mountainId: 'gyeryongsan',
+    kind: 'summit',
+    region: { ko: '대전·충남', en: 'Daejeon · Chungnam' },
+    provider: { ko: '국립공원공단', en: 'Korea National Park Service' },
+    officialPage: 'https://www.knps.or.kr/portal/main/contents.do?menuNo=8000168',
+    sourceType: 'hls',
+    sourceUrl: 'https://live.knps.or.kr/cctv/hls/sinsungbong.m3u8',
+  },
+  {
+    id: 'juwangsan-jeoljae',
+    name: { ko: '절재', en: 'Jeoljae' },
+    mountainId: 'juwangsan',
+    kind: 'summit',
+    region: { ko: '경북', en: 'Gyeongbuk' },
+    provider: { ko: '국립공원공단', en: 'Korea National Park Service' },
+    officialPage: 'https://www.knps.or.kr/portal/main/contents.do?menuNo=8000168',
+    sourceType: 'hls',
+    sourceUrl: 'https://live.knps.or.kr/cctv/hls/zjulje.m3u8',
   },
 ]
 
