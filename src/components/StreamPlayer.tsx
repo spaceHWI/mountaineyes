@@ -44,6 +44,7 @@ export function StreamPlayer({
   const copy = playerCopy[language]
   const feedName = localize(feed.name, language)
 
+  const [imageLoading, setImageLoading] = useState(true)
   const isImageFeed = feed.sourceType === 'image'
   const playerTone = getStatusTone(status, isPlaying)
   const playerStatusLabel = status === 'error'
@@ -326,12 +327,25 @@ export function StreamPlayer({
       </div>
       <div className={compact ? 'stream-player compact' : 'stream-player'}>
         {isImageFeed ? (
-          <img
-            alt={copy.streamImageAlt(feedName)}
-            className="stream-image"
-            onError={() => setStatus('error')}
-            src={refreshedImageUrl}
-          />
+          <>
+            {imageLoading && (
+              <div className="stream-image-placeholder" aria-hidden="true">
+                <svg viewBox="0 0 64 64" className="placeholder-icon">
+                  <path d="M32 6 C26 6 6 40 2 48 Q8 52 14 48 Q20 52 26 48 Q32 52 38 48 Q44 52 50 48 Q56 52 62 48 C58 40 38 6 32 6Z" fill="none" stroke="currentColor" strokeWidth="1.5"/>
+                  <ellipse cx="23" cy="34" rx="7" ry="8" fill="none" stroke="currentColor" strokeWidth="1.5"/>
+                  <ellipse cx="41" cy="34" rx="7" ry="8" fill="none" stroke="currentColor" strokeWidth="1.5"/>
+                </svg>
+              </div>
+            )}
+            <img
+              alt={copy.streamImageAlt(feedName)}
+              className="stream-image"
+              onError={() => { setImageLoading(false); setStatus('error') }}
+              onLoad={() => setImageLoading(false)}
+              src={refreshedImageUrl}
+              style={imageLoading ? { opacity: 0, position: 'absolute' } : undefined}
+            />
+          </>
         ) : (
           <video
             aria-label={copy.streamVideoAriaLabel(feedName)}
