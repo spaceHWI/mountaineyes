@@ -462,11 +462,18 @@
   transform: rotate(180deg);
 }
 
+.mountain-picker-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 999;
+  background: rgba(0, 0, 0, 0.3);
+}
+
 .mountain-picker-menu {
   position: absolute;
   top: calc(100% + 0.4rem);
   left: 0;
-  z-index: 100;
+  z-index: 1000;
   min-width: 100%;
   max-height: 20rem;
   overflow-y: auto;

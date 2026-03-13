@@ -63,6 +63,8 @@ export function MountainPicker({ health, language, mountains, onChange, value }:
       </button>
 
       {open && (
+        <>
+        <div className="mountain-picker-backdrop" onClick={() => setOpen(false)} />
         <ul className="mountain-picker-menu" role="listbox">
           {mountains.map((mountain) => {
             const status = health[mountain.id] ?? 'checking'
@@ -90,6 +92,7 @@ export function MountainPicker({ health, language, mountains, onChange, value }:
             )
           })}
         </ul>
+        </>
       )}
     </div>
   )
