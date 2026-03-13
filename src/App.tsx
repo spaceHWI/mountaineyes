@@ -93,6 +93,21 @@ function App() {
     ? copy.locationWithNearest(nearestMountainName)
     : copy.locationPrompt
 
+  const randomWorldPicks = useMemo(() => {
+    const grouped = new Map<string, typeof worldPicks>()
+    worldPicks.forEach((feed) => {
+      const existing = grouped.get(feed.mountainId) ?? []
+      existing.push(feed)
+      grouped.set(feed.mountainId, existing)
+    })
+    const picked: typeof worldPicks = []
+    grouped.forEach((feeds) => {
+      const randomFeed = feeds[Math.floor(Math.random() * feeds.length)]
+      picked.push(randomFeed)
+    })
+    return picked.sort(() => Math.random() - 0.5)
+  }, [])
+
   const activeMountain = mountains.find((mountain) => mountain.id === activeMountainId) ?? mountains[0]
   const weather = useWeather(activeMountain.lat, activeMountain.lng)
 
@@ -257,7 +272,7 @@ function App() {
             </div>
           </div>
           <div className="world-grid">
-            {worldPicks.map((feed) => (
+            {randomWorldPicks.map((feed) => (
               <FeedCard key={feed.id} feed={feed} language={language} />
             ))}
           </div>

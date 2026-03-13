@@ -35,9 +35,9 @@ export const appCopy = {
     pageTitle: 'MountainEyes V1.1',
     poweredBy: 'Powered by HWI',
     twitterDescription: '전국 산 CCTV를 한눈에 보고 가까운 산을 먼저 추천받는 실시간 산 CCTV 서비스',
-    worldPickDescription: '프랑스 샤모니 공식 웹캠에서 제공하는 최신 몽블랑 이미지를 함께 보여줍니다.',
+    worldPickDescription: '전 세계 유명 산의 실시간 웹캠을 랜덤으로 보여줍니다.',
     worldPickEyebrow: 'World Pick',
-    worldPickTitle: '몽블랑',
+    worldPickTitle: '세계의 산',
   },
   en: {
     allLabel: 'All',
@@ -62,9 +62,9 @@ export const appCopy = {
     poweredBy: 'Powered by HWI',
     twitterDescription: 'Live mountain CCTV feeds with nearest-mountain recommendations',
     worldPickDescription:
-      'See the latest Mont Blanc image provided by the official Chamonix webcam feed.',
+      'Live webcam feeds from famous mountains around the world, randomly picked for you.',
     worldPickEyebrow: 'World Pick',
-    worldPickTitle: 'Mont Blanc',
+    worldPickTitle: 'Mountains of the World',
   },
 } as const
 
