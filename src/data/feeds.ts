@@ -1424,7 +1424,7 @@ export const feeds: Feed[] = [
     provider: { ko: '곤지암리조트', en: 'Konjiam Resort' },
     officialPage: 'https://www.konjiamresort.co.kr/',
     sourceType: 'hls',
-    sourceUrl: 'http://konjiam.live.cdn.cloudn.co.kr/konjiam/cam01.stream/playlist.m3u8',
+    sourceUrl: withProxyBase('/api/proxy?target=http%3A%2F%2Fkonjiam.live.cdn.cloudn.co.kr%2Fkonjiam%2Fcam01.stream%2Fplaylist.m3u8'),
   },
   {
     id: 'konjiamresort-upper-slope',
@@ -1435,7 +1435,7 @@ export const feeds: Feed[] = [
     provider: { ko: '곤지암리조트', en: 'Konjiam Resort' },
     officialPage: 'https://www.konjiamresort.co.kr/',
     sourceType: 'hls',
-    sourceUrl: 'http://konjiam.live.cdn.cloudn.co.kr/konjiam/cam02.stream/playlist.m3u8',
+    sourceUrl: withProxyBase('/api/proxy?target=http%3A%2F%2Fkonjiam.live.cdn.cloudn.co.kr%2Fkonjiam%2Fcam02.stream%2Fplaylist.m3u8'),
   },
   {
     id: 'konjiamresort-mid-slope',
@@ -1446,7 +1446,7 @@ export const feeds: Feed[] = [
     provider: { ko: '곤지암리조트', en: 'Konjiam Resort' },
     officialPage: 'https://www.konjiamresort.co.kr/',
     sourceType: 'hls',
-    sourceUrl: 'http://konjiam.live.cdn.cloudn.co.kr/konjiam/cam05.stream/playlist.m3u8',
+    sourceUrl: withProxyBase('/api/proxy?target=http%3A%2F%2Fkonjiam.live.cdn.cloudn.co.kr%2Fkonjiam%2Fcam05.stream%2Fplaylist.m3u8'),
   },
   {
     id: 'konjiamresort-beginner-base',
@@ -1457,7 +1457,7 @@ export const feeds: Feed[] = [
     provider: { ko: '곤지암리조트', en: 'Konjiam Resort' },
     officialPage: 'https://www.konjiamresort.co.kr/',
     sourceType: 'hls',
-    sourceUrl: 'http://konjiam.live.cdn.cloudn.co.kr/konjiam/cam03.stream/playlist.m3u8',
+    sourceUrl: withProxyBase('/api/proxy?target=http%3A%2F%2Fkonjiam.live.cdn.cloudn.co.kr%2Fkonjiam%2Fcam03.stream%2Fplaylist.m3u8'),
   },
   {
     id: 'konjiamresort-advanced-base',
@@ -1468,7 +1468,7 @@ export const feeds: Feed[] = [
     provider: { ko: '곤지암리조트', en: 'Konjiam Resort' },
     officialPage: 'https://www.konjiamresort.co.kr/',
     sourceType: 'hls',
-    sourceUrl: 'http://konjiam.live.cdn.cloudn.co.kr/konjiam/cam04.stream/playlist.m3u8',
+    sourceUrl: withProxyBase('/api/proxy?target=http%3A%2F%2Fkonjiam.live.cdn.cloudn.co.kr%2Fkonjiam%2Fcam04.stream%2Fplaylist.m3u8'),
   },
   {
     id: 'o2resort-skihouse',
