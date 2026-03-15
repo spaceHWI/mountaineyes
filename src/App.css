@@ -822,6 +822,21 @@
   background: #07110b;
 }
 
+.stream-player:fullscreen {
+  background: #000;
+  border-radius: 0;
+}
+
+.stream-player:fullscreen video,
+.stream-player:fullscreen img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  min-height: unset;
+}
+
 .stream-image-placeholder {
   position: absolute;
   inset: 0;

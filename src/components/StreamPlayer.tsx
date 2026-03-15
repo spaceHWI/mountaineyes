@@ -218,29 +218,6 @@ export function StreamPlayer({
     }
   }, [feed, isImageFeed, playbackUrl])
 
-  const togglePlayback = async () => {
-    if (isImageFeed) {
-      return
-    }
-
-    const video = videoRef.current
-
-    if (!video || status === 'loading' || status === 'error') {
-      return
-    }
-
-    if (video.paused) {
-      try {
-        await video.play()
-      } catch {
-        setCaptureMessage(copy.statusCannotStartPlayback)
-      }
-      return
-    }
-
-    video.pause()
-  }
-
   const handleCapture = async () => {
     try {
       const canvas = document.createElement('canvas')
@@ -319,13 +296,26 @@ export function StreamPlayer({
     }
   }
 
+  const playerRef = useRef<HTMLDivElement>(null)
+
+  const toggleFullscreen = () => {
+    const el = playerRef.current
+    if (!el) return
+
+    if (document.fullscreenElement) {
+      void document.exitFullscreen()
+    } else {
+      void el.requestFullscreen()
+    }
+  }
+
   return (
     <div className="stream-shell">
       <div className="stream-meta">
         <span className={`stream-pill ${playerTone}`}>{playerStatusLabel}</span>
         <span className="stream-area">{localize(feed.region, language)}</span>
       </div>
-      <div className={compact ? 'stream-player compact' : 'stream-player'}>
+      <div className={compact ? 'stream-player compact' : 'stream-player'} ref={playerRef}>
         {isImageFeed ? (
           <>
             {imageLoading && (
@@ -340,10 +330,11 @@ export function StreamPlayer({
             <img
               alt={copy.streamImageAlt(feedName)}
               className="stream-image"
+              onClick={toggleFullscreen}
               onError={() => { setImageLoading(false); setStatus('error') }}
               onLoad={() => setImageLoading(false)}
               src={refreshedImageUrl}
-              style={imageLoading ? { opacity: 0, position: 'absolute' } : undefined}
+              style={imageLoading ? { opacity: 0, position: 'absolute' } : { cursor: 'pointer' }}
             />
           </>
         ) : (
@@ -352,9 +343,7 @@ export function StreamPlayer({
             className="stream-video"
             crossOrigin="anonymous"
             muted
-            onClick={() => {
-              void togglePlayback()
-            }}
+            onClick={toggleFullscreen}
             playsInline
             poster={feed.thumbnail}
             preload={priority ? 'auto' : 'metadata'}
