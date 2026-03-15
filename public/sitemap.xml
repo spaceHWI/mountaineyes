@@ -3,11 +3,209 @@
         xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
     <loc>https://mountaineyes.kr/</loc>
-    <lastmod>2026-03-14</lastmod>
+    <lastmod>2026-03-15</lastmod>
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
     <xhtml:link rel="alternate" hreflang="ko" href="https://mountaineyes.kr/" />
     <xhtml:link rel="alternate" hreflang="en" href="https://mountaineyes.kr/?lang=en" />
     <xhtml:link rel="alternate" hreflang="x-default" href="https://mountaineyes.kr/" />
+  </url>
+  <url>
+    <loc>https://mountaineyes.kr/?mountain=hallasan</loc>
+    <lastmod>2026-03-15</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://mountaineyes.kr/?mountain=hallasan" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://mountaineyes.kr/?mountain=hallasan&amp;lang=en" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://mountaineyes.kr/?mountain=hallasan" />
+  </url>
+  <url>
+    <loc>https://mountaineyes.kr/?mountain=seoraksan</loc>
+    <lastmod>2026-03-15</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://mountaineyes.kr/?mountain=seoraksan" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://mountaineyes.kr/?mountain=seoraksan&amp;lang=en" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://mountaineyes.kr/?mountain=seoraksan" />
+  </url>
+  <url>
+    <loc>https://mountaineyes.kr/?mountain=odaesan</loc>
+    <lastmod>2026-03-15</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://mountaineyes.kr/?mountain=odaesan" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://mountaineyes.kr/?mountain=odaesan&amp;lang=en" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://mountaineyes.kr/?mountain=odaesan" />
+  </url>
+  <url>
+    <loc>https://mountaineyes.kr/?mountain=bukhansan</loc>
+    <lastmod>2026-03-15</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://mountaineyes.kr/?mountain=bukhansan" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://mountaineyes.kr/?mountain=bukhansan&amp;lang=en" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://mountaineyes.kr/?mountain=bukhansan" />
+  </url>
+  <url>
+    <loc>https://mountaineyes.kr/?mountain=balwangsan</loc>
+    <lastmod>2026-03-15</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://mountaineyes.kr/?mountain=balwangsan" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://mountaineyes.kr/?mountain=balwangsan&amp;lang=en" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://mountaineyes.kr/?mountain=balwangsan" />
+  </url>
+  <url>
+    <loc>https://mountaineyes.kr/?mountain=chiaksan</loc>
+    <lastmod>2026-03-15</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://mountaineyes.kr/?mountain=chiaksan" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://mountaineyes.kr/?mountain=chiaksan&amp;lang=en" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://mountaineyes.kr/?mountain=chiaksan" />
+  </url>
+  <url>
+    <loc>https://mountaineyes.kr/?mountain=high1</loc>
+    <lastmod>2026-03-15</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://mountaineyes.kr/?mountain=high1" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://mountaineyes.kr/?mountain=high1&amp;lang=en" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://mountaineyes.kr/?mountain=high1" />
+  </url>
+  <url>
+    <loc>https://mountaineyes.kr/?mountain=taebaeksan</loc>
+    <lastmod>2026-03-15</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://mountaineyes.kr/?mountain=taebaeksan" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://mountaineyes.kr/?mountain=taebaeksan&amp;lang=en" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://mountaineyes.kr/?mountain=taebaeksan" />
+  </url>
+  <url>
+    <loc>https://mountaineyes.kr/?mountain=jirisan</loc>
+    <lastmod>2026-03-15</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://mountaineyes.kr/?mountain=jirisan" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://mountaineyes.kr/?mountain=jirisan&amp;lang=en" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://mountaineyes.kr/?mountain=jirisan" />
+  </url>
+  <url>
+    <loc>https://mountaineyes.kr/?mountain=deogyusan</loc>
+    <lastmod>2026-03-15</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://mountaineyes.kr/?mountain=deogyusan" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://mountaineyes.kr/?mountain=deogyusan&amp;lang=en" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://mountaineyes.kr/?mountain=deogyusan" />
+  </url>
+  <url>
+    <loc>https://mountaineyes.kr/?mountain=sobaeksan</loc>
+    <lastmod>2026-03-15</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://mountaineyes.kr/?mountain=sobaeksan" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://mountaineyes.kr/?mountain=sobaeksan&amp;lang=en" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://mountaineyes.kr/?mountain=sobaeksan" />
+  </url>
+  <url>
+    <loc>https://mountaineyes.kr/?mountain=mudeungsan</loc>
+    <lastmod>2026-03-15</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://mountaineyes.kr/?mountain=mudeungsan" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://mountaineyes.kr/?mountain=mudeungsan&amp;lang=en" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://mountaineyes.kr/?mountain=mudeungsan" />
+  </url>
+  <url>
+    <loc>https://mountaineyes.kr/?mountain=gyeryongsan</loc>
+    <lastmod>2026-03-15</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://mountaineyes.kr/?mountain=gyeryongsan" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://mountaineyes.kr/?mountain=gyeryongsan&amp;lang=en" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://mountaineyes.kr/?mountain=gyeryongsan" />
+  </url>
+  <url>
+    <loc>https://mountaineyes.kr/?mountain=juwangsan</loc>
+    <lastmod>2026-03-15</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://mountaineyes.kr/?mountain=juwangsan" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://mountaineyes.kr/?mountain=juwangsan&amp;lang=en" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://mountaineyes.kr/?mountain=juwangsan" />
+  </url>
+  <url>
+    <loc>https://mountaineyes.kr/?mountain=byeonsanbando</loc>
+    <lastmod>2026-03-15</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://mountaineyes.kr/?mountain=byeonsanbando" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://mountaineyes.kr/?mountain=byeonsanbando&amp;lang=en" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://mountaineyes.kr/?mountain=byeonsanbando" />
+  </url>
+  <url>
+    <loc>https://mountaineyes.kr/?mountain=hallyeohaesang</loc>
+    <lastmod>2026-03-15</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://mountaineyes.kr/?mountain=hallyeohaesang" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://mountaineyes.kr/?mountain=hallyeohaesang&amp;lang=en" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://mountaineyes.kr/?mountain=hallyeohaesang" />
+  </url>
+  <url>
+    <loc>https://mountaineyes.kr/?mountain=taeanhaean</loc>
+    <lastmod>2026-03-15</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://mountaineyes.kr/?mountain=taeanhaean" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://mountaineyes.kr/?mountain=taeanhaean&amp;lang=en" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://mountaineyes.kr/?mountain=taeanhaean" />
+  </url>
+  <url>
+    <loc>https://mountaineyes.kr/?mountain=phoenixpark</loc>
+    <lastmod>2026-03-15</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://mountaineyes.kr/?mountain=phoenixpark" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://mountaineyes.kr/?mountain=phoenixpark&amp;lang=en" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://mountaineyes.kr/?mountain=phoenixpark" />
+  </url>
+  <url>
+    <loc>https://mountaineyes.kr/?mountain=wellihilli</loc>
+    <lastmod>2026-03-15</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://mountaineyes.kr/?mountain=wellihilli" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://mountaineyes.kr/?mountain=wellihilli&amp;lang=en" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://mountaineyes.kr/?mountain=wellihilli" />
+  </url>
+  <url>
+    <loc>https://mountaineyes.kr/?mountain=oakvalley</loc>
+    <lastmod>2026-03-15</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://mountaineyes.kr/?mountain=oakvalley" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://mountaineyes.kr/?mountain=oakvalley&amp;lang=en" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://mountaineyes.kr/?mountain=oakvalley" />
+  </url>
+  <url>
+    <loc>https://mountaineyes.kr/?mountain=konjiamresort</loc>
+    <lastmod>2026-03-15</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://mountaineyes.kr/?mountain=konjiamresort" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://mountaineyes.kr/?mountain=konjiamresort&amp;lang=en" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://mountaineyes.kr/?mountain=konjiamresort" />
+  </url>
+  <url>
+    <loc>https://mountaineyes.kr/?mountain=o2resort</loc>
+    <lastmod>2026-03-15</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://mountaineyes.kr/?mountain=o2resort" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://mountaineyes.kr/?mountain=o2resort&amp;lang=en" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://mountaineyes.kr/?mountain=o2resort" />
   </url>
 </urlset>

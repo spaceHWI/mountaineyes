@@ -29,18 +29,27 @@ function App() {
   const feedHealth = useFeedHealth(mountainIds)
 
   const copy = appCopy[language]
+  const activeMountain = mountains.find((mountain) => mountain.id === activeMountainId) ?? mountains[0]
 
   useEffect(() => {
     document.documentElement.lang = language
     window.localStorage.setItem(LANGUAGE_STORAGE_KEY, language)
 
-    document.title = copy.pageTitle
-    setMetaContent('meta[name="description"]', copy.pageDescription)
-    setMetaContent('meta[property="og:title"]', copy.pageTitle)
-    setMetaContent('meta[property="og:description"]', copy.pageDescription)
-    setMetaContent('meta[name="twitter:title"]', copy.pageTitle)
-    setMetaContent('meta[name="twitter:description"]', copy.twitterDescription)
-  }, [copy.pageDescription, copy.pageTitle, copy.twitterDescription, language])
+    const mountainName = localize(activeMountain.name, language)
+    const title = `${mountainName} CCTV — MountainEyes`
+    const desc = language === 'ko'
+      ? `${mountainName} 실시간 CCTV 영상과 날씨를 MountainEyes에서 확인하세요.`
+      : `Watch live ${mountainName} CCTV feeds and weather on MountainEyes.`
+    const url = `https://mountaineyes.kr/?mountain=${activeMountain.id}`
+
+    document.title = title
+    setMetaContent('meta[name="description"]', desc)
+    setMetaContent('meta[property="og:title"]', title)
+    setMetaContent('meta[property="og:description"]', desc)
+    setMetaContent('meta[property="og:url"]', url)
+    setMetaContent('meta[name="twitter:title"]', title)
+    setMetaContent('meta[name="twitter:description"]', desc)
+  }, [activeMountain, language])
 
   useEffect(() => {
     if (!navigator.geolocation) {
@@ -88,7 +97,6 @@ function App() {
     return candidates[Math.floor(Math.random() * candidates.length)] ?? worldPicks[0]
   }, [activeWorldMountainId])
 
-  const activeMountain = mountains.find((mountain) => mountain.id === activeMountainId) ?? mountains[0]
   const weather = useWeather(activeMountain.lat, activeMountain.lng)
 
   const availableKinds = useMemo(() => {
