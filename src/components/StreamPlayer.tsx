@@ -52,10 +52,10 @@ export function StreamPlayer({
     : copy.live
 
   const playbackUrl = useMemo(() => {
-    return feed.sourceUrl.startsWith('http://')
+    return feed.sourceType === 'hls'
       ? `/api/proxy?target=${encodeURIComponent(feed.sourceUrl)}`
       : feed.sourceUrl
-  }, [feed.sourceUrl])
+  }, [feed.sourceType, feed.sourceUrl])
   const refreshedImageUrl = useMemo(
     () => `${feed.sourceUrl}${feed.sourceUrl.includes('?') ? '&' : '?'}t=${imageVersion}`,
     [feed.sourceUrl, imageVersion],
