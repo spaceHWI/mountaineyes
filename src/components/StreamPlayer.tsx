@@ -123,9 +123,6 @@ export function StreamPlayer({
     hasStartedPlaybackRef.current = false
     setStatus('loading')
     setIsPlaying(false)
-    video.pause()
-    video.removeAttribute('src')
-    video.load()
 
     const handleError = () => {
       setStatus('error')
@@ -167,9 +164,16 @@ export function StreamPlayer({
     video.addEventListener('timeupdate', handleTimeUpdate)
     video.addEventListener('waiting', handleWaiting)
 
+    const tryPlay = () => {
+      video.play().catch(() => {
+        setIsPlaying(false)
+      })
+    }
+
     const setupPlayer = async () => {
       if (video.canPlayType('application/vnd.apple.mpegurl')) {
         video.src = playbackUrl
+        tryPlay()
       } else {
         const { default: Hls } = await import('hls.js')
 
@@ -208,15 +212,13 @@ export function StreamPlayer({
           }
         })
 
+        hls.on(Hls.Events.MANIFEST_PARSED, () => {
+          tryPlay()
+        })
+
         hls.loadSource(playbackUrl)
         hls.attachMedia(video)
         teardown = () => hls.destroy()
-      }
-
-      try {
-        await video.play()
-      } catch {
-        setIsPlaying(false)
       }
     }
 
@@ -358,7 +360,6 @@ export function StreamPlayer({
           <video
             aria-label={copy.streamVideoAriaLabel(feedName)}
             className="stream-video"
-            crossOrigin="anonymous"
             muted
             onClick={toggleFullscreen}
             playsInline
