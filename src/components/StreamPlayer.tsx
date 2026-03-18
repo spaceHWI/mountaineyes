@@ -150,7 +150,9 @@ export function StreamPlayer({
       }
 
       clearWaitingTimer()
-      setStatus('loading')
+      waitingTimerRef.current = window.setTimeout(() => {
+        setStatus('loading')
+      }, 3000)
     }
     const handleTimeUpdate = () => {
       if (video.currentTime > 0) {
