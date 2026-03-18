@@ -7,7 +7,16 @@ const app = express()
 const port = Number(process.env.PORT ?? 8787)
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 const distPath = path.resolve(__dirname, '../dist')
-const allowedHosts = new Set(['59.8.86.94:8080', '59.30.12.195:1935', 'hallacctv.kr'])
+const allowedHosts = new Set([
+  '59.8.86.94:8080',
+  '59.30.12.195:1935',
+  'hallacctv.kr',
+  'live.yongpyong.co.kr',
+  'live.knps.or.kr',
+  'live.wellihillipark.com',
+  'cctv-oak9.ktcdn.co.kr',
+  'streaming.phoenixhnr.co.kr',
+])
 const USER_AGENT = 'JejuEye/1.0'
 const corsOrigins = (process.env.CORS_ALLOWED_ORIGINS ?? '*')
   .split(',')

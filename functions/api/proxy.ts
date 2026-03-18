@@ -1,4 +1,13 @@
-const allowedHosts = new Set(['59.8.86.94:8080', '59.30.12.195:1935', 'hallacctv.kr'])
+const allowedHosts = new Set([
+  '59.8.86.94:8080',
+  '59.30.12.195:1935',
+  'hallacctv.kr',
+  'live.yongpyong.co.kr',
+  'live.knps.or.kr',
+  'live.wellihillipark.com',
+  'cctv-oak9.ktcdn.co.kr',
+  'streaming.phoenixhnr.co.kr',
+])
 const USER_AGENT = 'JejuEye/1.0'
 
 const isPlaylistResponse = (target: string, contentType: string) => {
