@@ -184,17 +184,27 @@ export function StreamPlayer({
 
         const hls = new Hls({
           enableWorker: true,
-          lowLatencyMode: true,
-          liveSyncDurationCount: 2,
-          liveMaxLatencyDurationCount: 4,
-          maxBufferLength: 10,
-          maxMaxBufferLength: 20,
+          lowLatencyMode: false,
+          liveSyncDurationCount: 3,
+          liveMaxLatencyDurationCount: 6,
+          maxBufferLength: 15,
+          maxMaxBufferLength: 30,
           startFragPrefetch: true,
         })
 
         hls.on(Hls.Events.ERROR, (_, data) => {
           if (data.fatal) {
-            setStatus('error')
+            switch (data.type) {
+              case Hls.ErrorTypes.NETWORK_ERROR:
+                hls.startLoad()
+                break
+              case Hls.ErrorTypes.MEDIA_ERROR:
+                hls.recoverMediaError()
+                break
+              default:
+                setStatus('error')
+                break
+            }
           }
         })
 
