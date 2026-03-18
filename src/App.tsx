@@ -5,26 +5,21 @@ import { FeedCard } from './components/FeedCard'
 import { Icon, PinIcon } from './components/Icon'
 import { MountainPicker } from './components/MountainPicker'
 import { Sparkline } from './components/Sparkline'
-import { feeds, mountains, worldPicks, type FeedKind, type MountainId } from './data/feeds'
+import { feeds, mountains, worldPicks, type MountainId } from './data/feeds'
 import { useFeedHealth } from './hooks/useFeedHealth'
 import { getSunLabel, useWeather } from './hooks/useWeather'
 import { SunIcon, WeatherIcon } from './components/WeatherIcons'
-import { appCopy, kindLabels, localize, type Language } from './i18n'
+import { appCopy, localize, type Language } from './i18n'
 import { setMetaContent } from './utils/dom'
 import { getDistanceKm } from './utils/geo'
 import { getInitialLanguage, getInitialMountainId, isPinnedOnLoad, LANGUAGE_STORAGE_KEY, PINNED_MOUNTAIN_KEY } from './utils/init'
 
 const LANGUAGE_OPTIONS = ['ko', 'en'] as const
 
-const KIND_ICONS = {
-  all: 'grid', summit: 'mountain', view: 'view', access: 'path',
-} as const
-
 function App() {
   const [language, setLanguage] = useState<Language>(getInitialLanguage)
   const [activeMountainId, setActiveMountainId] = useState<MountainId>(getInitialMountainId)
   const [pinned, setPinned] = useState(isPinnedOnLoad)
-  const [activeKind, setActiveKind] = useState<'all' | FeedKind>('all')
   const mountainIds = useMemo(() => mountains.map((m) => m.id), [])
   const feedHealth = useFeedHealth(mountainIds)
 
@@ -99,29 +94,11 @@ function App() {
 
   const weather = useWeather(activeMountain.lat, activeMountain.lng)
 
-  const availableKinds = useMemo(() => {
-    const kinds = new Set<FeedKind>()
-
-    feeds.forEach((feed) => {
-      if (feed.mountainId === activeMountainId) {
-        kinds.add(feed.kind)
-      }
-    })
-
-    return ['all', ...Array.from(kinds)] as Array<'all' | FeedKind>
-  }, [activeMountainId])
-
-  const visibleKind = availableKinds.includes(activeKind) ? activeKind : 'all'
   const sunLabel = weather ? getSunLabel(weather.sunrise, weather.sunset) : null
 
   const visibleFeeds = useMemo(
-    () =>
-      feeds.filter((feed) => {
-        const sameMountain = feed.mountainId === activeMountainId
-        const sameKind = visibleKind === 'all' || feed.kind === visibleKind
-        return sameMountain && sameKind
-      }),
-    [activeMountainId, visibleKind],
+    () => feeds.filter((feed) => feed.mountainId === activeMountainId),
+    [activeMountainId],
   )
 
   return (
@@ -130,7 +107,20 @@ function App() {
         <section className="hero">
           <div className="hero-copy">
             <div className="hero-topline">
-              <p className="eyebrow">{copy.heroEyebrow}</p>
+              <div className="title-row">
+                <span className="title-logo" aria-hidden="true">
+                  <svg viewBox="0 0 64 64" className="logo-eyes-svg">
+                    <path d="M32 6 C26 6 6 40 2 48 Q8 52 14 48 Q20 52 26 48 Q32 52 38 48 Q44 52 50 48 Q56 52 62 48 C58 40 38 6 32 6Z" fill="#1a4a2e"/>
+                    <g className="logo-eye-group">
+                      <ellipse cx="23" cy="34" rx="7" ry="8" fill="white"/>
+                      <ellipse cx="41" cy="34" rx="7" ry="8" fill="white"/>
+                      <ellipse cx="25" cy="35" rx="3.5" ry="4.5" fill="#1a4a2e"/>
+                      <ellipse cx="43" cy="35" rx="3.5" ry="4.5" fill="#1a4a2e"/>
+                    </g>
+                  </svg>
+                </span>
+                <h1>MountainEyes<sup className="version-tag">V1.2</sup></h1>
+              </div>
               <div className="language-switch" aria-label={copy.languageLabel} role="group">
                 <span className="language-switch-label">{copy.languageLabel}</span>
                 {LANGUAGE_OPTIONS.map((option) => (
@@ -145,107 +135,62 @@ function App() {
                 ))}
               </div>
             </div>
-            <div className="title-row">
-              <span className="title-logo" aria-hidden="true">
-                <svg viewBox="0 0 64 64" className="logo-eyes-svg">
-                  <path d="M32 6 C26 6 6 40 2 48 Q8 52 14 48 Q20 52 26 48 Q32 52 38 48 Q44 52 50 48 Q56 52 62 48 C58 40 38 6 32 6Z" fill="#1a4a2e"/>
-                  <g className="logo-eye-group">
-                    <ellipse cx="23" cy="34" rx="7" ry="8" fill="white"/>
-                    <ellipse cx="41" cy="34" rx="7" ry="8" fill="white"/>
-                    <ellipse cx="25" cy="35" rx="3.5" ry="4.5" fill="#1a4a2e"/>
-                    <ellipse cx="43" cy="35" rx="3.5" ry="4.5" fill="#1a4a2e"/>
-                  </g>
-                </svg>
-              </span>
-              <h1>MountainEyes<sup className="version-tag">V1.2</sup></h1>
-            </div>
             <p className="hero-text">{copy.heroText}</p>
-            <div className="hero-badges">
-              <span className="soft-badge compact">
-                <Icon name="megaphone" />
-                {language === 'ko'
-                  ? '260313 — 22개 산 + 세계 54개 산, 실시간 날씨'
-                  : '260313 — 22 KR + 54 world mountains, live weather'}
-              </span>
-            </div>
+            <span className="soft-badge compact">
+              <Icon name="megaphone" />
+              {language === 'ko'
+                ? '260313 — 22개 산 + 세계 54개 산, 실시간 날씨'
+                : '260313 — 22 KR + 54 world mountains, live weather'}
+            </span>
           </div>
         </section>
 
         <section className="toolbar panel">
           <div className="toolbar-stack">
-            <div className="toolbar-block">
-              <div className="mountain-picker-row">
-                <MountainPicker
-                  health={feedHealth}
-                  language={language}
-                  mountains={mountains}
-                  onChange={(id: MountainId) => {
-                    setActiveMountainId(id)
-                    if (pinned) {
-                      window.localStorage.setItem(PINNED_MOUNTAIN_KEY, id)
-                    }
-                  }}
-                  value={activeMountainId}
-                />
-                <button
-                  className={`pin-toggle ${pinned ? 'active' : ''}`}
-                  type="button"
-                  title={pinned ? (language === 'ko' ? '고정 해제' : 'Unpin') : (language === 'ko' ? '이 산 고정' : 'Pin this mountain')}
-                  onClick={() => {
-                    if (pinned) {
-                      window.localStorage.removeItem(PINNED_MOUNTAIN_KEY)
-                      setPinned(false)
-                    } else {
-                      window.localStorage.setItem(PINNED_MOUNTAIN_KEY, activeMountainId)
-                      setPinned(true)
-                    }
-                  }}
-                >
-                  <PinIcon active={pinned} />
-                </button>
-              </div>
+            <div className="mountain-picker-row">
+              <MountainPicker
+                health={feedHealth}
+                language={language}
+                mountains={mountains}
+                onChange={(id: MountainId) => {
+                  setActiveMountainId(id)
+                  if (pinned) {
+                    window.localStorage.setItem(PINNED_MOUNTAIN_KEY, id)
+                  }
+                }}
+                value={activeMountainId}
+              />
+              <a className="inline-link" href={activeMountain.officialPage} rel="noreferrer" target="_blank">
+                {copy.officialInfo}
+              </a>
+              <button
+                className={`pin-toggle ${pinned ? 'active' : ''}`}
+                type="button"
+                title={pinned ? (language === 'ko' ? '고정 해제' : 'Unpin') : (language === 'ko' ? '이 산 고정' : 'Pin this mountain')}
+                onClick={() => {
+                  if (pinned) {
+                    window.localStorage.removeItem(PINNED_MOUNTAIN_KEY)
+                    setPinned(false)
+                  } else {
+                    window.localStorage.setItem(PINNED_MOUNTAIN_KEY, activeMountainId)
+                    setPinned(true)
+                  }
+                }}
+              >
+                <PinIcon active={pinned} />
+              </button>
             </div>
-
-            <div className="toolbar-block">
-              <div className="chip-list preset-chip-list compact">
-                {availableKinds.map((preset) => (
-                  <button
-                    key={preset}
-                    className={visibleKind === preset ? 'chip active' : 'chip'}
-                    onClick={() => setActiveKind(preset)}
-                    type="button"
-                  >
-                    <Icon name={KIND_ICONS[preset]} />
-                    {preset === 'all' ? copy.allLabel : localize(kindLabels[preset], language)}
-                  </button>
-                ))}
-              </div>
-            </div>
-          </div>
-        </section>
-
-        <section className="mountain-summary panel">
-          <div className="section-head">
-            <div>
-              <p className="eyebrow">{copy.liveMountainEyebrow}</p>
-              <div className="mountain-title-row">
-                <h2>{localize(activeMountain.name, language)}</h2>
-                <a className="inline-link" href={activeMountain.officialPage} rel="noreferrer" target="_blank">
-                  {copy.officialInfo}
-                </a>
-                {weather && sunLabel && (
-                  <span className="weather-badge">
-                    <span className="weather-icon"><WeatherIcon code={weather.weatherCode} /></span>
-                    <span className="weather-temp">{weather.temperature}°</span>
-                    <span className="weather-humidity">{weather.humidity}%</span>
-                    <span className="weather-wind">{weather.windSpeed}km/h</span>
-                    <span className="weather-sun"><SunIcon type={sunLabel.type} />{sunLabel.time}</span>
-                    <Sparkline data={weather.hourly} />
-                  </span>
-                )}
-              </div>
-              <p>{localize(activeMountain.description, language)}</p>
-            </div>
+            {weather && sunLabel && (
+              <span className="weather-badge">
+                <span className="weather-icon"><WeatherIcon code={weather.weatherCode} /></span>
+                <span className="weather-temp">{weather.temperature}°</span>
+                <span className="weather-humidity">{weather.humidity}%</span>
+                <span className="weather-wind">{weather.windSpeed}km/h</span>
+                <span className="weather-sun"><SunIcon type={sunLabel.type} />{sunLabel.time}</span>
+                <Sparkline data={weather.hourly} />
+              </span>
+            )}
+            <p className="mountain-desc">{localize(activeMountain.description, language)}</p>
           </div>
         </section>
 

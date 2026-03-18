@@ -68,11 +68,11 @@
 
 .hero {
   display: block;
-  padding: 1rem;
+  padding: 0.8rem 1rem;
 }
 
 .hero-copy {
-  padding: 1rem;
+  padding: 0.4rem 0.5rem;
 }
 
 .hero-topline {
@@ -86,7 +86,6 @@
   display: flex;
   align-items: center;
   gap: 0.8rem;
-  margin-top: 0.85rem;
 }
 
 .version-tag {
@@ -217,7 +216,7 @@
 
 .hero h1,
 .simul-header h2 {
-  margin: 0.6rem 0 0;
+  margin: 0;
   letter-spacing: -0.04em;
 }
 
@@ -236,7 +235,7 @@
 .hero-text,
 .card-copy,
 .empty-state {
-  margin: 0.9rem 0 0;
+  margin: 0.5rem 0 0;
   line-height: 1.65;
   color: #4d6154;
 }
@@ -395,7 +394,7 @@
 .hero-badges {
   display: grid;
   gap: 0.65rem;
-  margin-top: 1rem;
+  margin-top: 0.5rem;
 }
 
 .soft-badge {
@@ -444,6 +443,13 @@
   margin: 0.4rem 0 0;
 }
 
+.mountain-desc {
+  margin: 0;
+  color: #4d6154;
+  font-size: 0.88rem;
+  line-height: 1.5;
+}
+
 .weather-badge {
   display: inline-flex;
   align-items: center;
@@ -455,7 +461,6 @@
   font-weight: 500;
   color: #3a5a44;
   white-space: nowrap;
-  margin-top: 0.4rem;
 }
 
 .weather-icon {
@@ -606,7 +611,7 @@
   display: inline-flex;
   align-items: center;
   gap: 0.55rem;
-  min-width: 12rem;
+  min-width: 16rem;
   min-height: 2.7rem;
   padding: 0 0.8rem 0 0.9rem;
   border: 1px solid rgba(24, 72, 45, 0.14);
