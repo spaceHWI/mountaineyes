@@ -185,6 +185,11 @@ export function StreamPlayer({
         const hls = new Hls({
           enableWorker: true,
           lowLatencyMode: true,
+          liveSyncDurationCount: 2,
+          liveMaxLatencyDurationCount: 4,
+          maxBufferLength: 10,
+          maxMaxBufferLength: 20,
+          startFragPrefetch: true,
         })
 
         hls.on(Hls.Events.ERROR, (_, data) => {
