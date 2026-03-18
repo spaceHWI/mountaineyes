@@ -190,7 +190,6 @@ function App() {
                 <Sparkline data={weather.hourly} />
               </span>
             )}
-            <p className="mountain-desc">{localize(activeMountain.description, language)}</p>
           </div>
         </section>
 
