@@ -551,6 +551,17 @@
   align-items: center;
   gap: 0.6rem;
   flex-wrap: nowrap;
+  width: 100%;
+}
+
+.mountain-picker-row .mountain-picker {
+  flex: 1;
+  min-width: 0;
+}
+
+.mountain-picker-row .mountain-picker-trigger {
+  width: 100%;
+  min-width: 0;
 }
 
 .pin-toggle {
